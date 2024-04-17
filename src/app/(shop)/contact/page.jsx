@@ -7,7 +7,7 @@ export const metadata = {
 };
 export default function Contact() {
   return (
-    <div className="bg-white px-6 py-24 sm:py-32 lg:px-8 h-screen">
+    <div className="px-6 pb-16 m-auto max-w-[800px] mt-8">
       <div className="mx-auto max-w-2xl text-center">
         <Title title={metadata.title} className={"text-center"} />
         <p className="mt-6 text-lg leading-8 text-gray-600 mb-1">
@@ -40,7 +40,7 @@ export default function Contact() {
           Réseaux sociaux :
         </h2>
         <p className="mt-3 text-lg text-gray-600">
-          Suivez-nous sur
+          Suivez-nous sur{" "}
           <a
             href="https://www.facebook.com/PoussezPasDerriere/"
             className="text-blue-500 hover:underline"

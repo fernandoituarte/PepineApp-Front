@@ -6,7 +6,7 @@ export const OrderInfo = ({ order, role, loading }) => {
   const { created_at, id, total_price, status } = order;
   const dispatch = useAppDispatch();
 
-  const isEnded = status === "finalisée";
+  const isEnded = status === "annulée";
   const date = new Date(created_at);
   const DDMMYYYY = date.toLocaleDateString("fr-FR");
   const hours = date.getHours();
@@ -20,7 +20,7 @@ export const OrderInfo = ({ order, role, loading }) => {
   };
   const handleCancel = () => {
     if (window.confirm("Voulez-vous vraiment annuler cette commande?")) {
-      dispatch(changeStatus({ status: "finalisée", id }));
+      dispatch(changeStatus({ status: "annulée", id }));
     }
   };
   return (
@@ -44,12 +44,12 @@ export const OrderInfo = ({ order, role, loading }) => {
             </span>
           )}
         </p>
-        <p className="font-semibold mb-3 flex justify-between">
+        {/* <p className="font-semibold mb-3 flex justify-between">
           Sous-Total <span className="font-normal">00 €</span>
         </p>
         <p className="font-semibold flex justify-between">
           TVA (10%) <span className="font-normal">00 €</span>
-        </p>
+        </p> */}
         {/* Line Separator */}
         <div className="w-full h-px bg-gray-200 my-8" />
         <p className="text-2xl font-bold mb-2 mt-5 flex justify-between">
@@ -87,12 +87,12 @@ export const OrderInfo = ({ order, role, loading }) => {
               La commande a été retirée
             </button>
           )}
-          {status === "finalisée" && (
+          {status === "annulée" && (
             <button
               disabled
               className={"w-full mt-3 py-2 text-white rounded-lg bg-red-400"}
             >
-              La commande a été anulée
+              La commande a été annulée
             </button>
           )}
 

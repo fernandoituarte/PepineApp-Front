@@ -47,21 +47,15 @@ export function Order({ id }) {
             <tr>
               <th
                 scope="col"
-                className="min-w-[10rem] md:inline-flex py-3.5 pl-5 pr-3 text-left text-sm font-semibold text-gray-900"
+                className="py-3.5 pl-5 pr-3 text-left text-sm font-semibold text-gray-900"
               >
                 Produit
               </th>
               <th
                 scope="col"
-                className="py-3.5 md:inline-flex text-left text-sm font-semibold text-gray-900"
+                className="py-3.5 text-left text-sm font-semibold text-gray-900"
               >
                 Quantite
-              </th>
-              <th
-                scope="col"
-                className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-              >
-                Sous-total
               </th>
               <th
                 scope="col"
@@ -74,13 +68,10 @@ export function Order({ id }) {
           <tbody className="divide-y divide-gray-200 bg-white">
             {loading ? (
               <tr className="hover:bg-gray-100 rounded-sm">
-                <td className="whitespace-nowrap min-w-[10rem] pl-5 md:inline-block py-4 pr-3 text-sm font-medium text-gray-900">
+                <td className="whitespace-nowrap pl-5 py-4 pr-3 text-sm font-medium text-gray-900">
                   <SkeletonSmallText />
                 </td>
-                <td className="whitespace-nowrap md:inline-block py-4 pr-3 text-sm font-medium text-gray-900">
-                  <SkeletonSmallText />
-                </td>
-                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                <td className="whitespace-nowrap py-4 pr-3 text-sm font-medium text-gray-900">
                   <SkeletonSmallText />
                 </td>
                 <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">

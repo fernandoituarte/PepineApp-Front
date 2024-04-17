@@ -59,14 +59,14 @@ export function ProductDetails({ product }) {
   ];
   return (
     <div className="bg-white">
-      <main className="mx-auto max-w-7xl sm:px-6 sm:pt-16 lg:px-8">
+      <main className="mx-auto mb-28 max-w-7xl sm:px-6 sm:pt-16 lg:px-8">
         <div className="mx-auto max-w-2xl lg:max-w-none">
           {/* Product */}
           <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8 mb-6">
             {/* Image gallery */}
             <Tab.Group as="div" className="flex flex-col-reverse">
               {/* Image selector */}
-              <div className="mx-3 sm:mx-auto mt-6 w-full max-w-2xl sm:block lg:max-w-none">
+              <div className="mx-4 sm:mx-auto mt-6 w-full max-w-2xl sm:block lg:max-w-none">
                 <Tab.List className="grid grid-cols-4 gap-6 ">
                   {product.media_urls[0] &&
                     product.media_urls.map((image, index) => (
@@ -90,7 +90,7 @@ export function ProductDetails({ product }) {
                                 selected
                                   ? "ring-indigo-500"
                                   : "ring-transparent",
-                                "pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2",
+                                "pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2"
                               )}
                               aria-hidden="true"
                             />
@@ -186,7 +186,7 @@ export function ProductDetails({ product }) {
                     href={`update-product/${product.id}`}
                     onClick={handleUpdate}
                     type="submit"
-                    className="shadow-md flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
+                    className="shadow-md flex md:max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
                   >
                     Modifier
                   </Link>
@@ -213,7 +213,7 @@ export function ProductDetails({ product }) {
                               >
                                 {detail.name}
                               </span>
-                              <span className="ml-6 flex items-center">
+                              <span className="flex items-center">
                                 {open ? (
                                   <MinusIcon
                                     className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
@@ -232,7 +232,7 @@ export function ProductDetails({ product }) {
                             as="div"
                             className="prose prose-sm pb-6"
                           >
-                            <ul className="list-disc text-gray-400" role="list">
+                            <ul className="" role="list">
                               {detail.items.map((item, index) => {
                                 // Séparer la clé et la valeur
                                 const [key, value] = item.split(":");
@@ -242,11 +242,9 @@ export function ProductDetails({ product }) {
                                   .includes("price");
 
                                 return (
-                                  <li key={index} className="mx-4">
+                                  <li key={index} className="">
+                                    <span className="">{formattedKey}</span>
                                     <span className="font-semibold">
-                                      {formattedKey}
-                                    </span>
-                                    <span className="text-gray-700">
                                       {" "}
                                       {isPrice ? `${value} €` : value}
                                     </span>

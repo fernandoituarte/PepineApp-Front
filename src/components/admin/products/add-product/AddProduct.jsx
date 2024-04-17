@@ -69,7 +69,7 @@ export function AddProduct() {
 
   return (
     <motion.div
-      className="max-w-4xl m-auto pb-10 px-10"
+      className="max-w-4xl m-auto pb-10 px-4"
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{

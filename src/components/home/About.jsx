@@ -26,7 +26,7 @@ export function About() {
         contacter au{" "}
         <span className="text-amber-500 font-bold">06 19 10 04 12.</span>
       </p>
-      <p className=" mt-10 text-center text-opacity-90 text-4xl font-bold leading-10">
+      <p className="px-6 mt-10 text-center text-opacity-90 text-3xl font-bold leading-10">
         Bon Jardinage à tous !
       </p>
     </motion.div>

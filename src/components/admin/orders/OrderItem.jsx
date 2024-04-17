@@ -1,8 +1,6 @@
 "use client";
 import Link from "next/link";
 
-import { motion } from "framer-motion";
-
 export function OrderItem({
   id,
   reference,
@@ -16,17 +14,7 @@ export function OrderItem({
   const DDMMYYYY = date.toLocaleDateString("fr-FR");
 
   return (
-    <motion.tr
-      whileHover={{ scale: 1.01 }}
-      whileTap={{ scale: 1 }}
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{
-        duration: 0.2,
-        ease: [0, 0.71, 0.2, 1.01],
-      }}
-      className="hover:bg-gray-100 rounded-sm relative"
-    >
+    <tr className="hover:bg-gray-100 rounded-sm relative">
       <td className="whitespace-nowrap min-w-[10rem] hidden md:inline-block py-4 pr-3 text-sm font-medium text-gray-900">
         {DDMMYYYY}
       </td>
@@ -48,6 +36,6 @@ export function OrderItem({
           className="absolute z-5 top-0 bottom-0 right-0 left-0"
         />
       </td>
-    </motion.tr>
+    </tr>
   );
 }

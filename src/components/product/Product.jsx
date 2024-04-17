@@ -54,14 +54,14 @@ export function Product({ product }) {
   ];
   return (
     <div className="bg-white">
-      <main className="mx-auto max-w-7xl sm:px-6 sm:pt-16 lg:px-8">
+      <main className="mx-auto mb-28 max-w-7xl sm:px-6 sm:pt-16 lg:px-8">
         <div className="mx-auto max-w-2xl lg:max-w-none">
           {/* Product */}
           <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8 mb-6">
             {/* Image gallery */}
             <Tab.Group as="div" className="flex flex-col-reverse">
               {/* Image selector */}
-              <div className="mx-auto mt-6 w-full max-w-2xl sm:block lg:max-w-none">
+              <div className="mx-4 md:mx-auto mt-6 w-full max-w-2xl sm:block lg:max-w-none">
                 <Tab.List className="grid grid-cols-4 gap-6 ">
                   {product.media_urls[0] &&
                     product.media_urls.map((image, index) => (
@@ -245,7 +245,7 @@ export function Product({ product }) {
                             as="div"
                             className="prose prose-sm pb-6"
                           >
-                            <ul className="list-disc" role="list">
+                            <ul className="" role="list">
                               {detail.items.map((item, index) => {
                                 // Séparer la clé et la valeur
                                 const [key, value] = item.split(":");

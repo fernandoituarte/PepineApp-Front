@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const navigation = {
   main: [
-    { name: "Conditions Générales d utilisation", href: "/cgu" },
+    { name: "Conditions Générales d'utilisation", href: "/cgu" },
     { name: "Categories", href: "/categories" },
     { name: "Contact", href: "/contact" },
     { name: "Mentions Legales", href: "/legal" },
@@ -13,8 +13,8 @@ const navigation = {
 export function Footer() {
   return (
     <footer className="bg-[#1c4b30] w-full absolute z-20">
-      <div className="mx-auto max-w-7xl overflow-hidden px-6 py-10 sm:py-10 lg:px-8">
-        <h3 className="text-center text-white font-bold text-xl m-2">
+      <div className="mx-auto max-w-7xl overflow-hidden px-6 pt-6 pb-10 sm:py-10 lg:px-8">
+        <h3 className="text-center text-white font-bold text-lg mb-8">
           Poussez pas derrière - Pépinièriste à Saint André
         </h3>
         <nav

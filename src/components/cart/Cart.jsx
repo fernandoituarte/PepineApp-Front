@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/hooks/redux";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -11,18 +11,17 @@ import {
 } from "@/store/reducer/orders/orders";
 import { motion } from "framer-motion";
 
-import { CartItem, ModalCart } from "@/components";
-import { totalPriceSelector, setCartItems } from "@/store/reducer/cart/cart";
+import { CartItem, ModalCart, Message } from "@/components";
+import { totalPriceSelector } from "@/store/reducer/cart/cart";
 
 export function Cart() {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { reservationSuccess, isOrderSended, orderId } = useAppSelector(
-    (state) => state.orders,
-  );
+  const { isOrderSended, orderId } = useAppSelector((state) => state.orders);
   const { user } = useAppSelector((state) => state.user);
   const { cartItems } = useAppSelector((state) => state.cart);
   const totalPrice = useAppSelector(totalPriceSelector);
+  const [userRole, setUserRole] = useState();
 
   useEffect(() => {
     if (cartItems.length === 0) {
@@ -34,6 +33,7 @@ export function Cart() {
     const userCookie = getCookie("user");
     if (userCookie) {
       const { id, role } = JSON.parse(userCookie);
+      setUserRole(role);
       dispatch(getUserById(id));
     }
   }, [dispatch, router]);
@@ -43,7 +43,7 @@ export function Cart() {
     const orderData = {
       first_name_order: user.first_name,
       last_name_order: user.last_name,
-      total_price: totalPrice,
+      total_price: totalPrice.toFixed(2),
       status: "en cours",
       user_id: user.id,
     };
@@ -100,30 +100,17 @@ export function Cart() {
             </h2>
 
             <dl className="mt-6 space-y-4">
-              <div className="flex items-center justify-between">
-                <dt className="text-sm text-gray-600">Sous-total</dt>
-                <dd className="text-sm font-medium text-gray-900">
-                  {" "}
-                  {totalPrice}
-                </dd>
-              </div>
-              <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-                <dt className="flex text-sm text-gray-600">
-                  <span>TVA 0 %</span>
-                </dt>
-                <dd className="text-sm font-medium text-gray-900">0 €</dd>
-              </div>
               <div className="flex items-center justify-between border-t border-gray-200 pt-4">
                 <dt className="text-base font-medium text-gray-900">
-                  Total de la commande
+                  Total de la commande TTC
                 </dt>
                 <dd className="text-base font-medium text-gray-900">
-                  {totalPrice} €
+                  {totalPrice.toFixed(2)} €
                 </dd>
               </div>
             </dl>
-            <div className="mt-6 text-center">
-              {user ? (
+            <div className="my-10 text-center">
+              {userRole ? (
                 <button
                   type="button"
                   onClick={handleReservation}
@@ -141,6 +128,11 @@ export function Cart() {
                 </Link>
               )}
             </div>
+            <Message
+              title={"Info: "}
+              className={"bg-blue-50 text-blue-700 mt-5"}
+              text={"Les commandes sont a retirer sur place"}
+            />
           </section>
         </form>
       </div>

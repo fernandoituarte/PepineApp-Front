@@ -121,7 +121,6 @@ export const getAllUsers = createAsyncThunk(
 );
 
 const initialState = {
-  logged: false,
   error: null,
   orders: [],
   user: null,
@@ -139,15 +138,13 @@ const userReducer = createReducer(initialState, (builder) => {
       state.loading = true;
     })
     .addCase(loginUser.fulfilled, (state, action) => {
-      state.status = "succeeded";
+      state.status = "logged";
       state.loading = false;
-      state.logged = true;
     })
     .addCase(loginUser.rejected, (state, action) => {
       state.status = "failed";
       state.loading = false;
       state.error = true;
-      state.logged = false;
     })
     .addCase(logOut.pending, (state) => {
       state.status = "loading";
@@ -156,13 +153,12 @@ const userReducer = createReducer(initialState, (builder) => {
     .addCase(logOut.fulfilled, (state, action) => {
       state.status = "succeeded";
       state.loading = false;
-      state.logged = false;
+      state.user = null;
     })
     .addCase(logOut.rejected, (state, action) => {
       state.status = "failed";
       state.loading = false;
       state.error = true;
-      state.logged = true;
     })
     .addCase(forgotPassword.pending, (state) => {
       state.status = "loading";
@@ -198,7 +194,14 @@ const userReducer = createReducer(initialState, (builder) => {
       state.error = false;
     })
     .addCase(getUserById.fulfilled, (state, action) => {
-      state.user = action.payload;
+      state.user = {
+        first_name: action.payload.first_name,
+        last_name: action.payload.last_name,
+        email: action.payload.email,
+        phone: action.payload.phone,
+        id: action.payload.id,
+        created_at: action.payload.created_at,
+      };
       state.loading = false;
     })
     .addCase(getUserById.rejected, (state, action) => {
@@ -207,16 +210,17 @@ const userReducer = createReducer(initialState, (builder) => {
     })
     .addCase(updateUserDetails.pending, (state, action) => {
       state.loading = true;
-      state.status = "updated";
+      state.status = "loqding";
     })
     .addCase(updateUserDetails.fulfilled, (state, action) => {
       state.loading = false;
       state.user = { ...state.user, ...action.payload.updatedUser };
-      state.status = "updated";
+      state.status = "user updated";
     })
     .addCase(updateUserDetails.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
+      state.status = "user failed to update";
     })
     .addCase(deleteAccount.pending, (state) => {
       state.loading = true;
@@ -224,7 +228,6 @@ const userReducer = createReducer(initialState, (builder) => {
     })
     .addCase(deleteAccount.fulfilled, (state) => {
       state.token = null;
-      state.logged = false;
       state.error = null;
       state.orders = [];
       state.user = null;

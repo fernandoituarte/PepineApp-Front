@@ -25,7 +25,7 @@ export function ProductList() {
   }, [dispatch]);
 
   return (
-    <div className="px-6 sm:px-6 lg:px-8">
+    <div className="lg:px-8">
       <div className="mt-12 flow-root m-auto">
         <div className="px-5 -mx-4 -my-2 sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle ">

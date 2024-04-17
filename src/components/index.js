@@ -65,4 +65,5 @@ export * from "./ui/Spinners/SkeletonText";
 export * from "./ui/Spinners/SkeletonOrderProduct";
 export * from "./ui/title/Title";
 export * from "./ui/title/Subtitle";
+export * from "./ui/messages/Message";
 export * from "./ui/empty/EmptyCart";

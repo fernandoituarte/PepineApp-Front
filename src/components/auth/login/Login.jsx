@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 export function Login() {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { logged, loading, error } = useAppSelector((state) => state.user);
+  const { status, loading, error } = useAppSelector((state) => state.user);
   const { register, handleSubmit } = useForm();
 
   const onSubmit = handleSubmit((data) => {
@@ -18,10 +18,10 @@ export function Login() {
   });
 
   useEffect(() => {
-    if (logged) {
+    if (status === "logged") {
       router.push("/");
     }
-  }, [logged, router]);
+  }, [status, router]);
 
   return (
     <form onSubmit={onSubmit} className="space-y-6" action="" method="POST">

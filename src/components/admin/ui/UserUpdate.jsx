@@ -8,12 +8,22 @@ import { getCookie } from "cookies-next";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userUpdateSchema } from "@/validations/schemas";
 import { updateUserDetails } from "@/store/reducer/auth/login";
+import { Message } from "@/components";
 
 export const UserUpdate = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { status } = useAppSelector((state) => state.user);
+  const { status, user } = useAppSelector((state) => state.user);
   const [userId, setUserId] = useState();
+  const [showMessage, setShowMessage] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({ resolver: zodResolver(userUpdateSchema) });
 
   useEffect(() => {
     const userCookie = getCookie("user");
@@ -21,13 +31,30 @@ export const UserUpdate = () => {
       const { id } = JSON.parse(userCookie);
       setUserId(id);
     }
-  }, []);
+    if (user) {
+      reset({
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        phone: user.phone,
+      });
+    }
+  }, [reset, user]);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ resolver: zodResolver(userUpdateSchema) });
+  useEffect(() => {
+    if (status === "user updated") {
+      setShowMessage(true);
+      setTimeout(() => {
+        setShowMessage(false);
+      }, 3000);
+    }
+    if (status === "user failed to update") {
+      setShowErrorMessage(true);
+      setTimeout(() => {
+        setShowErrorMessage(false);
+      }, 3000);
+    }
+  }, [status]);
 
   const onSubmit = handleSubmit((data) => {
     const userInfo = { ...data };
@@ -42,35 +69,20 @@ export const UserUpdate = () => {
       onSubmit={onSubmit}
       className="mx-2 sm:w-4/5 md:w-2/3 sm:mx-auto mt-12 border rounded-lg p-6"
     >
-      {status === "updated" && (
-        <div
-          className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-10"
-          role="alert"
-        >
-          <strong className="font-bold">Réservation réussie !</strong>
-          <span className="block sm:inline">
-            Votre commande a été passée avec succès.
-          </span>
-        </div>
+      {showMessage && (
+        <Message
+          title={"Informations mises à jour: "}
+          className={"bg-green-50 text-green-700 mb-5"}
+          text={"Vos informations ont étés mises à jour"}
+        />
       )}
-      <div className="w-full flex flex-col sm:flex-row sm:justify-between mb-6">
-        <p className="font-semibold mb-1">Nom </p>
-        <div className="flex flex-col sm:w-1/2">
-          <input
-            className="font-normal border rounded-md h-8 px-2 "
-            placeholder={"Nom"}
-            {...register("last_name", {
-              required: true,
-              message: "Ce champ est requis",
-            })}
-          />
-          {errors.last_name?.message && (
-            <p className="ml-2 text-red-500 text-sm">
-              {errors.last_name?.message}
-            </p>
-          )}
-        </div>
-      </div>
+      {showErrorMessage && (
+        <Message
+          title={"Informations mises à jour: "}
+          className={"bg-red-50 text-red-700 mb-5"}
+          text={"Vos informations ont étés mises à jour"}
+        />
+      )}
       <div className="w-full flex flex-col sm:flex-row sm:justify-between  mb-6">
         <p className="font-semibold mb-1">Prénom </p>
         <div className="flex flex-col sm:w-1/2">
@@ -85,6 +97,24 @@ export const UserUpdate = () => {
           {errors.first_name?.message && (
             <p className="ml-2 text-red-500 text-sm">
               {errors.first_name?.message}
+            </p>
+          )}
+        </div>
+      </div>
+      <div className="w-full flex flex-col sm:flex-row sm:justify-between mb-6">
+        <p className="font-semibold mb-1">Nom </p>
+        <div className="flex flex-col sm:w-1/2">
+          <input
+            className="font-normal border rounded-md h-8 px-2 "
+            placeholder={"Nom"}
+            {...register("last_name", {
+              required: true,
+              message: "Ce champ est requis",
+            })}
+          />
+          {errors.last_name?.message && (
+            <p className="ml-2 text-red-500 text-sm">
+              {errors.last_name?.message}
             </p>
           )}
         </div>

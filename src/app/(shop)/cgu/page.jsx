@@ -7,8 +7,8 @@ export const metadata = {
 
 export default function Cgu() {
   return (
-    <div className="bg-white px-6 pb-16 lg:px-8 m-20">
-      <div className="mx-auto max-w-3xl text-base leading-7 text-gray-700">
+    <div className="px-6 pb-16 m-auto max-w-[800px] mt-8">
+      <div className="md:max-w-3xl text-base leading-7 text-gray-700">
         <p className="text-base font-semibold leading-7 text-amber-800">
           Pépinière PPD
         </p>
