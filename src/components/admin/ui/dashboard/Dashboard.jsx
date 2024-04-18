@@ -14,6 +14,7 @@ import {
   IoTicketOutline,
   IoCartOutline,
 } from "react-icons/io5";
+import { BsInboxes } from "react-icons/bs";
 
 export const Dashboard = () => {
   const router = useRouter();
@@ -101,6 +102,13 @@ export const Dashboard = () => {
           >
             <IoTicketOutline size={30} />
             <span className="ml-3 text-lg">Commandes</span>
+          </Link>
+          <Link
+            className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+            href={"/admin/files"}
+          >
+            <BsInboxes size={26} />
+            <span className="ml-3 text-lg">Archives</span>
           </Link>
           <Link
             className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"

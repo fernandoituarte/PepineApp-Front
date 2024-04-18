@@ -3,22 +3,34 @@ import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { getOrdersList } from "@/store/reducer/orders/orders";
+import { usePathname } from "next/navigation";
 
 import { OrderItem } from "@/components";
 
 export function Orders() {
   const dispatch = useAppDispatch();
   const { orders } = useAppSelector((state) => state.orders);
+  const pathname = usePathname();
+  const files = pathname === "/admin/files";
+
   useEffect(() => {
     dispatch(getOrdersList());
   }, [dispatch]);
+
+  const filteredOrders = orders.filter((order) => {
+    if (files) {
+      return !["en cours", "validée"].includes(order.status);
+    } else {
+      return ["en cours", "validée"].includes(order.status);
+    }
+  });
 
   return (
     <div className="sm:px-6 lg:px-8">
       <div className="mt-12 flow-root w-full m-auto">
         <div className="px-5 -mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className=" min-w-full pb-10 align-middle sm:px-6 lg:px-10">
-            <div className="relative lg:m-auto ">
+          <div className="min-w-full pb-10 align-middle sm:px-6 lg:px-10">
+            <div className="relative lg:m-auto">
               <table className="min-w-full table-fixed divide-y divide-gray-300">
                 <thead>
                   <tr>
@@ -55,10 +67,9 @@ export function Orders() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {orders &&
-                    orders.map((order) => (
-                      <OrderItem key={order.reference} {...order} />
-                    ))}
+                  {filteredOrders.map((order) => (
+                    <OrderItem key={order.reference} {...order} />
+                  ))}
                 </tbody>
               </table>
             </div>

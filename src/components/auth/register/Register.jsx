@@ -1,6 +1,4 @@
 "use client";
-import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -10,11 +8,14 @@ import { registerSchema } from "@/validations/schemas";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerUser } from "@/store/reducer/auth/register";
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 export function Register() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { status } = useAppSelector((state) => state.register);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
@@ -142,43 +143,69 @@ export function Register() {
                 />
               </div>
             </div>
-            <div>
+            <div className="relative block mb-4">
               <label
                 htmlFor="password"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                className="text-sm font-medium leading-6 text-gray-900 block"
               >
-                Mot de passe
+                Entrez votre nouveau mot de passe
               </label>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  type="password"
-                  {...register("password", {
-                    required: true,
-                    message: "Ce champ est requis",
-                  })}
-                  className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm sm:leading-6"
-                />
-              </div>
+              <input
+                id="password"
+                name="password"
+                {...register("password")}
+                type={showPassword ? "text" : "password"}
+                autoComplete="current-password"
+                required
+                className="w-full rounded-md border p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm sm:leading-6 pr-10" // Added pr-10 to make space for the icon
+              />
+              {showPassword ? (
+                <div
+                  className="absolute top-7 bottom-0 right-0 pt-1 w-10 h-8 text-lg text-gray-500"
+                  onClick={() => setShowPassword(false)}
+                >
+                  <IoEyeOffOutline size={25} className="m-auto" />
+                </div>
+              ) : (
+                <div
+                  className="absolute top-7 bottom-0 right-0 w-10 h-8 text-lg text-gray-500"
+                  onClick={() => setShowPassword(true)}
+                >
+                  <IoEyeOutline size={25} className="m-auto h-full" />
+                </div>
+              )}
             </div>
-            <div>
+            <div className="relative block mb-4">
               <label
                 htmlFor="confirmPassword"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                className="text-sm font-medium leading-6 text-gray-900 block"
               >
                 Confirmez votre mot de passe
               </label>
-              <div className="mt-2">
-                <input
-                  id="confirmPassword"
-                  type="password"
-                  {...register("confirmPassword", {
-                    required: true,
-                    message: "Ce champ est requis",
-                  })}
-                  className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm sm:leading-6"
-                />
-              </div>
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                {...register("confirmPassword")}
+                type={showConfirmPassword ? "text" : "password"}
+                autoComplete="confirmPassword"
+                required
+                className="w-full rounded-md border p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm sm:leading-6 pr-10" // Added pr-10 to make space for the icon
+              />
+              {showConfirmPassword ? (
+                <div
+                  className="absolute top-7 bottom-0 right-0 pt-1 w-10 h-8 text-lg text-gray-500"
+                  onClick={() => setShowConfirmPassword(false)}
+                >
+                  <IoEyeOffOutline size={25} className="m-auto" />
+                </div>
+              ) : (
+                <div
+                  className="absolute top-7 bottom-0 right-0 w-10 h-8 text-lg text-gray-500"
+                  onClick={() => setShowConfirmPassword(true)}
+                >
+                  <IoEyeOutline size={25} className="m-auto h-full" />
+                </div>
+              )}
             </div>
             <button className="flex w-full justify-center rounded-md bg-amber-500 px-3 p-2 mt-10 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-amber-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">
               Créer mon compte

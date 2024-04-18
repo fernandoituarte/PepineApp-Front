@@ -32,6 +32,7 @@ export function UpdateProduct({ id }) {
     categoriesByProduct,
     isProductSended,
     isCategoryDeleted,
+    status,
   } = useAppSelector((state) => state.products);
 
   const [userId, setUserId] = useState(null);
@@ -98,13 +99,13 @@ export function UpdateProduct({ id }) {
   });
 
   useEffect(() => {
-    if (isProductSended && productToUpdate.category_id?.length > 0) {
+    if (isProductSended) {
       dispatch(deleteProductCategory(id));
     }
-  }, [isProductSended, dispatch, id, productToUpdate]);
+  }, [isProductSended, dispatch, id]);
 
   useEffect(() => {
-    if (isCategoryDeleted) {
+    if (isCategoryDeleted || status === "delete category rejected") {
       categoriesByProduct.forEach((category) => {
         dispatch(
           productCategory({
@@ -115,7 +116,7 @@ export function UpdateProduct({ id }) {
       });
       dispatch(statusProduct(false));
     }
-  }, [isCategoryDeleted, categoriesByProduct, dispatch, id]);
+  }, [isCategoryDeleted, status, categoriesByProduct, dispatch, id]);
 
   function handleCancel(e) {
     e.preventDefault();

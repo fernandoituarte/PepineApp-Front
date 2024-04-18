@@ -4,14 +4,17 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { loginUser } from "@/store/reducer/auth/login";
 
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 export function Login() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { status, loading, error } = useAppSelector((state) => state.user);
   const { register, handleSubmit } = useForm();
+  const [showPassword, setShowPassword] = useState();
 
   const onSubmit = handleSubmit((data) => {
     dispatch(loginUser(data));
@@ -55,31 +58,47 @@ export function Login() {
         />
       </div>
 
-      <div>
+      <div className="relative block mb-4">
         <label
           htmlFor="password"
-          className="block text-sm font-medium leading-6 text-gray-900"
+          className="text-sm font-medium leading-6 text-gray-900 block"
         >
-          Mot de passe
+          Entrez votre nouveau mot de passe
         </label>
         <input
           id="password"
           name="password"
           {...register("password")}
-          type="password"
+          type={showPassword ? "text" : "password"}
           autoComplete="current-password"
           required
-          className="block mb-4 w-full rounded-md border p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm sm:leading-6"
+          className="w-full rounded-md border p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm sm:leading-6 pr-10" // Added pr-10 to make space for the icon
         />
+        {showPassword ? (
+          <div
+            className="absolute top-7 bottom-0 right-0 pt-1 w-10 h-8 text-lg text-gray-500"
+            onClick={() => setShowPassword(false)}
+          >
+            <IoEyeOffOutline size={25} className="m-auto" />
+          </div>
+        ) : (
+          <div
+            className="absolute top-7 bottom-0 right-0 w-10 h-8 text-lg text-gray-500"
+            onClick={() => setShowPassword(true)}
+          >
+            <IoEyeOutline size={25} className="m-auto h-full" />
+          </div>
+        )}
+      </div>
+
+      <div>
         <Link
           href={"/auth/forgot-password"}
           className="font-bold text-amber-600"
         >
           Mot de passe oublié?
         </Link>
-      </div>
-      <div>
-        <button className="flex w-full justify-center rounded-md bg-amber-600 mb-5 px-3 p-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">
+        <button className="flex w-full justify-center rounded-md bg-amber-600 my-5 px-3 p-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">
           {loading ? "Chargement en cours" : "Valider"}
         </button>
       </div>

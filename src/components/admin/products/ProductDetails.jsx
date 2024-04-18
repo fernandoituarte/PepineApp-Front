@@ -21,6 +21,7 @@ function classNames(...classes) {
 export function ProductDetails({ product }) {
   const dispatch = useAppDispatch();
 
+  console.log(product.hardiness_zone_value);
   function handleUpdate() {
     dispatch(emptyCategories());
     dispatch(deleteProductToUpdate());
@@ -37,7 +38,7 @@ export function ProductDetails({ product }) {
         `Pot: ${product.pot}`,
         `Stock: ${product.stock}`,
         `Prix: ${product.price}`,
-        `Statut: ${product.status}`,
+        `Statut: ${product.status ? "Disponible" : "Indisponible"}`,
       ],
     },
     {
@@ -208,7 +209,7 @@ export function ProductDetails({ product }) {
                               <span
                                 className={classNames(
                                   open ? "text-indigo-600" : "text-gray-900",
-                                  "text-lg font-medium",
+                                  "text-lg font-medium"
                                 )}
                               >
                                 {detail.name}
@@ -234,16 +235,22 @@ export function ProductDetails({ product }) {
                           >
                             <ul className="" role="list">
                               {detail.items.map((item, index) => {
-                                // Séparer la clé et la valeur
-                                const [key, value] = item.split(":");
-                                const formattedKey = `${key}: `;
+                                const firstColonIndex = item.indexOf(":");
+                                const key = item.substring(
+                                  0,
+                                  firstColonIndex + 1,
+                                );
+                                const value = item
+                                  .substring(firstColonIndex + 1)
+                                  .trim();
+
                                 const isPrice = key
                                   .toLowerCase()
-                                  .includes("price");
+                                  .includes("prix");
 
                                 return (
                                   <li key={index} className="">
-                                    <span className="">{formattedKey}</span>
+                                    <span className="">{key}</span>
                                     <span className="font-semibold">
                                       {" "}
                                       {isPrice ? `${value} €` : value}

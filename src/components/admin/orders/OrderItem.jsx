@@ -1,15 +1,17 @@
 "use client";
 import Link from "next/link";
+import clsx from "clsx";
 
-export function OrderItem({
-  id,
-  reference,
-  created_at,
-  last_name,
-  first_name,
-  total_price,
-  status,
-}) {
+export function OrderItem(order) {
+  const {
+    id,
+    reference,
+    created_at,
+    last_name,
+    first_name,
+    total_price,
+    status,
+  } = order;
   const date = new Date(created_at);
   const DDMMYYYY = date.toLocaleDateString("fr-FR");
 
@@ -27,7 +29,23 @@ export function OrderItem({
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
         {total_price} €
       </td>
-      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+      <td
+        className={clsx(
+          "whitespace-nowrap px-3 py-4 text-sm font-medium",
+          {
+            "text-red-400": status === "annulée",
+          },
+          {
+            "text-blue-400": status === "en cours",
+          },
+          {
+            "text-orange-400": status === "validée",
+          },
+          {
+            "text-green-400": status === "retirée",
+          },
+        )}
+      >
         {status}
       </td>
       <td>
@@ -39,3 +57,9 @@ export function OrderItem({
     </tr>
   );
 }
+// className={clsx(
+//   "flex items-center gap-x-1 text-lg font-semibold  leading-6 text-gray-600 transform transition-colors duration-300",
+//   {
+//     "border-b-2 border-b-amber-500": pathname === "/products",
+//   },
+// )}

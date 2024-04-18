@@ -105,7 +105,7 @@ export function ProductCard(product) {
         {role === "admin" ? (
           <Link
             onClick={handleUpdate}
-            href={`/admin/products/update-product/${product.id}`}
+            href={`/admin/products/update-product/${product_id || id}`}
             className="bg-indigo-500 flex max-w-xs items-center justify-center rounded-md border border-transparent px-8 py-3 mt-3 mx-auto text-base font-medium text-white hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:bg-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 w-full shadow-md"
           >
             Modifier

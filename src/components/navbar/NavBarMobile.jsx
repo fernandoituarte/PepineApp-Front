@@ -4,11 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useAppSelector } from "@/hooks/redux";
 import { totalCartItemSelector } from "@/store/reducer/cart/cart";
-import clsx from "clsx";
 
 import { Dialog } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { FiLogIn, FiLogOut } from "react-icons/fi";
+import { BsInboxes } from "react-icons/bs";
 
 import {
   IoPeopleOutline,
@@ -126,6 +126,13 @@ export function NavBarMobile({
                   >
                     <IoTicketOutline size={30} />
                     <span className="ml-3 text-lg">Commandes</span>
+                  </Link>
+                  <Link
+                    className="flex items-center mt-5 p-2 hover:bg-gray-100 rounded transition-all"
+                    href={"/admin/files"}
+                  >
+                    <BsInboxes size={26} />
+                    <span className="ml-3 text-lg">Archives</span>
                   </Link>
                   <Link
                     className="flex items-center mt-5 p-2 hover:bg-gray-100 rounded transition-all"

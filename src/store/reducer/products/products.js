@@ -12,6 +12,7 @@ const initialState = {
   products: [],
   product: null,
   media: [],
+  status: "",
   mediaOrder: [],
   categoriesByProduct: [],
   productToUpdate: null,
@@ -234,15 +235,18 @@ const productsReducer = createReducer(initialState, (builder) => {
       state.error = action.error.message;
     })
     .addCase(deleteProductCategory.pending, (state) => {
+      state.status = "loading";
       state.loading = true;
     })
     .addCase(deleteProductCategory.fulfilled, (state, action) => {
+      state.status = "delete category success";
       state.loading = false;
       state.isCategoryDeleted = true;
     })
     .addCase(deleteProductCategory.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message;
+      state.status = "delete category rejected";
     })
     .addCase(addCategory, (state, action) => {
       if (!state.categoriesByProduct.includes(action.payload)) {
@@ -251,7 +255,7 @@ const productsReducer = createReducer(initialState, (builder) => {
     })
     .addCase(deleteCategory, (state, action) => {
       state.categoriesByProduct = state.categoriesByProduct.filter(
-        (id) => id !== action.payload
+        (id) => id !== action.payload,
       );
     })
     .addCase(emptyCategories, (state, action) => {
