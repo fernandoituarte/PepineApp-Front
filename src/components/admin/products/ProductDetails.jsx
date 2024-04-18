@@ -2,17 +2,22 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-import { useAppDispatch } from "@/hooks/redux";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { emptyMedia } from "@/store/reducer/products/media/media";
 import {
   emptyCategories,
   deleteProductToUpdate,
+  deleteProduct,
 } from "@/store/reducer/products/products";
+import { Message } from "@/components";
 
 import { Disclosure, Tab } from "@headlessui/react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { Icon } from "@iconify/react";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -20,13 +25,37 @@ function classNames(...classes) {
 
 export function ProductDetails({ product }) {
   const dispatch = useAppDispatch();
-
-  console.log(product.hardiness_zone_value);
+  const router = useRouter();
+  const { status } = useAppSelector((state) => state.products);
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [message, setMessage] = useState(false);
+  function handleDeleteProduct() {
+    if (window.confirm("Voulez vraiment supprimer ce produit?")) {
+      dispatch(deleteProduct(product.id));
+    }
+  }
   function handleUpdate() {
     dispatch(emptyCategories());
     dispatch(deleteProductToUpdate());
     dispatch(emptyMedia());
   }
+
+  useEffect(() => {
+    if (status === "product deleted successfully") {
+      setMessage(true);
+      setTimeout(() => {
+        setMessage(false);
+        router.back();
+      }, 2000);
+    }
+    if (status === "product deleted rejected") {
+      setErrorMessage(true);
+      setTimeout(() => {
+        setErrorMessage(false);
+      }, 3000);
+    }
+  }, [status, router]);
+
   const productDetails = [
     {
       name: "Informations Générales",
@@ -62,6 +91,22 @@ export function ProductDetails({ product }) {
     <div className="bg-white">
       <main className="mx-auto mb-28 max-w-7xl sm:px-6 sm:pt-16 lg:px-8">
         <div className="mx-auto max-w-2xl lg:max-w-none">
+          {errorMessage && (
+            <Message
+              className={"bg-red-100 border border-red-300 text-red-600 mb-3"}
+              title={"Error: "}
+              text={"Une erreur est survenu lors de la suppresion du produit"}
+            />
+          )}
+          {message && (
+            <Message
+              className={
+                "bg-green-100 border border-green-300 text-green-600 mb-3"
+              }
+              title={"Success: "}
+              text={"Le produit a été supprimé correctement "}
+            />
+          )}
           {/* Product */}
           <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8 mb-6">
             {/* Image gallery */}
@@ -191,6 +236,12 @@ export function ProductDetails({ product }) {
                   >
                     Modifier
                   </Link>
+                  <button
+                    onClick={handleDeleteProduct}
+                    className="shadow-md items-center ml-6 justify-center rounded-md bg-red-600 px-5 py-3 text-base font-medium text-white hover:bg-red-700"
+                  >
+                    <RiDeleteBin6Line size={20} />
+                  </button>
                 </div>
               </div>
 
@@ -238,7 +289,7 @@ export function ProductDetails({ product }) {
                                 const firstColonIndex = item.indexOf(":");
                                 const key = item.substring(
                                   0,
-                                  firstColonIndex + 1,
+                                  firstColonIndex + 1
                                 );
                                 const value = item
                                   .substring(firstColonIndex + 1)

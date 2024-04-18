@@ -56,7 +56,7 @@ export const getProductByIdToUpdate = createAsyncThunk(
     } catch (error) {
       throw notFound();
     }
-  }
+  },
 );
 
 //Add a new Product
@@ -70,7 +70,7 @@ export const addNewProduct = createAsyncThunk(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 //Update a Product
 export const updateProduct = createAsyncThunk(
@@ -82,8 +82,18 @@ export const updateProduct = createAsyncThunk(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
+
+export const deleteProduct = createAsyncThunk("Product/delete", async (id) => {
+  console.log(id);
+  try {
+    const response = await axios.delete(`/api/products/${id}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+});
 
 //CATEGORY
 
@@ -100,7 +110,7 @@ export const productCategory = createAsyncThunk(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 
 export const updateProductCategory = createAsyncThunk(
@@ -111,14 +121,14 @@ export const updateProductCategory = createAsyncThunk(
     try {
       const response = await axios.patch(
         `/api/products/categories/${id}`,
-        category
+        category,
       );
 
       return response.data.data.product;
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 export const deleteProductCategory = createAsyncThunk(
   "Delete/Category",
@@ -129,7 +139,7 @@ export const deleteProductCategory = createAsyncThunk(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 //Modal
 export const activeModal = createAction("active/modal");
@@ -184,6 +194,7 @@ const productsReducer = createReducer(initialState, (builder) => {
       state.error = action.error.message;
     })
     .addCase(addNewProduct.pending, (state, action) => {
+      state.status = "loading";
       state.loading = true;
     })
     .addCase(addNewProduct.fulfilled, (state, action) => {
@@ -212,6 +223,18 @@ const productsReducer = createReducer(initialState, (builder) => {
       state.rejected = true;
       state.isProductSended = false;
     })
+    .addCase(deleteProduct.pending, (state, action) => {
+      state.loading = true;
+      state.status = "loading";
+    })
+    .addCase(deleteProduct.fulfilled, (state, action) => {
+      state.loading = false;
+      state.status = "product deleted successfully";
+    })
+    .addCase(deleteProduct.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "product deleted rejected";
+    })
     .addCase(activeModal, (state, action) => {
       state.isModal = action.payload;
       state.products = [];
@@ -223,6 +246,7 @@ const productsReducer = createReducer(initialState, (builder) => {
       state.isCategoryDeleted = false;
     })
     .addCase(productCategory.pending, (state) => {
+      state.status = "loading";
       state.loading = true;
     })
     .addCase(productCategory.fulfilled, (state, action) => {
