@@ -30,7 +30,7 @@ export async function PATCH(req, { params }) {
   const { id } = params;
 
   const data = await req.json();
-
+  console.log(id, data);
   const cookieStore = cookies(req.headers);
 
   const authToken = cookieStore.get("authToken");

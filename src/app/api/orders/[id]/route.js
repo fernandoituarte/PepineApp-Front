@@ -28,7 +28,7 @@ export async function GET(req, { params }) {
       }),
       {
         status: error.response?.status || 500,
-      }
+      },
     );
   }
 }
@@ -43,7 +43,7 @@ export async function PATCH(req, { params }) {
   const authToken = cookieStore.get("authToken");
 
   const { value } = authToken;
-
+  console.log(data);
   try {
     const response = await axios.patch(
       `${URL}/orders/${id}/update-status`,
@@ -52,7 +52,7 @@ export async function PATCH(req, { params }) {
         headers: {
           Authorization: `Bearer ${value}`,
         },
-      }
+      },
     );
 
     return new NextResponse(JSON.stringify(response.data), {
@@ -65,7 +65,7 @@ export async function PATCH(req, { params }) {
       }),
       {
         status: error.response?.status || 500,
-      }
+      },
     );
   }
 }

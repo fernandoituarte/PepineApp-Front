@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { Message } from "@/components";
+
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 export function Login() {
@@ -22,22 +24,18 @@ export function Login() {
 
   useEffect(() => {
     if (status === "logged") {
-      router.push("/");
+      router.back();
     }
   }, [status, router]);
 
   return (
     <form onSubmit={onSubmit} className="space-y-6" action="" method="POST">
       {error && (
-        <div
-          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"
-          role="alert"
-        >
-          <strong className="font-bold">Error! </strong>
-          <span className="block sm:inline">
-            Une erreur est survenue, veuillez réessayer
-          </span>
-        </div>
+        <Message
+          className={"bg-red-100 border border-red-400 text-red-700"}
+          title={"Error: "}
+          text={"Une erreur est survenue, veuillez réessayer"}
+        />
       )}
       <div>
         <label

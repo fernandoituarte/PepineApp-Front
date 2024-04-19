@@ -1,6 +1,10 @@
 import { useAppDispatch } from "@/hooks/redux";
 import { changeStatus } from "@/store/reducer/orders/orders";
 import { SkeletonSmallText } from "../../../ui/Spinners/SkeletonOrderProduct";
+import {
+  decrementProductStock,
+  incrementProductStock,
+} from "@/lib/updateProductStock";
 
 export const OrderInfo = ({ order, role, loading }) => {
   const { created_at, id, total_price, status } = order;
@@ -17,10 +21,17 @@ export const OrderInfo = ({ order, role, loading }) => {
   };
   const handleFinish = () => {
     dispatch(changeStatus({ status: "retirée", id }));
+    order.products.map((product) => {
+      decrementProductStock(product.product_id, product.quantity_ordered);
+    });
   };
   const handleCancel = () => {
     if (window.confirm("Voulez-vous vraiment annuler cette commande?")) {
       dispatch(changeStatus({ status: "annulée", id }));
+      if (status === "retirée")
+        order.products.map((product) => {
+          incrementProductStock(product.product_id, product.quantity_ordered);
+        });
     }
   };
   return (
@@ -44,12 +55,6 @@ export const OrderInfo = ({ order, role, loading }) => {
             </span>
           )}
         </p>
-        {/* <p className="font-semibold mb-3 flex justify-between">
-          Sous-Total <span className="font-normal">00 €</span>
-        </p>
-        <p className="font-semibold flex justify-between">
-          TVA (10%) <span className="font-normal">00 €</span>
-        </p> */}
         {/* Line Separator */}
         <div className="w-full h-px bg-gray-200 my-8" />
         <p className="text-2xl font-bold mb-2 mt-5 flex justify-between">
@@ -107,6 +112,14 @@ export const OrderInfo = ({ order, role, loading }) => {
             </button>
           )}
         </>
+      )}
+      {role === "user" && status === "en cours" && (
+        <button
+          onClick={handleCancel}
+          className="w-full mt-2 py-2 antialiased rounded-lg hover:bg-red-100 text-red-400"
+        >
+          Annuler
+        </button>
       )}
     </>
   );

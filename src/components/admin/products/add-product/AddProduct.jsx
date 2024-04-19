@@ -26,7 +26,7 @@ export function AddProduct() {
 
   const { mediumInputs, descriptionInputs, smallInputs, selectInputs } = inputs;
   const { productId, isProductSended, categoriesByProduct } = useAppSelector(
-    (state) => state.products,
+    (state) => state.products
   );
   const { mediaToDelete } = useAppSelector((state) => state.media);
   const [user_id, setUser_id] = useState(1);
@@ -48,7 +48,7 @@ export function AddProduct() {
           productCategory({
             product_id: productId,
             category_id: category,
-          }),
+          })
         );
       });
     }
@@ -77,7 +77,10 @@ export function AddProduct() {
         ease: [0, 0.71, 0.2, 1.01],
       }}
     >
-      <Modal />
+      <Modal
+        title={"Votre produit a été enregistré"}
+        subtitle={"Le produit a bien été crée et ajouté à la liste"}
+      />
       <form onSubmit={onSubmit}>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
@@ -151,26 +154,24 @@ export function AddProduct() {
                   </label>
                   <div className="rounded-md shadow-sm border ring-gray-300 ">
                     <input
-                      type={
-                        item.name === "stock" ||
-                        item.name === "price" ||
-                        item.name === "vat"
-                          ? "number"
-                          : "text"
-                      }
-                      name="size"
+                      type="text"
                       {...register(item.name, {
-                        setValueAs:
-                          item.name === "stock" ||
-                          item.name === "price" ||
-                          item.name === "vat"
-                            ? (value) => parseInt(value, 10) || 0
-                            : null,
+                        setValueAs: (value) => {
+                          if (item.name === "price") {
+                            const parsed = parseFloat(value);
+                            return isNaN(parsed) ? 0 : parsed;
+                          } else if (
+                            item.name === "stock" ||
+                            item.name === "vat"
+                          ) {
+                            const parsed = parseInt(value, 10);
+                            return isNaN(parsed) ? 0 : parsed;
+                          }
+                          return value;
+                        },
                       })}
                       autoComplete="off"
-                      className={
-                        "block w-full border-0 bg-transparent py-2.5 pl-1.5 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6 hide-number-input-spinners"
-                      }
+                      className="block w-full border-0 bg-transparent py-2.5 pl-1.5 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6 hide-number-input-spinners"
                       placeholder={item.placeholder}
                     />
                   </div>
@@ -243,6 +244,12 @@ export function AddProduct() {
                     </option>
                     <option value={"4"} type="number">
                       Plantes équines
+                    </option>
+                    <option value={"5"} type="number">
+                      Fleuries/Ornementales
+                    </option>
+                    <option value={"6"} type="number">
+                      Plants Potagers
                     </option>
                   </select>
                 </div>

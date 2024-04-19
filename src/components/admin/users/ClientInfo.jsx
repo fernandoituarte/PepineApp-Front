@@ -19,6 +19,10 @@ export const ClientInfo = ({ id }) => {
     }
   }, [error]);
 
+  const sendEmail = (email) => {
+    window.location.href = `mailto:${email}`;
+  };
+
   return (
     <>
       <div className="mx-2 sm:w-4/5 md:w-2/3 xl:w-1/2 sm:mx-auto mt-8 border rounded-lg p-6">
@@ -45,11 +49,16 @@ export const ClientInfo = ({ id }) => {
           {loading ? (
             <SkeletonText />
           ) : (
-            <span className="font-normal">{user?.phone}</span>
+            <a href={`tel:${user?.phone}`} className="font-normal">
+              {user?.phone}
+            </a>
           )}
         </p>
         <div className="flex flex-col mt-6 sm:flex-row justify-around">
-          <button className="w-[300px] sm:w-[200px] mx-auto mt-3 py-2 antialiased text-white bg-green-500 rounded-lg hover:bg-green-400">
+          <button
+            onClick={() => sendEmail(user?.email)}
+            className="w-[300px] sm:w-[200px] mx-auto mt-3 py-2 antialiased text-white bg-orange-500 rounded-lg hover:bg-orange-400"
+          >
             Envoyer un email
           </button>
         </div>

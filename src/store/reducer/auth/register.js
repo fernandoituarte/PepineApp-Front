@@ -16,7 +16,7 @@ export const registerUser = createAsyncThunk(
 );
 
 const initialState = {
-  error: null,
+  error: false,
   loading: false,
   status: "",
 };
@@ -25,6 +25,7 @@ const registerReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(registerUser.pending, (state) => {
       state.status = "loading";
+      state.error = false;
       state.loading = true;
     })
     .addCase(registerUser.fulfilled, (state) => {
@@ -34,6 +35,7 @@ const registerReducer = createReducer(initialState, (builder) => {
     .addCase(registerUser.rejected, (state) => {
       state.status = "failed";
       state.loading = false;
+      state.error = true;
     });
 });
 

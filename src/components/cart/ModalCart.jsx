@@ -11,7 +11,7 @@ import { setCartItems } from "@/store/reducer/cart/cart";
 import { Dialog, Transition } from "@headlessui/react";
 import { IoCheckmarkSharp } from "react-icons/io5";
 
-export function ModalCart() {
+export function ModalCart({ title, subtitle }) {
   const { isModal } = useAppSelector((state) => state.orders);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -70,13 +70,10 @@ export function ModalCart() {
                         as="h3"
                         className="text-base font-semibold leading-6 text-gray-900"
                       >
-                        Votre produit a été enregistré
+                        {title}
                       </Dialog.Title>
                       <div className="mt-2">
-                        <p className="text-sm text-gray-500">
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Similique suscipit voluptates voluptatem
-                        </p>
+                        <p className="text-sm text-gray-500">{subtitle}</p>
                       </div>
                     </div>
                   </div>

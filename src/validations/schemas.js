@@ -32,7 +32,10 @@ export const productSchema = z.object({
   size: z.string().max(50, { message: "Veuillez inserer 50 caracteres max." }),
   pot: z.string().max(50, { message: "Veuillez inserer 50 caracteres max." }),
   stock: z.number().int().nonnegative(),
-  price: z.number().positive({ message: "Veuillez inserer un numéro valid." }),
+  price: z
+    .number()
+    .positive({ message: "Veuillez inserer un numéro valid." })
+    .transform((price) => parseFloat(price.toFixed(2))),
   vat: z.number().positive({ message: "Veuillez inserer un numéro valid." }),
   status: z.boolean(),
   yield_id: z.number(),
@@ -75,7 +78,7 @@ export const registerSchema = z
       .string()
       .regex(
         /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}$/,
-        "Le mot de passe doit contenir au moins 8 caractères, incluant au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.",
+        "Le mot de passe doit contenir au moins 8 caractères, incluant au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial (#?!@$%^&*-_).",
       ),
     confirmPassword: z.string(),
   })
@@ -99,7 +102,7 @@ export const resetPasswordSchema = z
       .string()
       .regex(
         /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}$/,
-        "Le mot de passe doit contenir au moins 8 caractères, incluant au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.",
+        "Le mot de passe doit contenir au moins 8 caractères, incluant au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial (#?!@$%^&*-_).",
       ),
     confirmPassword: z.string(),
   })

@@ -8,12 +8,18 @@ import { registerSchema } from "@/validations/schemas";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerUser } from "@/store/reducer/auth/register";
+import { loginUser } from "@/store/reducer/auth/login";
+import { Message } from "@/components";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 export function Register() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { status } = useAppSelector((state) => state.register);
+  const { status: statusRegister, error } = useAppSelector(
+    (state) => state.register,
+  );
+  const { status: statusLogin } = useAppSelector((state) => state.user);
+  const [user, setUser] = useState();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -31,15 +37,21 @@ export function Register() {
       email: data.email,
       password: data.password,
     };
-
+    setUser({ email: data.email, password: data.password });
     dispatch(registerUser(userInfo));
   });
 
   useEffect(() => {
-    if (status === "registered") {
+    if (statusRegister === "registered") {
+      dispatch(loginUser(user));
+    }
+  }, [statusRegister, router, dispatch, user]);
+
+  useEffect(() => {
+    if (statusLogin === "logged") {
       router.push("/");
     }
-  }, [status, router]);
+  }, [statusLogin, router]);
 
   return (
     <div className="mx-auto w-full max-w-sm lg:w-96">
@@ -77,6 +89,13 @@ export function Register() {
               ease: [0, 0.71, 0.2, 1.01],
             }}
           >
+            {error && (
+              <Message
+                className={"bg-red-100 border border-red-400 text-red-700"}
+                title={"Error: "}
+                text={"Un compte existe déjà avec cette adresse mail"}
+              />
+            )}
             <div>
               <label className="block text-sm font-medium leading-6 text-gray-900">
                 Prénom

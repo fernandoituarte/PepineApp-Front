@@ -14,6 +14,9 @@ export const OrderClientInfo = ({ order }) => {
     dispatch(getUserById(user_id));
   }, [dispatch, user_id]);
 
+  const sendEmail = (email) => {
+    window.location.href = `mailto:${email}`;
+  };
   return (
     <div>
       <p className="font-semibold mb-2 flex justify-between">
@@ -26,20 +29,21 @@ export const OrderClientInfo = ({ order }) => {
         Email <span className="font-normal">{user?.email} </span>
       </p>
       <p className="font-semibold mb-2 flex justify-between">
-        Téléphone <span className="font-normal">{user?.phone} </span>
+        Téléphone
+        <a href={`tel:${user?.phone}`} className="font-normal">
+          {user?.phone}
+        </a>
       </p>
+
       <p className="font-semibold mb-2 flex justify-between">
         Client depuis le<span className="font-normal">{DDMMYYYY} </span>
       </p>
-      {/* TODO: */}
-      {/* {note && (
-        <p className="font-semibold mb-2 flex justify-between">
-          Note:{" "}
-          <span className="font-normal ml-2">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.{" "}
-          </span>
-        </p>
-      )} */}
+      <button
+        onClick={() => sendEmail(user?.email)}
+        className="w-full mt-2 py-2  text-white bg-orange-500 rounded-lg hover:bg-orange-400"
+      >
+        Envoyer un email
+      </button>
     </div>
   );
 };

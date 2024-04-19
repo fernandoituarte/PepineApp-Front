@@ -3,7 +3,7 @@ import { Categories, Title } from "@/components";
 export const metadata = {
   title: "Categories",
   description:
-    "Découvrez notre sélection de produits de qualité répartis dans quatre catégories distinctes.",
+    "Découvrez notre sélection de produits de qualité répartis dans six catégories distinctes.",
 };
 export default function Page() {
   return (

@@ -1,4 +1,4 @@
-import { Title, EmptyCart } from "@/components";
+import { Title } from "@/components";
 import Link from "next/link";
 import { LuShoppingBasket } from "react-icons/lu";
 
@@ -22,7 +22,7 @@ export default function Page() {
             href={"/products"}
             className="bg-amber-500 text-white py-3 px-5 rounded-lg mx-auto"
           >
-            Ajoutez des articles
+            Ajouter des articles
           </Link>
         </div>
       </div>

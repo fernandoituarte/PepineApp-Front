@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FaFacebookSquare } from "react-icons/fa";
 
 const navigation = {
   main: [
@@ -7,6 +8,11 @@ const navigation = {
     { name: "Contact", href: "/contact" },
     { name: "Mentions Legales", href: "/legal" },
     { name: "Credits", href: "/credits" },
+    {
+      name: "Suivez nous sur Facebook",
+      href: "https://www.facebook.com/PoussezPasDerriere/",
+      icon: <FaFacebookSquare size={30} className="mr-2" />,
+    },
   ],
 };
 
@@ -18,15 +24,16 @@ export function Footer() {
           Poussez pas derrière - Pépinièriste à Saint André
         </h3>
         <nav
-          className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12"
+          className="-mb-6 columns-2 sm:flex sm:justify-center items-center sm:space-x-12"
           aria-label="Footer"
         >
           {navigation.main.map((item) => (
             <div key={item.name} className="pb-3 font-normal">
               <Link
                 href={item.href}
-                className="text-sm leading-6 text-white hover:text-gray-900"
+                className="text-sm flex items-center leading-6 h-auto text-white hover:text-gray-400"
               >
+                {item.icon && item.icon}
                 {item.name}
               </Link>
             </div>

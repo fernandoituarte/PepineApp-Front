@@ -81,7 +81,7 @@ export function UpdateProduct({ id }) {
         foliage_id: productToUpdate.foliage_id,
       });
       const { media_urls, media_id } = productToUpdate;
-      if (media_urls && media_urls.length > 0) {
+      if (media_urls && media_urls[0] !== null) {
         const media = media_id.map((id, index) => ({
           id: id,
           url: media_urls[index],
@@ -111,7 +111,7 @@ export function UpdateProduct({ id }) {
           productCategory({
             product_id: id,
             category_id: category,
-          }),
+          })
         );
       });
       dispatch(statusProduct(false));
@@ -137,7 +137,10 @@ export function UpdateProduct({ id }) {
         ease: [0, 0.71, 0.2, 1.01],
       }}
     >
-      <Modal />
+      <Modal
+        title={"Votre produit a été enregistré"}
+        subtitle={"Le produit a bien été modifié"}
+      />
       <form onSubmit={onSubmit}>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
@@ -301,6 +304,12 @@ export function UpdateProduct({ id }) {
                     </option>
                     <option value={"4"} type="number">
                       Plantes équines
+                    </option>
+                    <option value={"5"} type="number">
+                      Fleuries/Ornementales
+                    </option>
+                    <option value={"6"} type="number">
+                      Plants Potagers
                     </option>
                   </select>
                 </div>

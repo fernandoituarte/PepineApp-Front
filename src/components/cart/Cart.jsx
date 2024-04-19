@@ -76,16 +76,25 @@ export function Cart() {
         ease: [0, 0.71, 0.2, 1.01],
       }}
     >
-      <ModalCart />
+      <ModalCart
+        title={"Votre resarvation à été enregistré"}
+        subtitle={"La pépinière vous contactera rapidement"}
+      />
       <div className="mx-auto max-w-2xl px-4 pb-24 pt-2 sm:px-6 lg:max-w-7xl lg:px-8">
         <form className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
           <section aria-labelledby="cart-heading" className="lg:col-span-7">
-            <ul className="divide-y divide-gray-200 border-b border-t border-gray-200">
+            <ul className="divide-y divide-gray-200 border-b border-t mb-10 border-gray-200">
               {cartItems &&
                 cartItems.map((product) => (
                   <CartItem key={product.id} {...product} />
                 ))}
             </ul>
+            <Link
+              href={"/products"}
+              className="bg-amber-500 text-white flex justify-center py-3 px-5 rounded-lg mx-auto lg:max-w-80"
+            >
+              Ajouter des articles
+            </Link>
           </section>
 
           <section
