@@ -137,10 +137,7 @@ export function UpdateProduct({ id }) {
         ease: [0, 0.71, 0.2, 1.01],
       }}
     >
-      <Modal
-        title={"Votre produit a été enregistré"}
-        subtitle={"Le produit a bien été modifié"}
-      />
+      <Modal />
       <form onSubmit={onSubmit}>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">

@@ -9,7 +9,7 @@ import { activeModal } from "@/store/reducer/products/products";
 import { Dialog, Transition } from "@headlessui/react";
 import { IoCheckmarkSharp } from "react-icons/io5";
 
-export function Modal(title, subtitle) {
+export function Modal() {
   const { isModal } = useAppSelector((state) => state.products);
   const dispatch = useAppDispatch();
   const cancelButtonRef = useRef(null);
@@ -63,11 +63,8 @@ export function Modal(title, subtitle) {
                         as="h3"
                         className="text-base font-semibold leading-6 text-gray-900"
                       >
-                        {title}
+                        Votre produit a été enregistré
                       </Dialog.Title>
-                      <div className="mt-2">
-                        <p className="text-sm text-gray-500">{subtitle}</p>
-                      </div>
                     </div>
                   </div>
                 </div>

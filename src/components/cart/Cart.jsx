@@ -118,6 +118,11 @@ export function Cart() {
                 </dd>
               </div>
             </dl>
+            <Message
+              title={"Info: "}
+              className={"bg-blue-50 text-blue-700 mt-5"}
+              text={"Les commandes sont a retirer sur place"}
+            />
             <div className="my-10 text-center">
               {userRole ? (
                 <button
@@ -137,11 +142,6 @@ export function Cart() {
                 </Link>
               )}
             </div>
-            <Message
-              title={"Info: "}
-              className={"bg-blue-50 text-blue-700 mt-5"}
-              text={"Les commandes sont a retirer sur place"}
-            />
           </section>
         </form>
       </div>
