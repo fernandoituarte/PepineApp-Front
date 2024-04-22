@@ -56,9 +56,9 @@ export const ChangeStatusButton = ({
 
       <div
         id="dropdownDivider"
-        className={`z-10 ${
+        className={`absolute z-10 ${
           isOpen ? "" : "hidden"
-        } bg-white divide-y divide-gray-100 w-full rounded-lg shadow`}
+        } bg-white divide-y divide-gray-100 w-full rounded-lg shadow top-full mt-1`}
       >
         <ul className="py-2 text-sm" aria-labelledby="dropdownDividerButton">
           <li>

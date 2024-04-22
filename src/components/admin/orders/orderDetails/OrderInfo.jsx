@@ -43,7 +43,7 @@ export const OrderInfo = ({ order, role, loading }) => {
     }
   };
   return (
-    <>
+    <div className="relative">
       <div>
         <p className="font-semibold mb-3 flex justify-between">
           Commandé le{" "}
@@ -91,7 +91,7 @@ export const OrderInfo = ({ order, role, loading }) => {
           Annuler
         </button>
       )}
-    </>
+    </div>
   );
 };
 
