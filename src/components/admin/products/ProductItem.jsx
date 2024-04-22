@@ -17,23 +17,48 @@ export function ProductItem({
   return (
     <tr key={id} className="hover:bg-slate-100 relative">
       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
-        {name}
+        <Link
+          href={`/admin/products/${id}`}
+          className="inline-block w-full h-full"
+        >
+          {name}
+        </Link>
       </td>
 
       <td className="whitespace-nowrap hidden text-sm text-gray-500 xl:table-cell">
-        {category && category[0]}
+        <Link
+          href={`/admin/products/${id}`}
+          className="inline-block w-full h-full"
+        >
+          {category && category[0]}
+        </Link>
       </td>
 
       <td className="whitespace-nowrap hidden text-sm text-gray-500 xl:table-cell">
-        {scientific_name}
+        <Link
+          href={`/admin/products/${id}`}
+          className="inline-block w-full h-full"
+        >
+          {scientific_name}
+        </Link>
       </td>
 
       <td className="whitespace-nowrap hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
-        {size}
+        <Link
+          href={`/admin/products/${id}`}
+          className="inline-block w-full h-full"
+        >
+          {size}
+        </Link>
       </td>
 
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-        {pot}
+        <Link
+          href={`/admin/products/${id}`}
+          className="inline-block w-full h-full"
+        >
+          {pot}
+        </Link>
       </td>
 
       <td
@@ -41,15 +66,30 @@ export function ProductItem({
           stock < 5 ? "text-red-400" : "text-green-600"
         }`}
       >
-        {stock}
+        <Link
+          href={`/admin/products/${id}`}
+          className="inline-block w-full h-full"
+        >
+          {stock}
+        </Link>
       </td>
 
       <td className="whitespace-nowrap hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
-        {vat} €
+        <Link
+          href={`/admin/products/${id}`}
+          className="inline-block w-full h-full"
+        >
+          {vat} €
+        </Link>
       </td>
 
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-        {price} €
+        <Link
+          href={`/admin/products/${id}`}
+          className="inline-block w-full h-full"
+        >
+          {price} €
+        </Link>
       </td>
 
       <td
@@ -57,13 +97,12 @@ export function ProductItem({
           status ? "text-green-600" : "text-red-400"
         }`}
       >
-        {status ? "en ligne" : "hors ligne"}
-      </td>
-      <td>
         <Link
           href={`/admin/products/${id}`}
-          className="absolute top-0 bottom-0 right-0 left-0"
-        />
+          className="inline-block w-full h-full"
+        >
+          {status ? "en ligne" : "hors ligne"}
+        </Link>
       </td>
     </tr>
   );

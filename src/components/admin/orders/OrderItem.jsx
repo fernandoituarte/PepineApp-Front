@@ -18,16 +18,36 @@ export function OrderItem(order) {
   return (
     <tr className="hover:bg-gray-100 rounded-sm relative">
       <td className="whitespace-nowrap min-w-[10rem] hidden md:inline-block py-4 pr-3 text-sm font-medium text-gray-900">
-        {DDMMYYYY}
+        <Link
+          href={`/admin/orders/${id}`}
+          className="inline-block w-full h-full"
+        >
+          {DDMMYYYY}
+        </Link>
       </td>
       <td className="whitespace-nowrap hidden md:inline-block py-4 pr-3 text-sm font-medium text-gray-900">
-        {reference}
+        <Link
+          href={`/admin/orders/${id}`}
+          className="inline-block w-full h-full"
+        >
+          {reference}
+        </Link>
       </td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-        {last_name} {first_name}
+        <Link
+          href={`/admin/orders/${id}`}
+          className="inline-block w-full h-full"
+        >
+          {last_name} {first_name}
+        </Link>
       </td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-        {total_price} €
+        <Link
+          href={`/admin/orders/${id}`}
+          className="inline-block w-full h-full"
+        >
+          {total_price} €
+        </Link>
       </td>
       <td
         className={clsx(
@@ -46,13 +66,12 @@ export function OrderItem(order) {
           },
         )}
       >
-        {status}
-      </td>
-      <td>
         <Link
           href={`/admin/orders/${id}`}
-          className="absolute top-0 bottom-0 right-0 left-0"
-        />
+          className="inline-block w-full h-full"
+        >
+          {status}
+        </Link>
       </td>
     </tr>
   );
