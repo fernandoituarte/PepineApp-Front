@@ -10,7 +10,9 @@ export const OrderProduct = (product) => {
       <td className="py-4 pr-3 text-sm font-medium text-gray-900">
         x{quantity_ordered}
       </td>
-      <td className="px-3 py-4 text-sm text-gray-500">{subTotal} €</td>
+      <td className="px-3 py-4 text-sm text-gray-500">
+        {subTotal.toFixed(2)} €
+      </td>
     </tr>
   );
 };
