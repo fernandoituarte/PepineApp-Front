@@ -1,5 +1,6 @@
 import { useAppDispatch } from "@/hooks/redux";
 import { changeStatus } from "@/store/reducer/orders/orders";
+import { ChangeStatusButton } from "@/components";
 import { SkeletonSmallText } from "../../../ui/Spinners/SkeletonOrderProduct";
 import {
   decrementProductStock,
@@ -16,6 +17,10 @@ export const OrderInfo = ({ order, role, loading }) => {
   const DDMMYYYY = date.toLocaleDateString("fr-FR");
   const hours = date.getHours();
   const minutes = date.getMinutes();
+
+  const handleStart = () => {
+    dispatch(changeStatus({ status: "en cours", id }));
+  };
 
   const handleValidate = () => {
     dispatch(changeStatus({ status: "validée", id }));
@@ -70,7 +75,28 @@ export const OrderInfo = ({ order, role, loading }) => {
         </p>
       </div>
       {role === "admin" && (
-        <>
+        <ChangeStatusButton
+          handleStart={handleStart}
+          handleValidate={handleValidate}
+          handleFinish={handleFinish}
+          handleCancel={handleCancel}
+          status={status}
+        />
+      )}
+      {role === "user" && status === "en cours" && (
+        <button
+          onClick={handleCancel}
+          className="w-full mt-2 py-2 antialiased rounded-lg hover:bg-red-100 text-red-400"
+        >
+          Annuler
+        </button>
+      )}
+    </>
+  );
+};
+
+{
+  /* <>
           {status === "en cours" && (
             <button
               onClick={handleValidate}
@@ -114,16 +140,5 @@ export const OrderInfo = ({ order, role, loading }) => {
               Annuler
             </button>
           )}
-        </>
-      )}
-      {role === "user" && status === "en cours" && (
-        <button
-          onClick={handleCancel}
-          className="w-full mt-2 py-2 antialiased rounded-lg hover:bg-red-100 text-red-400"
-        >
-          Annuler
-        </button>
-      )}
-    </>
-  );
-};
+        </> */
+}

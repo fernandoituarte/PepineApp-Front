@@ -7,6 +7,7 @@ export * from "./admin/ui/Modal";
 export * from "./admin/ui/UserInfo";
 export * from "./admin/ui/UserUpdate";
 export * from "./admin/ui/UserChangePassword";
+export * from "./admin/ui/ChangeStatusButton";
 export * from "./admin/ui/dashboard/Dashboard";
 export * from "./admin/users/Users";
 export * from "./admin/users/UserItem";
