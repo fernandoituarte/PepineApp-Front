@@ -1,5 +1,6 @@
 import { bodyFont } from "@/config/fonts";
 import { Providers } from "@/store/Providers";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import CartStorageManager from "./CartStorageManager";
 import "./globals.css";
 
@@ -15,7 +16,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <Providers>
         <CartStorageManager />
-        <body className={bodyFont.className}>{children}</body>
+        <body className={bodyFont.className}>
+          <SpeedInsights />
+          {children}
+        </body>
       </Providers>
     </html>
   );
