@@ -15,6 +15,7 @@ import { ProductItem } from "./ProductItem";
 export function ProductList() {
   const dispatch = useAppDispatch();
   const products = useAppSelector((state) => state.products.products);
+
   const handleAddProduct = () => {
     dispatch(emptyCategories());
     dispatch(emptyMedia());

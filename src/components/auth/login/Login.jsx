@@ -16,7 +16,7 @@ export function Login() {
   const router = useRouter();
   const { status, loading, error } = useAppSelector((state) => state.user);
   const { register, handleSubmit } = useForm();
-  const [showPassword, setShowPassword] = useState();
+  const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = handleSubmit((data) => {
     dispatch(loginUser(data));

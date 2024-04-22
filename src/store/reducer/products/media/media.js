@@ -5,8 +5,6 @@ import {
   createReducer,
 } from "@reduxjs/toolkit";
 
-const URL = process.env.NEXT_PUBLIC_URL;
-
 const initialState = {
   media: [],
   mediaToDelete: [],
@@ -54,11 +52,6 @@ export const createMediaOrder = createAsyncThunk(
     }
   },
 );
-//TODO:
-// export const updateProductMedia = createAsyncThunk(
-//   "Update/ProductMedia",
-//   async () => {},
-// );
 
 const mediaReducer = createReducer(initialState, (builder) => {
   builder
@@ -116,17 +109,6 @@ const mediaReducer = createReducer(initialState, (builder) => {
       state.loading = false;
       state.error = action.payload;
     });
-  //updateProductMedia
-  // .addCase(updateProductMedia.pending, (state, action) => {
-  //   state.loading = true;
-  // })
-  // .addCase(updateProductMedia.fulfilled, (state, action) => {
-  //   state.loading = false;
-  // })
-  // .addCase(updateProductMedia.rejected, (state, action) => {
-  //   state.loading = false;
-  //   state.error = action.payload;
-  // });
 });
 
 export default mediaReducer;

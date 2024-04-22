@@ -8,7 +8,7 @@ export function AddToCart({ item }) {
   const qty = useAppSelector((state) => productQtySelector(state, item.id));
   const dispatch = useAppDispatch();
 
-  if (item.stock === 0 || !item.status) {
+  if (!item.status) {
     return (
       <button
         disabled

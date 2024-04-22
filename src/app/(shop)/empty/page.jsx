@@ -16,7 +16,7 @@ export default function Page() {
         </div>
         <div className="flex flex-col">
           <p className="text-xl text-center mt-10 mb-5 text-gray-600">
-            Lorem ipsum dolor sit amet, consectetur adipisicing
+            ¡Il semble que votre panier soit vide !
           </p>
           <Link
             href={"/products"}

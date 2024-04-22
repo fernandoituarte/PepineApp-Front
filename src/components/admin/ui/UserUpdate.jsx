@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { useForm } from "react-hook-form";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { getCookie } from "cookies-next";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userUpdateSchema } from "@/validations/schemas";
@@ -13,10 +15,12 @@ import { Message } from "@/components";
 export const UserUpdate = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const pathname = usePathname();
   const { status, user } = useAppSelector((state) => state.user);
   const [userId, setUserId] = useState();
   const [showMessage, setShowMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const adminPath = pathname === "/admin/update";
 
   const {
     register,
@@ -84,10 +88,10 @@ export const UserUpdate = () => {
         />
       )}
       <div className="w-full flex flex-col sm:flex-row sm:justify-between  mb-6">
-        <p className="font-semibold mb-1">Prénom </p>
+        <p className="font-semibold mb-1">Prénom: </p>
         <div className="flex flex-col sm:w-1/2">
           <input
-            className="font-normal border rounded-md h-8 px-2 "
+            className="font-normal border rounded-md h-10 px-2 "
             placeholder={"Prénom"}
             {...register("first_name", {
               required: true,
@@ -102,10 +106,10 @@ export const UserUpdate = () => {
         </div>
       </div>
       <div className="w-full flex flex-col sm:flex-row sm:justify-between mb-6">
-        <p className="font-semibold mb-1">Nom </p>
+        <p className="font-semibold mb-1">Nom: </p>
         <div className="flex flex-col sm:w-1/2">
           <input
-            className="font-normal border rounded-md h-8 px-2 "
+            className="font-normal border rounded-md h-10 px-2 "
             placeholder={"Nom"}
             {...register("last_name", {
               required: true,
@@ -120,10 +124,10 @@ export const UserUpdate = () => {
         </div>
       </div>
       <div className="w-full flex flex-col sm:flex-row sm:justify-between mb-6">
-        <p className="font-semibold mb-1">Email </p>
+        <p className="font-semibold mb-1">Email: </p>
         <div className="flex flex-col sm:w-1/2">
           <input
-            className="font-normal border rounded-md h-8 px-2 "
+            className="font-normal border rounded-md h-10 px-2 "
             placeholder={"Email"}
             {...register("email", {
               required: true,
@@ -136,9 +140,9 @@ export const UserUpdate = () => {
         </div>
       </div>
       <div className="w-full flex flex-col sm:flex-row sm:justify-between mb-4">
-        <p className="font-semibold mb-1">Téléphone </p>
+        <p className="font-semibold mb-1">Téléphone: </p>
         <input
-          className="font-normal border rounded-md h-8 px-2 sm:w-1/2"
+          className="font-normal border rounded-md h-10 px-2 sm:w-1/2"
           placeholder={"Phone"}
           {...register("phone", {
             required: true,
@@ -149,6 +153,15 @@ export const UserUpdate = () => {
           <p className="ml-2 text-red-500 text-sm">{errors.phone?.message}</p>
         )}
       </div>
+      {/* Line Separator */}
+      <div className="w-full h-px bg-gray-200 my-10" />
+
+      <Link
+        href={adminPath ? "/admin/change-password" : "/user/change-password"}
+        className="font-semibold mb-1 text-orange-500"
+      >
+        Modifier mon mot de passe{" "}
+      </Link>
       <div className="flex flex-col mt-8 sm:flex-row justify-around">
         <button
           type="submit"

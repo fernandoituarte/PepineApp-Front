@@ -14,6 +14,9 @@ import { motion } from "framer-motion";
 import { CartItem, ModalCart, Message } from "@/components";
 import { totalPriceSelector } from "@/store/reducer/cart/cart";
 
+const EMAIL = process.env.NEXT_PUBLIC_EMAIL;
+const PHONE = process.env.NEXT_PUBLIC_PHONE;
+
 export function Cart() {
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -77,7 +80,7 @@ export function Cart() {
       }}
     >
       <ModalCart
-        title={"Votre resarvation à été enregistré"}
+        title={"Votre réservation à été enregistré"}
         subtitle={"La pépinière vous contactera rapidement"}
       />
       <div className="mx-auto max-w-2xl px-4 pb-24 pt-2 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -142,6 +145,11 @@ export function Cart() {
                 </Link>
               )}
             </div>
+            <Message
+              title={""}
+              className={"bg-slate-100 text-slate-700 mt-5"}
+              text={`Pour toutes questions n'hesitez pas à nous contacter au ${PHONE} ou par mail: ${EMAIL}`}
+            />
           </section>
         </form>
       </div>

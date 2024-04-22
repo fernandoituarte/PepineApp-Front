@@ -35,15 +35,6 @@ export const fetchProduits = createAsyncThunk("produits/fetch", async () => {
     throw error;
   }
 });
-// export const getProductById = createAsyncThunk("product/byID", async (id) => {
-//   try {
-//     const response = await axios.get(`/api/products/${id}`);
-//     const data = response.data.data.product;
-//     return data;
-//   } catch (error) {
-//     throw notFound();
-//   }
-// });
 
 export const deleteProductToUpdate = createAction("delete/productToUpdate");
 export const getProductByIdToUpdate = createAsyncThunk(
@@ -160,20 +151,6 @@ const productsReducer = createReducer(initialState, (builder) => {
       state.loading = false;
       state.error = action.error.message;
     })
-    // .addCase(getProductById.pending, (state, action) => {
-    //   state.status = "loading";
-    //   state.loading = true;
-    // })
-    // .addCase(getProductById.fulfilled, (state, action) => {
-    //   state.status = "succeeded";
-    //   state.loading = false;
-    //   state.product = action.payload;
-    // })
-    // .addCase(getProductById.rejected, (state, action) => {
-    //   state.status = "failed";
-    //   state.loading = false;
-    //   state.error = true;
-    // })
     .addCase(getProductByIdToUpdate.pending, (state, action) => {
       state.status = "loading";
       state.loading = true;

@@ -27,7 +27,7 @@ export const createOrderByUser = createAsyncThunk(
     } catch (error) {
       throw rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 // rattacher les produits du client à une commande
@@ -41,7 +41,7 @@ export const orderHasProducts = createAsyncThunk(
     } catch (error) {
       throw rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 // Création d'une action asynchrone pour mettre à jour le statut d'une commande
@@ -54,7 +54,7 @@ export const changeStatus = createAsyncThunk(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 
 // récupérer les orders d'un user
@@ -67,7 +67,7 @@ export const ordersOfOneUser = createAsyncThunk(
     } catch (error) {
       throw rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const getOrderById = createAsyncThunk(
@@ -79,7 +79,7 @@ export const getOrderById = createAsyncThunk(
     } catch (error) {
       throw rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 export const activeModal = createAction("active/modal");
 export const isChanged = createAction("change/quantity");

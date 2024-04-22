@@ -56,6 +56,18 @@ export const resetPassword = createAsyncThunk(
     }
   },
 );
+export const updatePassword = createAsyncThunk(
+  "update/password",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("/api/users/update-password", data);
+
+      return response.data.message;
+    } catch (error) {
+      throw rejectWithValue(error.response.data);
+    }
+  },
+);
 // Asynchronous action to update user details
 export const updateUserDetails = createAsyncThunk(
   "user/updateUserDetails",
@@ -183,6 +195,19 @@ const userReducer = createReducer(initialState, (builder) => {
     })
     .addCase(resetPassword.rejected, (state, action) => {
       state.status = "reset failed";
+      state.loading = false;
+      state.error = true;
+    })
+    .addCase(updatePassword.pending, (state) => {
+      state.status = "loading";
+      state.loading = true;
+    })
+    .addCase(updatePassword.fulfilled, (state, action) => {
+      state.status = "password updated";
+      state.loading = false;
+    })
+    .addCase(updatePassword.rejected, (state, action) => {
+      state.status = "password failed to update";
       state.loading = false;
       state.error = true;
     })

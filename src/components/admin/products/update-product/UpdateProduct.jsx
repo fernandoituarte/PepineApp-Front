@@ -111,7 +111,7 @@ export function UpdateProduct({ id }) {
           productCategory({
             product_id: id,
             category_id: category,
-          })
+          }),
         );
       });
       dispatch(statusProduct(false));

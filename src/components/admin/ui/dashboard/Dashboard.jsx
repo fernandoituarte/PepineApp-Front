@@ -59,7 +59,7 @@ export const Dashboard = () => {
             href={"/user"}
           >
             <IoPersonOutline size={30} />
-            <span className="ml-3 text-lg">Profile</span>
+            <span className="ml-3 text-lg">Profil</span>
           </Link>
           <Link
             className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
@@ -87,7 +87,7 @@ export const Dashboard = () => {
             href={"/admin"}
           >
             <IoPersonOutline size={30} />
-            <span className="ml-3 text-lg">Profile</span>
+            <span className="ml-3 text-lg">Profil</span>
           </Link>
           <Link
             className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"

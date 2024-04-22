@@ -26,9 +26,11 @@ function classNames(...classes) {
 export function ProductDetails({ product }) {
   const dispatch = useAppDispatch();
   const router = useRouter();
+
   const { status } = useAppSelector((state) => state.products);
   const [errorMessage, setErrorMessage] = useState(false);
   const [message, setMessage] = useState(false);
+
   function handleDeleteProduct() {
     if (window.confirm("Voulez vraiment supprimer ce produit?")) {
       dispatch(deleteProduct(product.id));
@@ -136,7 +138,7 @@ export function ProductDetails({ product }) {
                                 selected
                                   ? "ring-indigo-500"
                                   : "ring-transparent",
-                                "pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2"
+                                "pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2",
                               )}
                               aria-hidden="true"
                             />
@@ -260,7 +262,7 @@ export function ProductDetails({ product }) {
                               <span
                                 className={classNames(
                                   open ? "text-indigo-600" : "text-gray-900",
-                                  "text-lg font-medium"
+                                  "text-lg font-medium",
                                 )}
                               >
                                 {detail.name}
@@ -289,7 +291,7 @@ export function ProductDetails({ product }) {
                                 const firstColonIndex = item.indexOf(":");
                                 const key = item.substring(
                                   0,
-                                  firstColonIndex + 1
+                                  firstColonIndex + 1,
                                 );
                                 const value = item
                                   .substring(firstColonIndex + 1)

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { ItemImage } from "@/components";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
@@ -8,7 +8,9 @@ import {
   createMediaOrder,
   deleteImage,
 } from "@/store/reducer/products/media/media";
-import { imageHandler } from "@/actions/uploadImage";
+import { imageHandler } from "@/lib/uploadImage";
+
+import { SkeletonImage } from "@/components";
 
 import { PhotoIcon } from "@heroicons/react/24/solid";
 
@@ -18,15 +20,22 @@ export function ImagesUploader({ id }) {
     (state) => state.products,
   );
   const { media, mediaToDelete } = useAppSelector((state) => state.media);
+  const [loading, setLoading] = useState(false);
 
   // Every time an image is selected, a dispatch of image is made
   const handleFileChange = async (event) => {
     const imageFile = event.target.files[0];
     const formData = new FormData();
     formData.append("images", imageFile);
-
-    const image = await imageHandler(formData);
-    dispatch(addImage(image[0]));
+    setLoading(true);
+    try {
+      const image = await imageHandler(formData);
+      dispatch(addImage(image[0]));
+    } catch (error) {
+      setLoading(false);
+      throw error;
+    }
+    setLoading(false);
   };
 
   // Once the product has been submitted, a media order is created and the items are removed from localStorage
@@ -55,6 +64,7 @@ export function ImagesUploader({ id }) {
         {media.length > 0 &&
           media[0].id !== null &&
           media.map((item) => <ItemImage key={item.url} {...item} />)}
+        {loading && <SkeletonImage className={"rounded-lg h-52"} />}
       </div>
       <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 py-10">
         <div className="text-center">

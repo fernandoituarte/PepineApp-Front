@@ -16,7 +16,7 @@ import { notFound } from "next/navigation";
 export function Order({ id }) {
   const dispatch = useAppDispatch();
   const { orderById, isChanged, error, loading } = useAppSelector(
-    (state) => state.orders
+    (state) => state.orders,
   );
   const [role, setRole] = useState();
 

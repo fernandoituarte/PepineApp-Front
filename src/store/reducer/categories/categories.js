@@ -23,7 +23,7 @@ export const fetchCategories = createAsyncThunk(
     const response = await axios.get(`${URL}/categories`);
     const data = response.data.data.category;
     return data;
-  }
+  },
 );
 export const fetchCategoriesById = createAsyncThunk(
   "categories/fetchById",
@@ -31,7 +31,7 @@ export const fetchCategoriesById = createAsyncThunk(
     const response = await axios.get(`${URL}/categories/${id}/products`);
     const data = response.data.data.category;
     return data;
-  }
+  },
 );
 
 const categoriesReducer = createReducer(initialState, (builder) => {

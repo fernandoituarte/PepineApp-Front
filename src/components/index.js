@@ -1,13 +1,12 @@
 // Account
-export * from "./account/ui/DeleteAccountModal";
-export * from "./account/ui/ErrorAlert";
-export * from "./account/ui/OrderItemUser";
+export * from "./account/ordersUser/OrderItemUser";
 export * from "./account/ordersUser/OrdersUser";
-export * from "./account/ui/UpdateAlert";
+
 // Admin
 export * from "./admin/ui/Modal";
 export * from "./admin/ui/UserInfo";
 export * from "./admin/ui/UserUpdate";
+export * from "./admin/ui/UserChangePassword";
 export * from "./admin/ui/UserItem";
 export * from "./admin/ui/dashboard/Dashboard";
 export * from "./admin/users/Users";
@@ -15,7 +14,7 @@ export * from "./admin/users/ClientInfo";
 
 //Admin/Orders
 export * from "./admin/orders/OrderItem";
-export * from "./admin/orders/Orders";
+export * from "./admin/orders/OrderList";
 export * from "./admin/orders/orderDetails/Order";
 export * from "./admin/orders/orderDetails/OrderClientInfo";
 export * from "./admin/orders/orderDetails/OrderInfo";
@@ -58,12 +57,9 @@ export * from "./product/Product";
 export * from "./product/ProductCard";
 export * from "./product/ProductsGrid";
 //UI
-export * from "./ui/Spinners/Spinner";
-export * from "./ui/Spinners/SpinnerCarre";
-export * from "./ui/Spinners/SpinnerImage";
+export * from "./ui/Spinners/SkeletonImage";
 export * from "./ui/Spinners/SkeletonText";
 export * from "./ui/Spinners/SkeletonOrderProduct";
 export * from "./ui/title/Title";
 export * from "./ui/title/Subtitle";
 export * from "./ui/messages/Message";
-export * from "./ui/empty/EmptyCart";

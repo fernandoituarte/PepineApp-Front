@@ -1,4 +1,4 @@
-import { configureStore, createReducer } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 
 import productsReducer from "./reducer/products/products";
 import categoriesReducer from "./reducer/categories/categories";

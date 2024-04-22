@@ -1,16 +1,11 @@
 "use client";
-import { useEffect } from "react";
-
-import { fetchCategoriesById } from "@/store/reducer/categories/categories";
 import { ProductCard, Title } from "@/components";
 
 import { categoriesInfo } from "@/utils/categoriesInfo";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 
 //Products By Category
 export function CategoryGrid({ products, id }) {
   const category = categoriesInfo.find((category) => category.id == id);
-  const dispatch = useAppDispatch();
 
   return (
     <div className="mx-auto my-10 lg:my-16 max-w-7xl px-6 lg:px-8">

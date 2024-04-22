@@ -5,6 +5,10 @@ export const metadata = {
   title: "Contactez-nous",
   description: "...",
 };
+
+const EMAIL = process.env.NEXT_PUBLIC_EMAIL;
+const PHONE = process.env.NEXT_PUBLIC_PHONE;
+
 export default function Contact() {
   return (
     <div className="px-6 pb-16 m-auto max-w-[800px] mt-8">
@@ -21,11 +25,10 @@ export default function Contact() {
         </h2>
         <ul className="text-lg text-gray-600">
           <li>
-            Téléphone : <a href="tel:0619100412">06 19 10 04 12</a>
+            Téléphone : <a href={`tel:${PHONE}`}>{PHONE}</a>
           </li>
           <li>
-            E-mail :{" "}
-            <a href="mailto:pepiniereppd@gmail.com">pepiniereppd@gmail.com</a>
+            E-mail : <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
           </li>
         </ul>
 

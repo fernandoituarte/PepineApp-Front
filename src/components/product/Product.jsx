@@ -1,14 +1,11 @@
 "use client";
 import Image from "next/image";
-import axios from "axios";
 
 import { AddToCart } from "@/components";
 
 import { Disclosure, Tab } from "@headlessui/react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { Icon } from "@iconify/react";
-
-const URL = process.env.NEXT_PUBLIC_URL;
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -247,17 +244,24 @@ export function Product({ product }) {
                           >
                             <ul className="" role="list">
                               {detail.items.map((item, index) => {
-                                // Séparer la clé et la valeur
-                                const [key, value] = item.split(":");
-                                const formattedKey = `${key}: `;
+                                const firstColonIndex = item.indexOf(":");
+                                const key = item.substring(
+                                  0,
+                                  firstColonIndex + 1,
+                                );
+                                const value = item
+                                  .substring(firstColonIndex + 1)
+                                  .trim();
+
                                 const isPrice = key
                                   .toLowerCase()
-                                  .includes("price");
+                                  .includes("prix");
 
                                 return (
-                                  <li key={index}>
-                                    <span>{formattedKey}</span>
-                                    <span className="font-bold">
+                                  <li key={index} className="">
+                                    <span className="">{key}</span>
+                                    <span className="font-semibold">
+                                      {" "}
                                       {isPrice ? `${value} €` : value}
                                     </span>
                                   </li>

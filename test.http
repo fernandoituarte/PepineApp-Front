@@ -1,3 +1,0 @@
-DELETE {URL}/products/media/6
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzExMDYyMjEzLCJleHAiOjE3MTExNDUwMTN9.Iv27BoOLRC4ZyLgwLL_fUfx42awk32PzdCluxISyiAs

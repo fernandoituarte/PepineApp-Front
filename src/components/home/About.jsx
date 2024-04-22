@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { Title } from "@/components";
 
+const PHONE = process.env.NEXT_PUBLIC_PHONE;
+
 export function About() {
   return (
     <motion.div
@@ -23,8 +25,7 @@ export function About() {
         comestibles, offrant ainsi à chacun la possibilité de déambuler dans son
         jardin ou sur sa terrasse tout en savourant ce qui l'entoure. Si vous
         souhaitez obtenir davantage d'informations, n'hésitez pas à nous
-        contacter au{" "}
-        <span className="text-amber-500 font-bold">06 19 10 04 12.</span>
+        contacter au <span className="text-amber-500 font-bold">{PHONE}</span>
       </p>
       <p className="px-6 mt-10 text-center text-opacity-90 text-3xl font-bold leading-10">
         Bon Jardinage à tous !

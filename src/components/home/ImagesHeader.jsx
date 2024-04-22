@@ -16,8 +16,8 @@ export function ImagesHeader() {
     >
       <Image
         className="object-center object-cover h-[550px] m-auto shadow-2xl"
-        src="/pépinère Pyrénées orientales.jpg"
-        width={1200}
+        src="/pépinèrePyrénéesorientales.jpg"
+        width={1000}
         height={700}
         alt="pépinière pyrénées orientales"
       />

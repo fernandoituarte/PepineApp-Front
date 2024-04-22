@@ -7,6 +7,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { resetPasswordSchema } from "@/validations/schemas";
+
+import { Message } from "@/components";
+
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 export function ResetPassword({ token }) {
@@ -48,26 +51,18 @@ export function ResetPassword({ token }) {
   return (
     <form onSubmit={onSubmit} className="space-y-6" action="" method="POST">
       {showMessage && (
-        <div
-          className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded"
-          role="alert"
-        >
-          <strong className="font-bold">Success! </strong>
-          <span className="block sm:inline">
-            Nous avons actualisé votre mot de passe.
-          </span>
-        </div>
+        <Message
+          className={"bg-green-100 border border-green-400 text-green-700"}
+          title={"Success: "}
+          text={"Nous avons actualisé votre mot de passe."}
+        />
       )}
       {showErrorMessage && (
-        <div
-          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"
-          role="alert"
-        >
-          <strong className="font-bold">Error ! </strong>
-          <span className="block sm:inline">
-            Une erreur est survenue, veuillez réessayer
-          </span>
-        </div>
+        <Message
+          className={"bg-red-100 border border-red-400 text-red-700"}
+          title={"Error: "}
+          text={"Une erreur est survenue, veuillez réessayer"}
+        />
       )}
       {Object.keys(errors).length > 0 && (
         <div className="flex flex-col w-full justify-center text-center rounded-md bg-red-500 px-3 p-2 mb-4 text-sm leading-6 text-white shadow-sm">

@@ -11,6 +11,7 @@ export const OrderInfo = ({ order, role, loading }) => {
   const dispatch = useAppDispatch();
 
   const isEnded = status === "annulée";
+
   const date = new Date(created_at);
   const DDMMYYYY = date.toLocaleDateString("fr-FR");
   const hours = date.getHours();
@@ -19,12 +20,14 @@ export const OrderInfo = ({ order, role, loading }) => {
   const handleValidate = () => {
     dispatch(changeStatus({ status: "validée", id }));
   };
+
   const handleFinish = () => {
     dispatch(changeStatus({ status: "retirée", id }));
     order.products.map((product) => {
       decrementProductStock(product.product_id, product.quantity_ordered);
     });
   };
+
   const handleCancel = () => {
     if (window.confirm("Voulez-vous vraiment annuler cette commande?")) {
       dispatch(changeStatus({ status: "annulée", id }));

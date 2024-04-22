@@ -3,10 +3,9 @@ import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { retireImage } from "@/store/reducer/products/media/media";
 
-import { TiDelete } from "react-icons/ti";
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 export function ItemImage(item) {
-  const { loading } = useAppSelector((state) => state.media);
   const dispatch = useAppDispatch();
 
   function handleDeleteImage(id) {
@@ -15,9 +14,9 @@ export function ItemImage(item) {
 
   return (
     <div className="relative max-w-60 max-h-52">
-      <TiDelete
+      <RiDeleteBin5Line
         onClick={() => handleDeleteImage(item.id)}
-        className="absolute top-0 right-0 text-red-500 z-10 cursor-pointer m-2 h-6 w-6"
+        className="absolute top-0 right-0 bg-[#ffffff91] text-white p-1 rounded-sm z-10 cursor-pointer m-2 h-8 w-8"
       />
       <Image
         src={`${item.url}`}
