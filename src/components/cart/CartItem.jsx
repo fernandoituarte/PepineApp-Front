@@ -58,11 +58,6 @@ export function CartItem({ product, qty }) {
             <p className="mt-1 text-sm font-semibold text-gray-500">
               Total: {(product?.price * qty).toFixed(2)} €
             </p>
-            {product?.stock && product?.status && (
-              <p className="mt-5 text-sm font-semibold text-green-500">
-                En stock
-              </p>
-            )}
             {product?.stock !== 0 && !product?.status && (
               <p className="mt-4 text-sm font-semibold text-red-400">
                 Article indisponible
