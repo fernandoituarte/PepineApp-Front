@@ -21,7 +21,7 @@ const cartReducer = createReducer(initialState, (builder) => {
         state.cartItems.push({ product: action.payload, qty: 1 });
       }
       state.cartItems = state.cartItems.filter(
-        (item) => item.product.status !== false && item.product.stock > 0,
+        (item) => item.product.status !== false,
       );
     })
     .addCase(decrement, (state, action) => {
@@ -37,10 +37,7 @@ const cartReducer = createReducer(initialState, (builder) => {
         }
       }
       state.cartItems = state.cartItems.filter(
-        (item) =>
-          item.qty > 0 &&
-          item.product.status !== false &&
-          item.product.stock > 0,
+        (item) => item.qty > 0 && item.product.status !== false,
       );
     })
     .addCase(setCartItems, (state, action) => {
