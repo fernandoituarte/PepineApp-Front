@@ -7,6 +7,20 @@ import axios from "axios";
 
 const URL = process.env.NEXT_PUBLIC_URL;
 
+const initialState = {
+  error: null,
+  orders: [],
+  userRole: null,
+  userId: null,
+  user: null,
+  users: null,
+  loading: false,
+  status: "",
+  isDeleted: false,
+};
+
+export const setUser = createAction("set/user");
+export const clearUser = createAction("clear/user");
 // Asynchronous action for user authentication
 export const loginUser = createAsyncThunk(
   "user/login",
@@ -73,7 +87,6 @@ export const updateUserDetails = createAsyncThunk(
   "user/updateUserDetails",
   async ({ userInfo, id }, { rejectWithValue }) => {
     try {
-      console.log(userInfo);
       const response = await axios.patch(`/api/users/${id}`, userInfo);
 
       return response.data;
@@ -132,16 +145,6 @@ export const getAllUsers = createAsyncThunk(
   },
 );
 
-const initialState = {
-  error: null,
-  orders: [],
-  user: null,
-  users: null,
-  loading: false,
-  status: "",
-  isDeleted: false,
-};
-
 //Reducer
 const userReducer = createReducer(initialState, (builder) => {
   builder
@@ -157,6 +160,14 @@ const userReducer = createReducer(initialState, (builder) => {
       state.status = "failed";
       state.loading = false;
       state.error = true;
+    })
+    .addCase(setUser, (state, action) => {
+      state.userRole = action.payload.role;
+      state.userId = action.payload.id;
+    })
+    .addCase(clearUser, (state) => {
+      state.userRole = null;
+      state.userId = null;
     })
     .addCase(logOut.pending, (state) => {
       state.status = "loading";
@@ -252,7 +263,6 @@ const userReducer = createReducer(initialState, (builder) => {
       state.error = null;
     })
     .addCase(deleteAccount.fulfilled, (state) => {
-      state.token = null;
       state.error = null;
       state.orders = [];
       state.user = null;

@@ -1,11 +1,16 @@
+// Use strict mode to avoid common mistakes
 "use client";
-import Link from "next/link";
-import Image from "next/image";
-import { useState, useEffect } from "react";
-import { getCookie, deleteCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/hooks/redux";
-import { logOut } from "@/store/reducer/auth/login";
+
+// Import necessary modules and components from libraries and frameworks
+import Link from "next/link"; // Import Link component from Next.js for client-side transitions
+import Image from "next/image"; // Import Image component for optimized image handling
+import { useState, useEffect } from "react"; // Import useState for state management and useEffect for side effects
+import { getCookie } from "cookies-next"; // Import cookie handling functions from cookies-next library
+import { useRouter } from "next/navigation"; // Import useRouter from Next.js for routing control
+import { useAppDispatch, useAppSelector } from "@/hooks/redux"; // Custom hook to access the Redux dispatch function
+import { logOut } from "@/store/reducer/auth/login"; // Import logout action from Redux store
+
+// Import icons from react-icons library
 import {
   IoLogOutOutline,
   IoPeopleOutline,
@@ -16,23 +21,15 @@ import {
 } from "react-icons/io5";
 import { BsInboxes } from "react-icons/bs";
 
+// Define a functional component for the Dashboard
 export const Dashboard = () => {
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-  const [role, setRole] = useState(null);
+  const router = useRouter(); // Hook to access the router object
+  const dispatch = useAppDispatch(); // Hook to dispatch Redux actions
+  const { userRole: role } = useAppSelector((state) => state.user);
 
-  useEffect(() => {
-    const userCookie = getCookie("user");
-    if (userCookie) {
-      const { role } = JSON.parse(userCookie);
-      setRole(role);
-    }
-  }, []);
-
+  // Function to handle user logout
   const handleLogout = () => {
-    setRole(null);
     dispatch(logOut());
-
     router.push("/");
   };
 

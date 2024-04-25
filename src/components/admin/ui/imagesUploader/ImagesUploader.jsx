@@ -16,8 +16,9 @@ import { PhotoIcon } from "@heroicons/react/24/solid";
 
 export function ImagesUploader({ id }) {
   const dispatch = useAppDispatch();
-  const { productId, isCategorySended } = useAppSelector(
-    (state) => state.products,
+  const { productId } = useAppSelector((state) => state.product);
+  const { isCategorySended } = useAppSelector(
+    (state) => state.productCategories,
   );
   const { media, mediaToDelete } = useAppSelector((state) => state.media);
   const [loading, setLoading] = useState(false);

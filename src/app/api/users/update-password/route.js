@@ -14,7 +14,6 @@ export async function POST(req) {
 
   const { value } = authToken;
 
-  console.log(data);
   try {
     const response = await axios.post(`${URL}/users/change-password`, data, {
       headers: {

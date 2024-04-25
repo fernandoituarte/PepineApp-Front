@@ -1,60 +1,56 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useAppSelector, useAppDispatch } from "@/hooks/redux";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { getCookie } from "cookies-next";
-import { getUserById } from "@/store/reducer/auth/login";
+"use client"; // Directs Next.js to only load this module in the client-side environment.
+
+import { useEffect, useState } from "react"; // Imports for React built-in hooks.
+import { useAppSelector, useAppDispatch } from "@/hooks/redux"; // Custom hooks for accessing Redux state and dispatching actions.
+import Link from "next/link"; // Next.js Link component for client-side navigation.
+import { useRouter } from "next/navigation"; // Next.js hook for routing.
+import { getCookie } from "cookies-next"; // Function to get cookies.
+import { getUserById } from "@/store/reducer/auth/login"; // Action to retrieve user details by ID.
 import {
   createOrderByUser,
   orderHasProducts,
-} from "@/store/reducer/orders/orders";
-import { motion } from "framer-motion";
+} from "@/store/reducer/orders/orders"; // Actions related to order processing.
+import { motion } from "framer-motion"; // Library for animations.
+import { CartItem, ModalCart, Message } from "@/components"; // Custom components.
+import { totalPriceSelector } from "@/store/reducer/cart/cart"; // Selector to compute total price of cart items.
 
-import { CartItem, ModalCart, Message } from "@/components";
-import { totalPriceSelector } from "@/store/reducer/cart/cart";
-
+// Environment variables for contact information.
 const EMAIL = process.env.NEXT_PUBLIC_EMAIL;
 const PHONE = process.env.NEXT_PUBLIC_PHONE;
 
 export function Cart() {
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-  const { isOrderSended, orderId } = useAppSelector((state) => state.orders);
-  const { user } = useAppSelector((state) => state.user);
-  const { cartItems } = useAppSelector((state) => state.cart);
-  const totalPrice = useAppSelector(totalPriceSelector);
-  const [userRole, setUserRole] = useState();
+  const dispatch = useAppDispatch(); // Initialize dispatch function.
+  const router = useRouter(); // Initialize router.
+  const { isOrderSended, orderId } = useAppSelector((state) => state.orders); // Select order status and ID from Redux store.
+  const { user, userId, userRole } = useAppSelector((state) => state.user); // Select user information from Redux store.
+  const { cartItems } = useAppSelector((state) => state.cart); // Select cart items from Redux store.
+  const totalPrice = useAppSelector(totalPriceSelector); // Calculate total price of cart items.
 
+  // Redirect to empty page if cart is empty.
   useEffect(() => {
     if (cartItems.length === 0) {
       router.push("/empty");
     }
   }, [cartItems, router]);
 
+  // Load user information from cookie and update user role state.
   useEffect(() => {
-    const userCookie = getCookie("user");
-    if (userCookie) {
-      const { id, role } = JSON.parse(userCookie);
-      setUserRole(role);
-      dispatch(getUserById(id));
-    }
-  }, [dispatch, router]);
+    dispatch(getUserById(userId));
+  }, [dispatch, userId]);
 
-  // Function to handle reservation (order creation)
+  // Create order when required conditions meet.
   const handleReservation = () => {
     const orderData = {
       first_name_order: user.first_name,
       last_name_order: user.last_name,
-      total_price: totalPrice.toFixed(2),
-      status: "en cours",
+      total_price: totalPrice.toFixed(2), // Format total price to two decimal places.
+      status: "en cours", // Initial status of the order.
       user_id: user.id,
     };
-
     dispatch(createOrderByUser(orderData));
   };
 
-  // Effect to handle order products after order is sent
+  // Handle post-order actions like linking products to the order.
   useEffect(() => {
     if (isOrderSended && orderId) {
       const productsToOrderWithOrderId = cartItems.map((item) => ({
@@ -62,7 +58,7 @@ export function Cart() {
         product_id: item.product.id,
         quantity: item.qty,
         price_time_order: item.product.price,
-        vat: 10,
+        vat: 10, // Assume a fixed VAT rate for demonstration.
       }));
 
       dispatch(orderHasProducts(productsToOrderWithOrderId));

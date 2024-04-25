@@ -1,7 +1,23 @@
 "use client";
-
+// Import necessary dependencies for linking to product details.
 import Link from "next/link";
 
+/**
+ * Displays a single product's details as a table row with clickable cells that link to the product's detailed view.
+ * Each cell of the row displays different aspects of the product like name, category, and price.
+ *
+ * @param {object} props - The properties passed to the component.
+ * @param {string} props.name - The name of the product.
+ * @param {string} props.id - The unique identifier for the product.
+ * @param {string} props.scientific_name - The scientific name of the product.
+ * @param {string} props.pot - The pot size or type in which the product is sold.
+ * @param {string} props.size - The size of the product.
+ * @param {number} props.stock - The current stock level of the product.
+ * @param {number} props.vat - The value-added tax rate applicable to the product.
+ * @param {number} props.price - The price of the product.
+ * @param {string} props.status - The current status of the product (online or offline).
+ * @param {string[]} props.category - The category(ies) under which the product is listed.
+ */
 export function ProductItem({
   name,
   id,
@@ -16,6 +32,7 @@ export function ProductItem({
 }) {
   return (
     <tr key={id} className="hover:bg-slate-100 relative">
+      {/* Product Name Cell */}
       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
         <Link
           href={`/admin/products/${id}`}
@@ -25,6 +42,7 @@ export function ProductItem({
         </Link>
       </td>
 
+      {/* Category Cell, visible only on larger screens */}
       <td className="whitespace-nowrap hidden text-sm text-gray-500 xl:table-cell">
         <Link
           href={`/admin/products/${id}`}
@@ -34,6 +52,7 @@ export function ProductItem({
         </Link>
       </td>
 
+      {/* Scientific Name Cell, visible only on larger screens */}
       <td className="whitespace-nowrap hidden text-sm text-gray-500 xl:table-cell">
         <Link
           href={`/admin/products/${id}`}
@@ -43,6 +62,7 @@ export function ProductItem({
         </Link>
       </td>
 
+      {/* Size Cell, visible only on larger screens */}
       <td className="whitespace-nowrap hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
         <Link
           href={`/admin/products/${id}`}
@@ -52,6 +72,7 @@ export function ProductItem({
         </Link>
       </td>
 
+      {/* Pot Size Cell */}
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
         <Link
           href={`/admin/products/${id}`}
@@ -61,6 +82,7 @@ export function ProductItem({
         </Link>
       </td>
 
+      {/* Stock Cell */}
       <td
         className={`whitespace-nowrap px-3 py-4 text-sm text-gray-500 font-medium ${
           stock < 5 ? "text-red-400" : "text-green-600"
@@ -74,6 +96,7 @@ export function ProductItem({
         </Link>
       </td>
 
+      {/* VAT Cell, visible only on larger screens */}
       <td className="whitespace-nowrap hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
         <Link
           href={`/admin/products/${id}`}
@@ -83,6 +106,7 @@ export function ProductItem({
         </Link>
       </td>
 
+      {/* Price Cell */}
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
         <Link
           href={`/admin/products/${id}`}
@@ -92,6 +116,7 @@ export function ProductItem({
         </Link>
       </td>
 
+      {/* Status Cell, visible only on larger screens */}
       <td
         className={`whitespace-nowrap hidden px-3 py-4 text-sm text-gray-500 font-medium sm:table-cell ${
           status ? "text-green-600" : "text-red-400"

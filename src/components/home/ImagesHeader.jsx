@@ -17,8 +17,8 @@ export function ImagesHeader() {
       <Image
         className="object-center object-cover h-[550px] m-auto shadow-2xl"
         src="/pépinèrePyrénéesorientales.jpg"
-        width={1000}
-        height={700}
+        width={1250}
+        height={600}
         alt="pépinière pyrénées orientales"
       />
       <div className="absolute bottom-10 inset-x-0">

@@ -13,22 +13,25 @@ import { Message } from "@/components";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 export function Register() {
-  const router = useRouter();
-  const dispatch = useAppDispatch();
+  const router = useRouter(); // Initialize router for navigation
+  const dispatch = useAppDispatch(); // Retrieve the dispatch function to emit actions
+  // Extract registration and login status along with any errors from Redux store
   const { status: statusRegister, error } = useAppSelector(
     (state) => state.register,
   );
   const { status: statusLogin } = useAppSelector((state) => state.user);
-  const [user, setUser] = useState();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [user, setUser] = useState(); // State to hold user credentials temporarily
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State to toggle confirm password visibility
 
+  // Initialize form handling with react-hook-form and Zod validation schema
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: zodResolver(registerSchema) });
 
+  // Handler for form submission, dispatches registration action
   const onSubmit = handleSubmit((data) => {
     const userInfo = {
       first_name: data.first_name,
@@ -41,12 +44,14 @@ export function Register() {
     dispatch(registerUser(userInfo));
   });
 
+  // Effect to handle user login after registration success
   useEffect(() => {
     if (statusRegister === "registered") {
       dispatch(loginUser(user));
     }
   }, [statusRegister, router, dispatch, user]);
 
+  // Effect to navigate to home page upon successful login
   useEffect(() => {
     if (statusLogin === "logged") {
       router.push("/");
@@ -55,7 +60,7 @@ export function Register() {
 
   return (
     <div className="mx-auto w-full max-w-sm lg:w-96">
-      <div className="">
+      <div className="mx-2">
         {Object.keys(errors).length > 0 && (
           <div className="flex flex-col w-full justify-center text-center rounded-md bg-red-500 px-3 p-2 mb-4 text-sm leading-6 text-white shadow-sm">
             {errors.first_name?.message && (

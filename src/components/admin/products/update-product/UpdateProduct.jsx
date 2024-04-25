@@ -1,8 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 
-import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,15 +9,28 @@ import { productSchema } from "@/validations/schemas";
 
 import {
   updateProduct,
+  getProductByIdToUpdate,
+  statusProduct,
+} from "@/store/reducer/products/product";
+import {
   deleteProductCategory,
   productCategory,
-  getProductByIdToUpdate,
   addCategory,
-  statusProduct,
-} from "@/store/reducer/products/products";
+} from "@/store/reducer/products/update-categories/productCategories";
 import { addImage } from "@/store/reducer/products/media/media";
 // Components
-import { Modal, ImagesUploader, CategoriesBadges } from "@/components";
+import {
+  Modal,
+  ImagesUploader,
+  CategoriesBadges,
+  MediumInputs,
+  DescriptionInputs,
+  SmallInputs,
+  SelectInputs,
+  CategorySelect,
+  StatusCheckbox,
+  ButtonsForm,
+} from "@/components";
 //Utils
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { inputs } from "@/utils/inputs";
@@ -27,86 +39,73 @@ export function UpdateProduct({ id }) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { mediumInputs, descriptionInputs, smallInputs, selectInputs } = inputs;
-  const {
-    productToUpdate,
-    categoriesByProduct,
-    isProductSended,
-    isCategoryDeleted,
-    status,
-  } = useAppSelector((state) => state.products);
-
-  const [userId, setUserId] = useState(null);
-
-  useEffect(() => {
-    const userCookie = getCookie("user");
-    if (userCookie) {
-      const { id } = JSON.parse(userCookie);
-      setUserId(id);
-    }
-    dispatch(getProductByIdToUpdate(id));
-  }, [dispatch, id]);
-
+  const { productToUpdate, status } = useAppSelector((state) => state.product);
+  const { categories, status: statusCategory } = useAppSelector(
+    (state) => state.productCategories,
+  );
+  const { userId } = useAppSelector((state) => state.user);
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({ resolver: zodResolver(productSchema) });
 
+  //UseEffect to fetch a product by ID
   useEffect(() => {
+    dispatch(getProductByIdToUpdate(id));
+  }, [dispatch, id]);
+
+  // This useEffect hook is triggered whenever the 'productToUpdate' change.
+  useEffect(() => {
+    // Check if there is a 'productToUpdate' object available. This means that product data has been fetched successfully.
     if (productToUpdate) {
-      reset({
-        name: productToUpdate.name,
-        scientific_name: productToUpdate.scientific_name,
-        maturity_height: productToUpdate.maturity_height,
-        maturity_width: productToUpdate.maturity_width,
-        family: productToUpdate.family,
-        origin: productToUpdate.origin,
-        flower_color: productToUpdate.flower_color,
-        leaf_color: productToUpdate.leaf_color,
-        description1: productToUpdate.description1,
-        description2: productToUpdate.description2,
-        size: productToUpdate.size,
-        pot: productToUpdate.pot,
-        stock: productToUpdate.stock,
-        price: productToUpdate.price,
-        vat: productToUpdate.vat,
-        status: productToUpdate.status,
-        yield_id: productToUpdate.yield_id,
-        hardiness_zone_id: productToUpdate.hardiness_zone_id,
-        water_requirement_id: productToUpdate.water_requirement_id,
-        exposure_id: productToUpdate.exposure_id,
-        ground_cover_power_id: productToUpdate.ground_cover_power_id,
-        strate_id: productToUpdate.strate_id,
-        foliage_id: productToUpdate.foliage_id,
-      });
-      const { media_urls, media_id } = productToUpdate;
+      // The 'reset' function from useForm is used to reset form fields to the values in 'productToUpdate'..
+      reset(productToUpdate);
+
+      const { media_urls, media_id, category_id } = productToUpdate;
+      // Check if 'media_urls' is truthy and the first item is not null, indicating there are valid media URLs to process.
       if (media_urls && media_urls[0] !== null) {
+        // Map 'media_id' to an array of objects where each object contains an 'id' and a 'url'.
+        // This mapping creates a new array 'media' where each element corresponds to an image with its 'id' and 'url'.
         const media = media_id.map((id, index) => ({
           id: id,
           url: media_urls[index],
         }));
-        media.map((image) => {
+        // Iterate over each 'media' item and dispatch an 'addImage' action for each.
+        // This adds each image to the Redux store
+        media.forEach((image) => {
           dispatch(addImage(image));
         });
+        if (category_id && category_id[0] !== null) {
+          category_id.forEach((category) => {
+            dispatch(addCategory(category));
+          });
+        }
       }
     }
   }, [productToUpdate, reset, dispatch]);
 
+  // Submit updated product details.
   const onSubmit = handleSubmit((data) => {
     const update = { ...data, user_id: userId };
     dispatch(updateProduct({ id, update }));
   });
 
+  //UseEffect to delete all categories
   useEffect(() => {
-    if (isProductSended) {
+    if (status === "product updated") {
       dispatch(deleteProductCategory(id));
     }
-  }, [isProductSended, dispatch, id]);
+  }, [status, dispatch, id]);
 
+  //UseEffect to add new categories
   useEffect(() => {
-    if (isCategoryDeleted || status === "delete category rejected") {
-      categoriesByProduct.forEach((category) => {
+    if (
+      statusCategory === "delete category success" ||
+      statusCategory === "delete category rejected"
+    ) {
+      categories.forEach((category) => {
         dispatch(
           productCategory({
             product_id: id,
@@ -116,8 +115,9 @@ export function UpdateProduct({ id }) {
       });
       dispatch(statusProduct(false));
     }
-  }, [isCategoryDeleted, status, categoriesByProduct, dispatch, id]);
+  }, [statusCategory, categories, dispatch, id]);
 
+  // Handle form cancellation and confirmation.
   function handleCancel(e) {
     e.preventDefault();
     if (window.confirm("Voulez-vous vraiment annuler ?")) {
@@ -144,205 +144,52 @@ export function UpdateProduct({ id }) {
             <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Medium inputs */}
               {mediumInputs.map((item) => (
-                <div key={item.name} className="col-span-1 md:col-span-2">
-                  <label
-                    htmlFor=""
-                    className="block text-md mb-1 font-medium leading-6 text-gray-900"
-                  >
-                    {item.label}
-                  </label>
-
-                  <input
-                    type="text"
-                    name="name"
-                    {...register(item.name)}
-                    autoComplete="off"
-                    className={
-                      "block w-full rounded-md shadow-sm border ring-gray-300 bg-transparent py-2.5 pl-1.5 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6 hide-number-input-spinners"
-                    }
-                    placeholder={item.placeholder}
-                  />
-                  {errors[item.name]?.message && (
-                    <p className="ml-2 text-red-500 text-sm">
-                      {errors[item.name].message}
-                    </p>
-                  )}
-                </div>
+                <MediumInputs
+                  key={item.name}
+                  register={register}
+                  item={item}
+                  errors={errors}
+                />
               ))}
               {/* Description inputs */}
               {descriptionInputs.map((item) => (
-                <div
+                <DescriptionInputs
                   key={item.name}
-                  className="col-span-1 md:col-span-2 lg:col-span-4"
-                >
-                  <label
-                    htmlFor=""
-                    className="block text-md mb-1 font-medium leading-6 text-gray-900"
-                  >
-                    {item.label}
-                  </label>
-                  <div className="rounded-md shadow-sm border ring-gray-300 ">
-                    <textarea
-                      name="description1"
-                      {...register(item.name)}
-                      rows="3"
-                      className="block w-full border-0 bg-transparent py-1.5 pl-1.5 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-                      placeholder={item.placeholder}
-                    />
-                  </div>
-                  {errors[item.name]?.message && (
-                    <p className="ml-2 text-red-500 text-sm">
-                      {errors[item.name].message}
-                    </p>
-                  )}
-                </div>
+                  register={register}
+                  item={item}
+                  errors={errors}
+                />
               ))}
               {/* Small inputs */}
               {smallInputs.map((item) => (
-                <div
+                <SmallInputs
                   key={item.name}
-                  className="col-span-1 md:col-span-1 lg:col-span-1"
-                >
-                  <label
-                    htmlFor=""
-                    className="block text-md mb-1 font-medium leading-6 text-gray-900"
-                  >
-                    {item.label}
-                  </label>
-                  <div className="rounded-md shadow-sm border ring-gray-300 ">
-                    <input
-                      type="text"
-                      {...register(item.name, {
-                        setValueAs: (value) => {
-                          if (item.name === "price") {
-                            const parsed = parseFloat(value);
-                            return isNaN(parsed) ? 0 : parsed;
-                          } else if (
-                            item.name === "stock" ||
-                            item.name === "vat"
-                          ) {
-                            const parsed = parseInt(value, 10);
-                            return isNaN(parsed) ? 0 : parsed;
-                          }
-                          return value;
-                        },
-                      })}
-                      autoComplete="off"
-                      className="block w-full border-0 bg-transparent py-2.5 pl-1.5 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6 hide-number-input-spinners"
-                      placeholder={item.placeholder}
-                    />
-                  </div>
-                  {errors[item.name]?.message && (
-                    <p className="ml-2 text-red-500 text-sm">
-                      {errors[item.name].message}
-                    </p>
-                  )}
-                </div>
+                  register={register}
+                  item={item}
+                  errors={errors}
+                />
               ))}
               {/* Select inputs */}
               {selectInputs.map((item) => (
-                <div
+                <SelectInputs
                   key={item.name}
-                  className="col-span-1 md:col-span-1 lg:col-span-1"
-                >
-                  <label
-                    htmlFor=""
-                    className="block text-md mb-1 font-medium leading-6 text-gray-900"
-                  >
-                    {item.label}
-                  </label>
-                  <div className="rounded-md shadow-sm border ring-gray-300 ">
-                    <select
-                      className="block w-full rounded bg-transparent py-2.5 pl-1 text-gray-600 placeholder:text-gray-900 focus:ring-0"
-                      {...register(item.name, {
-                        setValueAs: (value) => parseInt(value, 10),
-                      })}
-                    >
-                      {item.options?.map((item, index) => (
-                        <option key={item} value={index + 1} type="number">
-                          {item}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  {errors[item.name]?.message && (
-                    <p className="ml-2 text-red-500 text-sm">
-                      {errors[item.name].message}
-                    </p>
-                  )}
-                </div>
+                  register={register}
+                  item={item}
+                  errors={errors}
+                />
               ))}
               {/* Category select */}
-              <div className="col-span-1 md:col-span-1 lg:col-span-1">
-                <label
-                  htmlFor=""
-                  className="block text-md mb-1 font-medium leading-6 text-gray-900"
-                >
-                  Categorie
-                </label>
-                <div className="rounded-md shadow-sm border ring-gray-300 ">
-                  <select
-                    onChange={(e) =>
-                      dispatch(addCategory(parseFloat(e.target.value)))
-                    }
-                    className="block w-full rounded bg-transparent py-2.5 pl-1 text-gray-600 placeholder:text-gray-900 focus:ring-0"
-                  >
-                    <option value={""} type="number">
-                      Select
-                    </option>
-                    <option value={"1"} type="number">
-                      Aromates et Médicinales
-                    </option>
-                    <option value={"2"} type="number">
-                      Fruitiers
-                    </option>
-                    <option value={"3"} type="number">
-                      Agrumes
-                    </option>
-                    <option value={"4"} type="number">
-                      Plantes équines
-                    </option>
-                    <option value={"5"} type="number">
-                      Fleuries/Ornementales
-                    </option>
-                    <option value={"6"} type="number">
-                      Plants Potagers
-                    </option>
-                  </select>
-                </div>
-              </div>
+              <CategorySelect />
               {/* Stutus checkbox */}
-              <div className="flex sm:justify-center items-center mt-5">
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    {...register("status")}
-                    className="sr-only peer"
-                  />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-gren-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
-                  <span className="ms-3 text-sm font-medium text-gray-900">
-                    Disponible
-                  </span>
-                </label>
-              </div>
+              <StatusCheckbox register={register} />
             </div>
             {/*Categories Badges */}
-            <CategoriesBadges categoriesByProduct={categoriesByProduct} />
+            <CategoriesBadges categories={categories} />
           </div>
         </div>
+        {/* Images Uploader */}
         <ImagesUploader id={id} />
-        <div className="mt-6 flex items-center justify-around gap-x-6">
-          <button
-            type="button"
-            onClick={handleCancel}
-            className="rounded-md w-[200px] px-3 py-2 text-sm font-semibold border hover:text-white shadow-sm hover:bg-red-400"
-          >
-            Annuler
-          </button>
-          <button className="rounded-md w-[200px] px-3 py-2 text-sm font-semibold text-white shadow-sm bg-orange-500 hover:bg-orange-400">
-            Valider
-          </button>
-        </div>
+        <ButtonsForm handleCancel={handleCancel} />
       </form>
     </motion.div>
   );

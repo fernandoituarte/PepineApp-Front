@@ -1,38 +1,32 @@
-"use client";
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { getCookie } from "cookies-next";
-import { useRouter, usePathname } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { logOut } from "@/store/reducer/auth/login";
+"use client"; // Ensures that this module only runs on the client side.
 
-import { Bars3Icon, ShoppingCartIcon } from "@heroicons/react/24/outline";
-import { FiLogOut } from "react-icons/fi";
-import clsx from "clsx";
-import { NavBarMobile } from "@/components";
-import { totalCartItemSelector } from "@/store/reducer/cart/cart";
+import { useState, useEffect } from "react"; // Importing React hooks for state management and side effects.
+import Link from "next/link"; // Imports the Link component for SPA navigation.
+import Image from "next/image"; // Imports the Image component for optimized image handling.
+import { getCookie } from "cookies-next"; // Imports a utility function for cookie retrieval.
+import { useRouter, usePathname } from "next/navigation"; // useRouter for programmatic navigation, usePathname for current path retrieval.
+import { useAppDispatch, useAppSelector } from "@/hooks/redux"; // Custom hooks for accessing Redux state and dispatch functions.
+import { logOut } from "@/store/reducer/auth/login"; // Action creator for logging out users.
+
+import { Bars3Icon, ShoppingCartIcon } from "@heroicons/react/24/outline"; // Icons for menu and shopping cart.
+import { FiLogOut } from "react-icons/fi"; // Icon for logout button.
+import clsx from "clsx"; // A utility for conditionally joining classNames together.
+import { NavBarMobile } from "@/components"; // Mobile version of the navigation bar.
+import { totalCartItemSelector } from "@/store/reducer/cart/cart"; // Selector for total items in the cart.
 
 export function NavBar({ className }) {
   const router = useRouter();
-  const pathname = usePathname();
-  const dispatch = useAppDispatch();
-  const [role, setRole] = useState(null);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const totalItems = useAppSelector(totalCartItemSelector);
+  const pathname = usePathname(); // Retrieves the current path.
+  const dispatch = useAppDispatch(); // Dispatch function from Redux.
+  const { userRole: role } = useAppSelector((state) => state.user);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // State to manage mobile menu visibility.
+  const totalItems = useAppSelector(totalCartItemSelector); // Total cart items count from Redux store.
 
-  useEffect(() => {
-    const userCookie = getCookie("user");
-    if (userCookie) {
-      const { role } = JSON.parse(userCookie);
-      setRole(role);
-    }
-  }, []);
   const handleLogout = () => {
-    setMobileMenuOpen(false);
-    setRole(null);
-    dispatch(logOut());
+    setMobileMenuOpen(false); // Close mobile menu.
+    dispatch(logOut()); // Dispatch logout action.
 
+    // Refresh or navigate to the home page depending on current path.
     if (pathname === "/") {
       router.refresh();
     } else {
@@ -47,6 +41,7 @@ export function NavBar({ className }) {
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
+          {/* Conditional rendering of logo based on path, smaller on user/admin pages. */}
           {pathname.includes("user") || pathname.includes("admin") ? (
             <Link href={"/"} className={"-m-1.5 p-1.5 lg:hidden"}>
               <Image
@@ -69,6 +64,7 @@ export function NavBar({ className }) {
             </Link>
           )}
         </div>
+        {/* Hamburger menu for mobile view. */}
         <div className="flex lg:hidden">
           <button
             type="button"
@@ -78,31 +74,28 @@ export function NavBar({ className }) {
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
+        {/* Desktop navigation links with conditional styling for active links. */}
         <div className="hidden lg:flex lg:gap-x-20">
           <Link
             href={"/products"}
             className={clsx(
               "flex items-center gap-x-1 text-lg font-semibold  leading-6 text-gray-600 transform transition-colors duration-300",
-              {
-                "border-b-2 border-b-amber-500": pathname === "/products",
-              },
+              { "border-b-2 border-b-amber-500": pathname === "/products" },
             )}
           >
             Produits
           </Link>
-
           <Link
             href={"/categories"}
             className={clsx(
               "flex items-center gap-x-1 text-lg font-semibold  leading-6 text-gray-600 transform transition-colors duration-300",
-              {
-                "border-b-2 border-b-amber-500": pathname === "/categories",
-              },
+              { "border-b-2 border-b-amber-500": pathname === "/categories" },
             )}
           >
             Categories
           </Link>
 
+          {/* Admin or user-specific links depending on the role. */}
           {role === "admin" ? (
             <Link
               href={"/admin/products"}
@@ -121,9 +114,7 @@ export function NavBar({ className }) {
               href={"/cart"}
               className={clsx(
                 "flex items-center gap-x-1 text-lg font-semibold  leading-6 text-gray-600 transform transition-colors duration-300",
-                {
-                  "border-b-2 border-b-amber-500": pathname.includes("/cart"),
-                },
+                { "border-b-2 border-b-amber-500": pathname.includes("/cart") },
               )}
             >
               {!!totalItems && (
@@ -137,6 +128,7 @@ export function NavBar({ className }) {
           )}
         </div>
 
+        {/* Right-aligned section for login/logout functionality based on user role. */}
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           {role === "user" && (
             <Link
@@ -171,6 +163,7 @@ export function NavBar({ className }) {
           )}
         </div>
       </nav>
+      {/* Mobile navigation bar component. */}
       <NavBarMobile
         handleLogout={handleLogout}
         setMobileMenuOpen={setMobileMenuOpen}

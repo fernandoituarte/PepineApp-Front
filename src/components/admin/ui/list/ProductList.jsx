@@ -1,28 +1,38 @@
+// Ensures that this file runs only on the client-side in Next.js.
 "use client";
 import { useEffect } from "react";
 import Link from "next/link";
 
+// Custom hooks from the Redux store for dispatching actions and selecting state.
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import {
-  fetchProduits,
-  emptyCategories,
-} from "@/store/reducer/products/products";
+
+// Actions imported from the product reducer to manage product and media states.
+import { fetchProducts } from "@/store/reducer/products/product";
+import { emptyCategories } from "@/store/reducer/products/update-categories/productCategories";
 import { emptyMedia } from "@/store/reducer/products/media/media";
-import { BsPlus } from "react-icons/bs";
 
+// Component imports
 import { ProductItem } from "./ProductItem";
+import { BsPlus } from "react-icons/bs"; // Icon for the add product button.
 
+/**
+ * Component to display a list of products with functionality to add new products.
+ * It fetches products from the backend on component mount and initializes adding product flows.
+ */
 export function ProductList() {
   const dispatch = useAppDispatch();
-  const products = useAppSelector((state) => state.products.products);
+  // Retrieves the products array from Redux state.
+  const { products } = useAppSelector((state) => state.product);
 
+  // Handler to reset category and media states before adding a new product.
   const handleAddProduct = () => {
     dispatch(emptyCategories());
     dispatch(emptyMedia());
   };
 
+  // Effect hook to fetch products on component mount.
   useEffect(() => {
-    dispatch(fetchProduits());
+    dispatch(fetchProducts());
   }, [dispatch]);
 
   return (
@@ -90,13 +100,14 @@ export function ProductList() {
                 </tr>
               </thead>
               <tbody>
+                {/* Maps over the products array and renders each product using the ProductItem component. */}
                 {products.map((item, index) => (
                   <ProductItem key={index} {...item} />
                 ))}
               </tbody>
             </table>
           </div>
-
+          {/* Floating action button for adding a new product, with an icon from react-icons. */}
           <Link
             href={"/admin/products/add-product"}
             onClick={handleAddProduct}

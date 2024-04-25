@@ -1,15 +1,17 @@
+// Ensures the component only runs on the client side.
 "use client";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { forgotPassword } from "@/store/reducer/auth/login";
 
-import { useForm } from "react-hook-form";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux"; // Custom hooks for Redux state management.
+import { forgotPassword } from "@/store/reducer/auth/login"; // Redux action to trigger the forgot password process.
+
+import { useForm } from "react-hook-form"; // Form handling library.
 import { useEffect, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { forgotPasswordSchema } from "@/validations/schemas";
+import { zodResolver } from "@hookform/resolvers/zod"; // Integration of Zod with React Hook Form for schema validation.
+import { forgotPasswordSchema } from "@/validations/schemas"; // Validation schema for the forgot password form.
 
 export function ForgotPassword() {
   const dispatch = useAppDispatch();
-  const { loading, status } = useAppSelector((state) => state.user);
+  const { loading, status } = useAppSelector((state) => state.user); // Accessing the loading state and status from the Redux store.
   const {
     register,
     handleSubmit,
@@ -17,24 +19,24 @@ export function ForgotPassword() {
   } = useForm({
     resolver: zodResolver(forgotPasswordSchema),
   });
-  const [showMessage, setShowMessage] = useState(false);
-  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [showMessage, setShowMessage] = useState(false); // State to control visibility of the success message.
+  const [showErrorMessage, setShowErrorMessage] = useState(false); // State to control visibility of the error message.
 
   const onSubmit = handleSubmit((data) => {
-    dispatch(forgotPassword(data));
+    dispatch(forgotPassword(data)); // Dispatching the forgot password action with the form data.
   });
 
   useEffect(() => {
     if (status === "email sended") {
       setShowMessage(true);
       setTimeout(() => {
-        setShowMessage(false);
+        setShowMessage(false); // Auto-hide the success message after 3 seconds.
       }, 3000);
     }
     if (status === "email rejected") {
       setShowErrorMessage(true);
       setTimeout(() => {
-        setShowErrorMessage(false);
+        setShowErrorMessage(false); // Auto-hide the error message after 3 seconds.
       }, 3000);
     }
   }, [status]);
@@ -48,7 +50,7 @@ export function ForgotPassword() {
         >
           <strong className="font-bold">Lien de connexion envoyé !</strong>
           <span className="block sm:inline">
-            Nous avons envoye un lien dans votre boîte mail.
+            Nous avons envoyé un lien dans votre boîte mail.
           </span>
         </div>
       )}

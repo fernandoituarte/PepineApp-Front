@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# projet-05-pepine-front
 
-## Getting Started
+## Description
 
-First, run the development server:
+Ce projet est une application front-end conçue pour la pepiniere "Poussez pas derriere".
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Technologies
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ce projet utilise les technologies et bibliothèques suivantes :
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- **Next.js :** Un framework de React pour la production.
+- **Redux Toolkit :** Pour gérer l'état de l'application.
+- **Axios :** Client HTTP utilisé pour effectuer des requêtes API.
+- **Tailwind CSS :** Framework CSS pour un design rapide et réactif.
+- **Clsx :** Utilisé pour joindre conditionnellement des classNames.
+- **React-Hook-Form :** Pour gérer les formulaires avec une meilleure performance.
+- **Zod :** Bibliothèque de parsing et de validation pour JavaScript.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Installation
 
-## Learn More
+1. Cloner ou télécharger le projet depuis son dépôt GitHub :
+   ```bash
+   git clone https://github.com/........
+   cd projet-05-pepine-front
 
-To learn more about Next.js, take a look at the following resources:
+2. Installer des package : `npm i`
+3. Créer le fichier ".env" sur la base de ".env.example"
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Utilisation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Developpement
 
-## Deploy on Vercel
+- Lancer l'app. : `npm run dev` (script)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Production
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Construire le projet: `npm run build`
+
+- Lancer l'app en production: `npm run build`
+
+
+
+Une fois, le serveur en route, ouvrez un navigateur avec l'adresse `http://localhost:3000`

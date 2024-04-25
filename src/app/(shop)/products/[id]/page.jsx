@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Product } from "@/components";
+import { UserProductDetails } from "@/components";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import ProductDetailsLoading from "./loading";
@@ -42,5 +42,5 @@ const getProduct = async (id) => {
 };
 export default async function Page({ params }) {
   const product = await getProduct(params.id);
-  return <Product product={product} />;
+  return <UserProductDetails product={product} />;
 }

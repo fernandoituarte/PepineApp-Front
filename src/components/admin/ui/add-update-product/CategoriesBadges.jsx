@@ -1,11 +1,11 @@
 import { useAppDispatch } from "@/hooks/redux";
-import { deleteCategory } from "@/store/reducer/products/products";
+import { deleteCategory } from "@/store/reducer/products/update-categories/productCategories";
 
-export function CategoriesBadges({ categoriesByProduct }) {
+export function CategoriesBadges({ categories }) {
   const dispatch = useAppDispatch();
   return (
     <div className="mt-8 flex flex-wrap">
-      {categoriesByProduct.includes(1) && (
+      {categories.includes(1) && (
         <p
           id="badge-dismiss-green"
           className="inline-flex items-center px-2 py-1 me-2 text-sm font-medium text-green-800 bg-green-100 rounded mb-2"
@@ -38,7 +38,7 @@ export function CategoriesBadges({ categoriesByProduct }) {
         </p>
       )}
 
-      {categoriesByProduct.includes(2) && (
+      {categories.includes(2) && (
         <p
           id="badge-dismiss-green"
           className="inline-flex items-center px-2 py-1 me-2 text-sm font-medium text-green-800 bg-green-100 rounded mb-2"
@@ -71,7 +71,7 @@ export function CategoriesBadges({ categoriesByProduct }) {
         </p>
       )}
 
-      {categoriesByProduct.includes(3) && (
+      {categories.includes(3) && (
         <p
           id="badge-dismiss-green"
           className="inline-flex items-center px-2 py-1 me-2 text-sm font-medium text-green-800 bg-green-100 rounded mb-2"
@@ -104,7 +104,7 @@ export function CategoriesBadges({ categoriesByProduct }) {
         </p>
       )}
 
-      {categoriesByProduct.includes(4) && (
+      {categories.includes(4) && (
         <p
           id="badge-dismiss-green"
           className="inline-flex items-center px-2 py-1 me-2 text-sm font-medium text-green-800 bg-green-100 rounded mb-2"
@@ -136,7 +136,7 @@ export function CategoriesBadges({ categoriesByProduct }) {
           </button>
         </p>
       )}
-      {categoriesByProduct.includes(5) && (
+      {categories.includes(5) && (
         <p
           id="badge-dismiss-green"
           className="inline-flex items-center px-2 py-1 me-2 text-sm font-medium text-green-800 bg-green-100 rounded mb-2"
@@ -168,7 +168,7 @@ export function CategoriesBadges({ categoriesByProduct }) {
           </button>
         </p>
       )}
-      {categoriesByProduct.includes(6) && (
+      {categories.includes(6) && (
         <p
           id="badge-dismiss-green"
           className="inline-flex items-center px-2 py-1 me-2 text-sm font-medium text-green-800 bg-green-100 rounded mb-2"

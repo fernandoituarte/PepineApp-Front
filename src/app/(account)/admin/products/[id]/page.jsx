@@ -1,6 +1,6 @@
 import axios from "axios";
 import { notFound } from "next/navigation";
-import { ProductDetails } from "@/components";
+import { AdminProductDetails } from "@/components";
 
 const URL = process.env.NEXT_PUBLIC_URL;
 
@@ -24,5 +24,5 @@ const getProduct = async (id) => {
 };
 export default async function Page({ params }) {
   const product = await getProduct(params.id);
-  return <ProductDetails product={product} />;
+  return <AdminProductDetails product={product} />;
 }

@@ -9,6 +9,15 @@ export * from "./admin/ui/UserUpdate";
 export * from "./admin/ui/UserChangePassword";
 export * from "./admin/ui/ChangeStatusButton";
 export * from "./admin/ui/dashboard/Dashboard";
+export * from "./admin/ui/add-update-product/MediumInputs";
+export * from "./admin/ui/add-update-product/DescriptionInputs";
+export * from "./admin/ui/add-update-product/CategorySelect";
+export * from "./admin/ui/add-update-product/StatusCheckbox";
+export * from "./admin/ui/add-update-product/ButtonsForm";
+export * from "./admin/ui/add-update-product/SmallInputs";
+export * from "./admin/ui/add-update-product/SelectInputs";
+
+//Admin/Users
 export * from "./admin/users/Users";
 export * from "./admin/users/UserItem";
 export * from "./admin/users/ClientInfo";
@@ -22,14 +31,14 @@ export * from "./admin/orders/orderDetails/OrderInfo";
 export * from "./admin/orders/orderDetails/OrderProduct";
 
 //Admin/Products
-export * from "./admin/products/ProductDetails";
-export * from "./admin/products/ProductItem";
-export * from "./admin/products/ProductList";
+export * from "./admin/ui/list/ProductItem";
+export * from "./admin/ui/list/ProductList";
 export * from "./admin/products/add-product/AddProduct";
-export * from "./admin/products/images/ImagesUploader";
-export * from "./admin/products/images/ItemImage";
-export * from "./admin/products/CategoriesBadges";
+export * from "./admin/ui/imagesUploader/ImagesUploader";
+export * from "./admin/ui/imagesUploader/ItemImage";
+export * from "./admin/ui/add-update-product/CategoriesBadges";
 export * from "./admin/products/update-product/UpdateProduct";
+
 //Cart
 export * from "./cart/Cart";
 export * from "./cart/CartItem";
@@ -54,9 +63,13 @@ export * from "./auth/reset-password/ResetPassword";
 export * from "./navbar/NavBar";
 export * from "./navbar/NavBarMobile";
 //Product
-export * from "./product/Product";
 export * from "./product/ProductCard";
 export * from "./product/ProductsGrid";
+export * from "./product/UserProductDetails";
+export * from "./product/AdminProductDetails";
+export * from "./product/product-details/ImagesGallery";
+export * from "./product/product-details/PrincipalDetails";
+export * from "./product/product-details/AdditionalDetails";
 //UI
 export * from "./ui/Spinners/SkeletonImage";
 export * from "./ui/Spinners/SkeletonText";

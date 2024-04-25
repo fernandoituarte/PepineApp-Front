@@ -1,36 +1,39 @@
-"use client";
-import Link from "next/link";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { loginUser } from "@/store/reducer/auth/login";
+"use client"; // Ensures the component only runs on the client side.
 
-import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link"; // Used for navigation between routes.
+import { useAppDispatch, useAppSelector } from "@/hooks/redux"; // Custom hooks for Redux state management.
+import { loginUser } from "@/store/reducer/auth/login"; // Redux action to handle user login.
 
-import { Message } from "@/components";
+import { useForm } from "react-hook-form"; // Hook for handling form validation and submission.
+import { useEffect, useState } from "react"; // React hooks for managing state and side effects.
+import { useRouter } from "next/navigation"; // Hook to programmatically navigate.
 
-import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
+import { Message } from "@/components"; // Component to display messages like errors.
+
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5"; // Icons for showing/hiding password.
 
 export function Login() {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { status, loading, error } = useAppSelector((state) => state.user);
-  const { register, handleSubmit } = useForm();
-  const [showPassword, setShowPassword] = useState(false);
+  const { status, loading, error } = useAppSelector((state) => state.user); // Access Redux state for user.
+  const { register, handleSubmit } = useForm(); // Setup form handling with react-hook-form.
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility.
 
+  // Function to handle form submission, dispatching the login action.
   const onSubmit = handleSubmit((data) => {
-    dispatch(loginUser(data));
+    dispatch(loginUser(data)); // Dispatch login action with form data.
   });
 
+  // Effect to handle redirection on successful login.
   useEffect(() => {
     if (status === "logged") {
-      router.back();
+      router.back(); // Navigate back on successful login.
     }
   }, [status, router]);
 
   return (
     <form onSubmit={onSubmit} className="space-y-6" action="" method="POST">
-      {error && (
+      {error && ( // Conditionally render error message if login fails.
         <Message
           className={"bg-red-100 border border-red-400 text-red-700"}
           title={"Error: "}

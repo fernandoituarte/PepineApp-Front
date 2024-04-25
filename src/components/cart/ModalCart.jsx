@@ -1,27 +1,26 @@
-"use client";
+"use client"; // Ensures this module loads only in the client environment.
 
-import { Fragment, useRef } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { Fragment, useRef } from "react"; // Import necessary React features.
+import { useRouter } from "next/navigation"; // Router for navigation in Next.js applications.
 
-import { useAppSelector, useAppDispatch } from "@/hooks/redux";
-import { activeModal } from "@/store/reducer/orders/orders";
-import { setCartItems } from "@/store/reducer/cart/cart";
+import { useAppSelector, useAppDispatch } from "@/hooks/redux"; // Custom hooks for accessing Redux state and dispatching actions.
+import { activeModal } from "@/store/reducer/orders/orders"; // Action to toggle modal visibility.
+import { setCartItems } from "@/store/reducer/cart/cart"; // Action to reset the cart items.
 
-import { Dialog, Transition } from "@headlessui/react";
-import { IoCheckmarkSharp } from "react-icons/io5";
+import { Dialog, Transition } from "@headlessui/react"; // Import UI components for accessible, unstyled UI.
+import { IoCheckmarkSharp } from "react-icons/io5"; // Import an icon for visual elements.
 
 export function ModalCart({ title, subtitle }) {
-  const { isModal } = useAppSelector((state) => state.orders);
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-  const cancelButtonRef = useRef(null);
+  const { isModal } = useAppSelector((state) => state.orders); // Retrieve modal state from Redux.
+  const dispatch = useAppDispatch(); // Access Redux dispatch function.
+  const router = useRouter(); // Router for navigating.
+  const cancelButtonRef = useRef(null); // Reference for the cancel button for initial focus.
 
   function handleClose() {
-    dispatch(activeModal(false));
-    router.push("/products");
+    dispatch(activeModal(false)); // Dispatch action to hide modal.
+    router.push("/products"); // Navigate to the products page.
     setTimeout(() => {
-      dispatch(setCartItems([]));
+      dispatch(setCartItems([])); // Reset cart items after a slight delay.
     }, 200);
   }
 
@@ -29,30 +28,30 @@ export function ModalCart({ title, subtitle }) {
     <Transition.Root show={isModal} as={Fragment}>
       <Dialog
         as="div"
-        className="relative z-20"
-        initialFocus={cancelButtonRef}
-        onClose={handleClose}
+        className="relative z-20" // Styling for positioning.
+        initialFocus={cancelButtonRef} // Initial focus when the dialog opens.
+        onClose={handleClose} // Function to call on dialog close.
       >
         <Transition.Child
           as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
+          enter="ease-out duration-300" // Enter animation configuration.
+          enterFrom="opacity-0" // Start state for enter animation.
+          enterTo="opacity-100" // End state for enter animation.
+          leave="ease-in duration-200" // Leave animation configuration.
+          leaveFrom="opacity-100" // Start state for leave animation.
+          leaveTo="opacity-0" // End state for leave animation.
         >
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
         </Transition.Child>
 
-        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div className="fixed inset-0 z-10 overflow-y-auto">
           <div className="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0">
             <Transition.Child
               as={Fragment}
-              enter="ease-out duration-300"
+              enter="ease-out duration-300" // Enter animation for the dialog.
               enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               enterTo="opacity-100 translate-y-0 sm:scale-100"
-              leave="ease-in duration-200"
+              leave="ease-in duration-200" // Leave animation for the dialog.
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
@@ -80,7 +79,7 @@ export function ModalCart({ title, subtitle }) {
                 </div>
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
-                    onClick={handleClose}
+                    onClick={handleClose} // Button to accept and close the modal.
                     className="inline-flex w-full justify-center rounded-md bg-green-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-400 sm:ml-3 sm:w-auto"
                   >
                     Accepter

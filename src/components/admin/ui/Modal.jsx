@@ -1,19 +1,25 @@
+// Directive to ensure this component only runs on the client side in a Next.js environment.
 "use client";
 
-import { Fragment, useRef, useState } from "react";
-import Link from "next/link";
+import { Fragment, useRef } from "react";
+import Link from "next/link"; // Used for navigation within the app.
 
-import { useAppSelector, useAppDispatch } from "@/hooks/redux";
-import { activeModal } from "@/store/reducer/products/products";
+import { useAppSelector, useAppDispatch } from "@/hooks/redux"; // Hooks for accessing Redux state and dispatching Redux actions.
+import { activeModal } from "@/store/reducer/products/update-categories/productCategories"; // Redux action for managing modal state.
 
-import { Dialog, Transition } from "@headlessui/react";
-import { IoCheckmarkSharp } from "react-icons/io5";
+import { Dialog, Transition } from "@headlessui/react"; // Components from Headless UI for building accessible UI elements.
+import { IoCheckmarkSharp } from "react-icons/io5"; // Icon for visual feedback.
 
+/**
+ * Modal component that displays a confirmation message and an option to accept, which navigates back to the products page.
+ * This modal is controlled through Redux state management to dynamically show or hide based on user interactions elsewhere in the application.
+ */
 export function Modal() {
-  const { isModal } = useAppSelector((state) => state.products);
-  const dispatch = useAppDispatch();
-  const cancelButtonRef = useRef(null);
+  const { isModal } = useAppSelector((state) => state.productCategories); // Accesses modal visibility state from Redux.
+  const dispatch = useAppDispatch(); // Hook to dispatch actions.
+  const cancelButtonRef = useRef(null); // Ref for an element that should gain focus when the modal opens.
 
+  // Function to close the modal and dispatch an action to update the modal state.
   function handleClose() {
     dispatch(activeModal(false));
   }
@@ -23,17 +29,17 @@ export function Modal() {
       <Dialog
         as="div"
         className="relative z-20"
-        initialFocus={cancelButtonRef}
-        onClose={handleClose}
+        initialFocus={cancelButtonRef} // Focus the cancel button when the modal opens.
+        onClose={handleClose} // Handle close when the overlay or escape key is used.
       >
         <Transition.Child
           as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
+          enter="ease-out duration-300" // Transition for entering the modal.
+          enterFrom="opacity-0" // Start with fully transparent.
+          enterTo="opacity-100" // End with fully opaque.
+          leave="ease-in duration-200" // Transition for leaving the modal.
+          leaveFrom="opacity-100" // Start with fully opaque.
+          leaveTo="opacity-0" // End with fully transparent.
         >
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
         </Transition.Child>
@@ -42,7 +48,7 @@ export function Modal() {
           <div className="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0">
             <Transition.Child
               as={Fragment}
-              enter="ease-out duration-300"
+              enter="ease-out duration-300" // More detailed transition for the modal dialog.
               enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               enterTo="opacity-100 translate-y-0 sm:scale-100"
               leave="ease-in duration-200"

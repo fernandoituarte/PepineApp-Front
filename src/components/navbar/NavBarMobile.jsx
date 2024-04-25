@@ -1,14 +1,14 @@
-"use client";
+"use client"; // Directs Next.js to only load this module on the client side.
 
-import Link from "next/link";
-import Image from "next/image";
-import { useAppSelector } from "@/hooks/redux";
-import { totalCartItemSelector } from "@/store/reducer/cart/cart";
+import Link from "next/link"; // Imports Link component for navigation within the app without full page reloads.
+import Image from "next/image"; // Imports optimized Image component for handling images efficiently in Next.js.
+import { useAppSelector } from "@/hooks/redux"; // Custom hook for selecting state from the Redux store.
+import { totalCartItemSelector } from "@/store/reducer/cart/cart"; // Selector to get the total number of items in the cart.
 
-import { Dialog } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { FiLogIn, FiLogOut } from "react-icons/fi";
-import { BsInboxes } from "react-icons/bs";
+import { Dialog } from "@headlessui/react"; // Import Dialog component for accessible modals.
+import { XMarkIcon } from "@heroicons/react/24/outline"; // Import icon for close button.
+import { FiLogIn, FiLogOut } from "react-icons/fi"; // Import login and logout icons.
+import { BsInboxes, BsShopWindow } from "react-icons/bs"; // Import icon for admin archive link.
 
 import {
   IoPeopleOutline,
@@ -16,26 +16,29 @@ import {
   IoShirtOutline,
   IoTicketOutline,
   IoCartOutline,
-} from "react-icons/io5";
-import { BsShop } from "react-icons/bs";
+} from "react-icons/io5"; // Import various Ionicons for menu items.
+import { BsShop } from "react-icons/bs"; // Import shop icon for product link.
 
+// Functional component for mobile navigation bar.
 export function NavBarMobile({
-  handleLogout,
-  setMobileMenuOpen,
-  mobileMenuOpen,
-  role,
+  handleLogout, // Function to handle logout.
+  setMobileMenuOpen, // Function to set the state of the mobile menu.
+  mobileMenuOpen, // State indicating whether the mobile menu is open.
+  role, // User role to conditionally render links.
 }) {
-  const totalItems = useAppSelector(totalCartItemSelector);
+  const totalItems = useAppSelector(totalCartItemSelector); // Retrieve total cart items from Redux store.
 
   return (
     <Dialog
       as="div"
-      className="lg:hidden"
-      open={mobileMenuOpen}
-      onClose={setMobileMenuOpen}
+      className="lg:hidden" // Hide on larger screens where the main nav bar is used.
+      open={mobileMenuOpen} // Control the visibility of the modal based on mobileMenuOpen state.
+      onClose={setMobileMenuOpen} // Set the mobile menu state to false when the dialog is closed.
     >
       <Dialog.Panel className="fixed inset-y-0 right-0 z-20 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+        {/* Dialog panel containing all content */}
         <div className="flex items-center justify-between">
+          {/* Top section with logo and close button */}
           <Link href={"/"} className="-m-1.5 p-1.5">
             <Image
               className="h-8 w-auto"
@@ -57,9 +60,10 @@ export function NavBarMobile({
         <div className="flow-root">
           <div className="-my-6 divide-y divide-gray-500/10">
             <div className="py-8">
-              {/*User */}
+              {/* Conditionally render user or admin specific links */}
               {role !== "admin" ? (
                 <>
+                  {/* Links for general users */}
                   <Link
                     className="flex items-center mt-8 p-2 hover:bg-gray-100 rounded transition-all"
                     href={!role ? "/auth/login" : "/user"}
@@ -75,6 +79,14 @@ export function NavBarMobile({
                   >
                     <BsShop size={30} />
                     <span className="ml-3 text-lg">Produits</span>
+                  </Link>
+                  <Link
+                    className="flex items-center mt-5 p-2 hover:bg-gray-100 rounded transition-all"
+                    href={"/categories"}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <BsShopWindow size={30} />
+                    <span className="ml-3 text-lg">Categories</span>
                   </Link>
                   {role && (
                     <Link
@@ -97,19 +109,17 @@ export function NavBarMobile({
                     )}
                     <span className="ml-3 text-lg">Mon Panier</span>
                   </Link>
-                  {/* Line Separator */}
-                  <div className="w-full h-px bg-gray-200 my-10" />
                 </>
               ) : (
                 <>
-                  {/* admin */}
+                  {/* Links for admin users */}
                   <Link
                     className="flex items-center mt-5 p-2 hover:bg-gray-100 rounded transition-all"
                     href={"/admin"}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <IoPersonOutline size={30} />
-                    <span className="ml-3 text-lg">Profile</span>
+                    <span className="ml-3 text-lg">Profil</span>
                   </Link>
                   <Link
                     className="flex items-center mt-5 p-2 hover:bg-gray-100 rounded transition-all"
@@ -130,6 +140,7 @@ export function NavBarMobile({
                   <Link
                     className="flex items-center mt-5 p-2 hover:bg-gray-100 rounded transition-all"
                     href={"/admin/files"}
+                    onClick={() => setMobileMenuOpen(false)}
                   >
                     <BsInboxes size={26} />
                     <span className="ml-3 text-lg">Archives</span>
@@ -145,6 +156,7 @@ export function NavBarMobile({
                 </>
               )}
 
+              {/* Logout or login button based on user role */}
               {role ? (
                 <button
                   onClick={handleLogout}

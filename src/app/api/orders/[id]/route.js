@@ -43,7 +43,7 @@ export async function PATCH(req, { params }) {
   const authToken = cookieStore.get("authToken");
 
   const { value } = authToken;
-  console.log(data);
+
   try {
     const response = await axios.patch(
       `${URL}/orders/${id}/update-status`,

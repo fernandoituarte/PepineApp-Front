@@ -1,26 +1,39 @@
+// "use client" ensures that this file runs only on the client side in Next.js applications.
 "use client";
 import { useEffect } from "react";
 
+// Custom hooks for dispatching actions and selecting state slices from Redux store.
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+
+// Redux action to fetch a list of orders.
 import { getOrdersList } from "@/store/reducer/orders/orders";
+
+// Hook from Next.js to access the current pathname for routing-based logic.
 import { usePathname } from "next/navigation";
 
+// Component for displaying individual order details in a row.
 import { OrderItem } from "@/components";
 
 export function Orders() {
   const dispatch = useAppDispatch();
   const { orders } = useAppSelector((state) => state.orders);
   const pathname = usePathname();
+
+  // Determines if the current path is '/admin/files' to adjust shown orders based on the path.
   const files = pathname === "/admin/files";
 
+  // Fetch orders on component mount.
   useEffect(() => {
     dispatch(getOrdersList());
   }, [dispatch]);
 
+  // Filter orders based on the page context, showing different statuses based on the path.
   const filteredOrders = orders.filter((order) => {
     if (files) {
+      // Exclude orders with statuses 'en cours' (in progress) and 'validée' (validated) in admin files view.
       return !["en cours", "validée"].includes(order.status);
     } else {
+      // Include only orders with statuses 'en cours' and 'validée' in other views.
       return ["en cours", "validée"].includes(order.status);
     }
   });
@@ -34,6 +47,7 @@ export function Orders() {
               <table className="min-w-full table-fixed divide-y divide-gray-300">
                 <thead>
                   <tr>
+                    {/* Table headers defining the data columns displayed */}
                     <th
                       scope="col"
                       className="min-w-[10rem] hidden md:inline-flex py-3.5 pr-3 text-left text-sm font-semibold text-gray-900"
@@ -67,6 +81,7 @@ export function Orders() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
+                  {/* Dynamically generate table rows from filtered orders data */}
                   {filteredOrders.map((order) => (
                     <OrderItem key={order.reference} {...order} />
                   ))}

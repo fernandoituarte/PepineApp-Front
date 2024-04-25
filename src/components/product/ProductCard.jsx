@@ -1,19 +1,17 @@
+// Directive to ensure this component only runs on the client side.
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { AddToCart } from "@/components";
+import { usePathname } from "next/navigation"; // Hook from Next.js for getting the current path.
+import { motion } from "framer-motion"; // For adding animations to the component.
+import { AddToCart } from "@/components"; // Importing a reusable Add to Cart button component.
 
+// Redux actions for clearing selected media and categories.
 import { emptyMedia } from "@/store/reducer/products/media/media";
-import {
-  emptyCategories,
-  deleteProductToUpdate,
-} from "@/store/reducer/products/products";
+import { emptyCategories } from "@/store/reducer/products/update-categories/productCategories";
+import { deleteProductToUpdate } from "@/store/reducer/products/product";
 
-import { useAppDispatch } from "@/hooks/redux";
-import { getCookie } from "cookies-next";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 
 export function ProductCard(product) {
   const {
@@ -22,7 +20,6 @@ export function ProductCard(product) {
     name,
     size,
     price,
-    vat,
     product_id,
     category_id,
     status,
@@ -30,6 +27,7 @@ export function ProductCard(product) {
   } = product;
   const pathname = usePathname();
   const dispatch = useAppDispatch();
+  const { userRole: role } = useAppSelector((state) => state.user);
 
   const item = {
     id: product_id || id,
@@ -40,31 +38,22 @@ export function ProductCard(product) {
     status,
   };
 
-  const [role, setRole] = useState(null);
-
   function handleUpdate() {
+    // Dispatches actions to reset categories, product updates, and media when updating a product.
     dispatch(emptyCategories());
     dispatch(deleteProductToUpdate());
     dispatch(emptyMedia());
   }
 
-  useEffect(() => {
-    const userCookie = getCookie("user");
-    if (userCookie) {
-      const { role } = JSON.parse(userCookie);
-      setRole(role);
-    }
-  }, []);
-
   return (
     <motion.div
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 1.1 }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1, scale: 1 }}
+      whileHover={{ scale: 1.1 }} // Animation for hover state.
+      whileTap={{ scale: 1.1 }} // Animation for tap state.
+      initial={{ opacity: 0 }} // Initial animation state.
+      animate={{ opacity: 1, scale: 1 }} // Animated state.
       transition={{
-        duration: 0.2,
-        ease: [0, 0.71, 0.2, 1.01],
+        duration: 0.2, // Animation duration.
+        ease: [0, 0.71, 0.2, 1.01], // Animation ease function.
       }}
       className="bg-white shadow-lg rounded-md"
     >
@@ -76,16 +65,17 @@ export function ProductCard(product) {
                 width={800}
                 height={800}
                 src={media_urls[0] ? media_urls[0] : "/"}
-                alt={"image"}
+                alt={"image"} // Placeholder if no image URL is provided.
                 className="h-full w-full object-cover object-center"
                 placeholder="blur"
-                blurDataURL={media_urls[0] ? media_urls[0] : "/"}
+                blurDataURL={media_urls[0] ? media_urls[0] : "/"} // Data URL for image placeholder.
               />
             )}
           </div>
           <h3 className="mt-4 text-sm text-gray-700">
             <Link
               href={
+                // Conditional link based on the pathname and role.
                 pathname === `/categories/${category_id}`
                   ? role === "admin"
                     ? `/admin/products/${product_id}`

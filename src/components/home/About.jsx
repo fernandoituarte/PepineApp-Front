@@ -1,19 +1,23 @@
 /* eslint-disable react/no-unescaped-entities */
-"use client";
-import { motion } from "framer-motion";
-import { Title } from "@/components";
+// Disabling ESLint rule for unescaped entities to allow apostrophes in JSX without escaping.
 
-const PHONE = process.env.NEXT_PUBLIC_PHONE;
+"use client"; // Ensures that this module only runs on the client side.
+
+import { motion } from "framer-motion"; // Importing the motion component from Framer Motion for animations.
+import { Title } from "@/components"; // Importing a custom Title component for consistent styled headings.
+
+const PHONE = process.env.NEXT_PUBLIC_PHONE; // Accessing the public phone number from environment variables for security and ease of updates.
 
 export function About() {
+  // This component renders an about page with motion effects and dynamic content.
   return (
     <motion.div
-      className="text-start m-auto lg:w-4/5 md:w-full sm:w-full pb-36"
-      initial={{ opacity: 0, scale: 0.5 }}
-      animate={{ opacity: 1, scale: 1 }}
+      className="text-start m-auto lg:w-4/5 md:w-full sm:w-full pb-36" // Styling for text alignment, margin, and padding.
+      initial={{ opacity: 0, scale: 0.5 }} // Initial animation state, starting faded and scaled down.
+      animate={{ opacity: 1, scale: 1 }} // Animates to full opacity and scale.
       transition={{
-        duration: 0.8,
-        ease: [0, 0.71, 0.2, 1.01],
+        duration: 0.8, // Duration of the animation in seconds.
+        ease: [0, 0.71, 0.2, 1.01], // Custom easing function for the animation.
       }}
     >
       <Title
