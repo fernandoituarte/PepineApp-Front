@@ -20,7 +20,7 @@ Ce projet utilise les technologies et bibliothèques suivantes :
 
 1. Cloner ou télécharger le projet depuis son dépôt GitHub :
    ```bash
-   git clone https://github.com/........
+   git clone git@github.com:fernandoituarte/PepineApp-Front.git
    cd projet-05-pepine-front
 
 2. Installer des package : `npm i`
