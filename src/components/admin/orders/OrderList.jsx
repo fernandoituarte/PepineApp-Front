@@ -1,17 +1,9 @@
 // "use client" ensures that this file runs only on the client side in Next.js applications.
 "use client";
 import { useEffect } from "react";
-
-// Custom hooks for dispatching actions and selecting state slices from Redux store.
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-
-// Redux action to fetch a list of orders.
 import { getOrdersList } from "@/store/reducer/orders/orders";
-
-// Hook from Next.js to access the current pathname for routing-based logic.
 import { usePathname } from "next/navigation";
-
-// Component for displaying individual order details in a row.
 import { OrderItem } from "@/components";
 
 export function Orders() {

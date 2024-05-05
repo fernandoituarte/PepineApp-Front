@@ -55,7 +55,6 @@ export const OrderInfo = ({ order, role, loading }) => {
     }
   };
 
-  // Renders the component based on the order details and user role.
   return (
     <div className="relative">
       <div className="mb-6">

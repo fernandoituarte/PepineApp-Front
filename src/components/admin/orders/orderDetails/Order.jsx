@@ -2,7 +2,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/hooks/redux";
-import { getCookie } from "cookies-next";
 import { getOrderById } from "@/store/reducer/orders/orders";
 import {
   OrderClientInfo,

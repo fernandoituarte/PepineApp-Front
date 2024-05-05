@@ -1,17 +1,8 @@
 // "use client" ensures that this file runs only on the client-side.
 "use client";
-
-// Import necessary hooks and utilities.
 import { useEffect } from "react";
-import { getCookie } from "cookies-next";
-
-// Custom hooks for managing Redux.
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-
-// Redux action to fetch orders for a specific user.
 import { ordersOfOneUser } from "@/store/reducer/orders/orders";
-
-// React component to display each user order in the table.
 import { OrderItemUser } from "@/components";
 
 export function OrdersUser() {

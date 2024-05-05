@@ -25,9 +25,8 @@ export function OrderItemUser({
   total_price,
   status,
 }) {
-  // Convert ISO date string to a Date object, then format it in DD/MM/YYYY format for French locale
   const date = new Date(created_at);
-  const DDMMYYYY = date.toLocaleDateString("fr-FR");
+  const localDateOfOrder = date.toLocaleDateString("fr-FR");
 
   return (
     <tr className="hover:bg-gray-100 rounded-sm relative">
@@ -36,7 +35,7 @@ export function OrderItemUser({
           href={`/user/orders/${id}`}
           className="inline-block w-full h-full"
         >
-          {DDMMYYYY}
+          {localDateOfOrder}
         </Link>
       </td>
       <td className="whitespace-nowrap hidden md:inline-block py-4 pr-3 text-sm font-medium text-gray-900">

@@ -1,4 +1,3 @@
-// Required modules import
 import axios from "axios";
 import {
   createAction,
@@ -6,9 +5,6 @@ import {
   createReducer,
 } from "@reduxjs/toolkit";
 import { notFound } from "next/navigation";
-
-// Base API URL from environment variables
-const URL = process.env.NEXT_PUBLIC_URL;
 
 // Initial state for the product slice
 const initialState = {

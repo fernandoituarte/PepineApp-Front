@@ -2,7 +2,7 @@ import { Title, UserChangePassword } from "@/components";
 
 export const metadata = {
   title: "Mon Compte",
-  description: "Mon Compte",
+  description: "Changement de mot de passe",
 };
 export default function Page() {
   return (

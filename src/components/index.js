@@ -46,9 +46,7 @@ export * from "./cart/AddToCart";
 export * from "./cart/QtyBtn";
 export * from "./cart/ModalCart";
 //Categories
-export * from "./categories/Categories";
 export * from "./categories/Category";
-export * from "./categories/CategoryGrid";
 // Footer
 export * from "./footer/Footer";
 // Home

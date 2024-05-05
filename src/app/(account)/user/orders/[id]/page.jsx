@@ -1,7 +1,7 @@
 import { Title, Order } from "@/components";
 
 export const metadata = {
-  title: "Order # 5223",
+  title: "Order",
   description: "Order",
 };
 

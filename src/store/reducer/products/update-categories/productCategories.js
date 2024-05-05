@@ -1,13 +1,9 @@
-// Required modules import
 import axios from "axios";
 import {
   createAction,
   createAsyncThunk,
   createReducer,
 } from "@reduxjs/toolkit";
-
-// Base API URL from environment variables
-const URL = process.env.NEXT_PUBLIC_URL;
 
 // Initial state for the product slice
 const initialState = {
@@ -46,7 +42,7 @@ export const deleteProductCategory = createAsyncThunk(
   async (id) => {
     try {
       const response = await axios.delete(`/api/products/categories/${id}`);
-      return response.data; // Assuming this method returns something relevant
+      return response.data;
     } catch (error) {
       throw error;
     }

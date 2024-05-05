@@ -15,7 +15,7 @@ export function UserProductDetails({ product }) {
   const item = {
     id: product.id,
     name: product.name,
-    media: product.media_urls[0], // Assuming first media URL is the primary image.
+    media: product.media_urls[0],
     price: product.price,
     stock: product.stock,
     status: product.status,
@@ -78,12 +78,6 @@ export function UserProductDetails({ product }) {
   );
 }
 
-/**
- * Generates JSX for each icon section representing different attributes of the product.
- *
- * @param {object} product - The product data containing attribute values.
- * @returns JSX elements array
- */
 function generateIconSections(product) {
   const attributes = [
     { value: product.size, icon: "carbon:crop-growth" },

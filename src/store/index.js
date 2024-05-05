@@ -2,7 +2,6 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import productReducer from "./reducer/products/product";
 import productCategories from "./reducer/products/update-categories/productCategories";
-import categoriesReducer from "./reducer/categories/categories";
 import mediaReducer from "./reducer/products/media/media";
 
 import registerReducer from "./reducer/auth/register";
@@ -15,7 +14,6 @@ const store = configureStore({
   reducer: {
     product: productReducer,
     productCategories: productCategories,
-    categories: categoriesReducer,
     media: mediaReducer,
     register: registerReducer,
     user: userReducer,
