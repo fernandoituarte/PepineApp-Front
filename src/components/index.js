@@ -81,5 +81,5 @@ export * from "./ui/title/Subtitle";
 export * from "./ui/messages/Message";
 
 //Buttons
-export * from "./ui/buttons/addProductFloating";
+export * from "./ui/buttons/AddProductFloating";
 export * from "./ui/buttons/DeleteAccount";
