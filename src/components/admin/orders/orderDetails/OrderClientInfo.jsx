@@ -1,34 +1,20 @@
-// "use client" ensures that this file runs only on the client side in Next.js.
 "use client";
+
 import { useEffect } from "react";
+import { SendEmailButton } from "@/components";
 import { useAppSelector, useAppDispatch } from "@/hooks/redux";
 import { getUserById } from "@/store/reducer/auth/login";
 
-/**
- * Component that displays detailed information about the user associated with an order.
- * It fetches user data on mount and provides functionality to send an email to the user.
- *
- * @param {object} order - Order object containing the user's identifier.
- */
-export const OrderClientInfo = ({ order }) => {
-  const { user_id } = order;
+export const OrderClientInfo = ({ id }) => {
   const dispatch = useAppDispatch();
+  const { user, loading } = useAppSelector((state) => state.user);
 
-  const { user } = useAppSelector((state) => state.user);
-
+  useEffect(() => {
+    dispatch(getUserById(id));
+  }, [id, dispatch]);
   // Convert user's account creation date from ISO string to readable format.
   const date = new Date(user?.created_at);
-  const accountCreationTime = date.toLocaleDateString("fr-FR"); // Format date in French date style.
-
-  // Effect hook to fetch user details based on user_id from the order when the component mounts.
-  useEffect(() => {
-    dispatch(getUserById(user_id));
-  }, [dispatch, user_id]);
-
-  // Function to initiate an email to the user using the default mail client.
-  const sendEmail = (email) => {
-    window.location.href = `mailto:${email}`;
-  };
+  const accountCreationTime = date.toLocaleDateString("fr-FR");
 
   return (
     <div>
@@ -39,7 +25,8 @@ export const OrderClientInfo = ({ order }) => {
         </span>
       </p>
       <p className="font-semibold mb-2 flex justify-between">
-        Email <span className="font-normal">{user?.email}</span>
+        Email
+        <span className="font-normal">{user?.email}</span>
       </p>
       <p className="font-semibold mb-2 flex justify-between">
         Téléphone
@@ -51,12 +38,7 @@ export const OrderClientInfo = ({ order }) => {
         Client depuis le{" "}
         <span className="font-normal">{accountCreationTime}</span>
       </p>
-      <button
-        onClick={() => sendEmail(user?.email)}
-        className="w-full mt-2 py-2 text-white bg-orange-500 rounded-lg hover:bg-orange-400"
-      >
-        Envoyer un email
-      </button>
+      {user && <SendEmailButton email={user.email} />}
     </div>
   );
 };

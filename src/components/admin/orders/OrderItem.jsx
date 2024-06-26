@@ -1,21 +1,6 @@
-// "use client" ensures that this component only executes on the client-side in Next.js.
-"use client";
 import Link from "next/link";
-import clsx from "clsx"; // A utility for conditionally joining classNames together.
+import clsx from "clsx";
 
-/**
- * Component to render a single order as a table row.
- * Each cell in the row is a clickable link that leads to a detailed view of the order.
- *
- * @param {object} order - The order data passed to the component.
- * @param {string} order.id - Unique identifier for the order.
- * @param {string} order.reference - Order reference number.
- * @param {string} order.created_at - ISO string of order creation date.
- * @param {string} order.last_name - Customer's last name.
- * @param {string} order.first_name - Customer's first name.
- * @param {number} order.total_price - Total price of the order.
- * @param {string} order.status - Current status of the order.
- */
 export function OrderItem({
   id,
   reference,

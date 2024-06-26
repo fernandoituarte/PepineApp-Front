@@ -1,18 +1,16 @@
-// Ensures that the component only executes on the client side, suitable for Next.js applications.
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-// Redux hooks for dispatching actions and accessing state.
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import {
   deleteProductToUpdate,
   deleteProduct,
+  getProductById,
 } from "@/store/reducer/products/product";
 import { emptyCategories } from "@/store/reducer/products/update-categories/productCategories";
 import { emptyMedia } from "@/store/reducer/products/media/media";
 
-// Component imports for displaying various parts of the product details.
 import {
   Message,
   ImagesGallery,
@@ -24,8 +22,6 @@ import {
  * Displays detailed information about a specific product, including an image gallery,
  * principal details, and additional detailed attributes.
  * Provides functionalities to update or delete the product.
- *
- * @param {object} product - Product object containing detailed information.
  */
 export function AdminProductDetails({ product }) {
   const dispatch = useAppDispatch();
@@ -83,11 +79,10 @@ export function AdminProductDetails({ product }) {
               text="Le produit a été supprimé correctement"
             />
           )}
-
           {/* Layout for product details and media */}
           <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8 mb-6">
             {/* Component for displaying a gallery of product images */}
-            <ImagesGallery urls={product.media_urls} />
+            <ImagesGallery urls={product?.media_urls} />
 
             {/* Section for main product information and action buttons */}
             <div className="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">

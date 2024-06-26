@@ -1,10 +1,14 @@
-import axios from "axios"; // Import axios for making HTTP requests.
+import axios from "axios";
+
+const URL = process.env.NEXT_PUBLIC_URL;
 
 // Function to decrement the stock of a specific product by a certain quantity.
 export const decrementProductStock = async (id, quantity) => {
   try {
     // Fetch the current details of the product using its ID.
-    const response = await axios.get(`/api/products/${id}`);
+    const response = await axios.get(`${URL}/products/${id}`, {
+      withCredentials: true,
+    });
     const product = response.data.data.product;
 
     // Check if the product exists and has a defined stock value.
@@ -13,9 +17,15 @@ export const decrementProductStock = async (id, quantity) => {
       const newStock = Math.max(0, product.stock - quantity);
 
       // Update the product's stock on the server.
-      const updateResponse = await axios.patch(`/api/products/${id}`, {
-        stock: newStock,
-      });
+      const updateResponse = await axios.patch(
+        `${URL}/products/${id}`,
+        {
+          stock: newStock,
+        },
+        {
+          withCredentials: true,
+        },
+      );
       return updateResponse;
     } else {
       // Throw an error if the product data is invalid.
@@ -32,7 +42,9 @@ export const decrementProductStock = async (id, quantity) => {
 export const incrementProductStock = async (id, quantity) => {
   try {
     // Fetch the current details of the product using its ID.
-    const response = await axios.get(`/api/products/${id}`);
+    const response = await axios.get(`${URL}/products/${id}`, {
+      withCredentials: true,
+    });
     const product = response.data.data.product;
 
     // Check if the product exists and has a defined stock value.
@@ -41,9 +53,15 @@ export const incrementProductStock = async (id, quantity) => {
       const newStock = product.stock + quantity;
 
       // Update the product's stock on the server.
-      const updateResponse = await axios.patch(`/api/products/${id}`, {
-        stock: newStock,
-      });
+      const updateResponse = await axios.patch(
+        `${URL}/products/${id}`,
+        {
+          stock: newStock,
+        },
+        {
+          withCredentials: true,
+        },
+      );
       return updateResponse;
     } else {
       // Throw an error if the product data is invalid.

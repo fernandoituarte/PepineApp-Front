@@ -1,12 +1,3 @@
-/**
- * Component to display product details in an order summary.
- * It shows the product name, quantity ordered, and subtotal price.
- *
- * @param {object} product - Product data including name, price, and quantity.
- * @param {string} product.product_name - Name of the product.
- * @param {number} product.product_price - Price of one unit of the product.
- * @param {number} product.quantity_ordered - Quantity of the product ordered.
- */
 export const OrderProduct = ({
   product_name,
   product_price,

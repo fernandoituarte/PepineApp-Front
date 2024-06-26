@@ -28,7 +28,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { inputs } from "@/utils/inputs";
 
-export function AddProduct() {
+export function AddProduct({ userId }) {
   // Initialize router and dispatch for navigating and dispatching Redux actions.
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -36,11 +36,10 @@ export function AddProduct() {
   // Retrieve form input configurations and selected Redux states.
   const { mediumInputs, descriptionInputs, smallInputs, selectInputs } = inputs;
   const { productId, isProductSended } = useAppSelector(
-    (state) => state.product,
+    (state) => state.product
   );
   const { categories } = useAppSelector((state) => state.productCategories);
   const { mediaToDelete } = useAppSelector((state) => state.media);
-  const { userId: user_id } = useAppSelector((state) => state.user);
 
   // Setup the form handling using react-hook-form with Zod for schema validation.
   const {
@@ -51,7 +50,7 @@ export function AddProduct() {
 
   // Define the function to execute on form submission.
   const onSubmit = handleSubmit((data) => {
-    dispatch(addNewProduct({ ...data, user_id }));
+    dispatch(addNewProduct({ ...data, user_id: userId }));
   });
 
   // Use useEffect to perform actions after the product is added successfully.
@@ -63,7 +62,7 @@ export function AddProduct() {
           productCategory({
             product_id: productId,
             category_id: category,
-          }),
+          })
         );
       });
     }
@@ -87,15 +86,7 @@ export function AddProduct() {
   }
 
   return (
-    <motion.div
-      className="max-w-4xl m-auto pb-10 px-4"
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{
-        duration: 0.5,
-        ease: [0, 0.71, 0.2, 1.01],
-      }}
-    >
+    <div className="max-w-4xl m-auto pb-10 px-4">
       <Modal />
       <form onSubmit={onSubmit}>
         <div className="space-y-12">
@@ -150,6 +141,6 @@ export function AddProduct() {
         <ImagesUploader />
         <ButtonsForm handleCancel={handleCancel} />
       </form>
-    </motion.div>
+    </div>
   );
 }

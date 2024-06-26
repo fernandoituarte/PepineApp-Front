@@ -1,10 +1,12 @@
 import { AddProduct, Title } from "@/components";
+import { getUserSessionCookieServer } from "@/lib/getUserServerSide";
 
 export const metadata = {
   title: "Ajoutez un produit",
   description: "",
 };
 export default function Page() {
+  const { id } = getUserSessionCookieServer();
   return (
     <>
       <Title
@@ -12,7 +14,7 @@ export default function Page() {
         subtitle={metadata.description}
         className={"text-center"}
       />
-      <AddProduct />
+      <AddProduct userId={id} />
     </>
   );
 }

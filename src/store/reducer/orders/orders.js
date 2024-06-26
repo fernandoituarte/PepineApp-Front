@@ -5,23 +5,28 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const URL = process.env.NEXT_PUBLIC_URL;
+
 // Création d'une action asynchrone pour récupérer la liste des commandes
 export const getOrdersList = createAsyncThunk("ordersList", async () => {
   try {
-    const response = await axios.get("/api/orders/");
+    const response = await axios.get(`${URL}/orders`, {
+      withCredentials: true,
+    });
 
     return response.data.data.order;
   } catch (error) {
     throw rejectWithValue(error.response.data);
   }
 });
-
 // Création d'une commande par le client
 export const createOrderByUser = createAsyncThunk(
   "orders/createOrder",
   async (order, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/api/orders", order);
+      const response = await axios.post(`${URL}/orders`, order, {
+        withCredentials: true,
+      });
 
       return response.data.data.o[0];
     } catch (error) {
@@ -35,7 +40,9 @@ export const orderHasProducts = createAsyncThunk(
   "orders/productsByOrders",
   async (cart) => {
     try {
-      const response = await axios.post("/api/orders/details", cart);
+      const response = await axios.post(`${URL}/orders/details`, cart, {
+        withCredentials: true,
+      });
 
       return response.data.data;
     } catch (error) {
@@ -49,8 +56,14 @@ export const changeStatus = createAsyncThunk(
   "changeStatus",
   async ({ status, id }) => {
     try {
-      const response = await axios.patch(`/api/orders/${id}`, { status });
-      return response.data;
+      const response = await axios.patch(
+        `${URL}/orders/${id}/update-status`,
+        { status },
+        {
+          withCredentials: true,
+        },
+      );
+      return response.data.status;
     } catch (error) {
       throw error;
     }
@@ -62,8 +75,10 @@ export const ordersOfOneUser = createAsyncThunk(
   "users/ordersOfOneUser",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/api/users/${id}/orders`);
-      return response.data.user;
+      const response = await axios.get(`${URL}/users/${id}/orders`, {
+        withCredentials: true,
+      });
+      return response.data.data.user;
     } catch (error) {
       throw rejectWithValue(error.response.data);
     }
@@ -74,10 +89,13 @@ export const getOrderById = createAsyncThunk(
   "get/orderById",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/api/orders/${id}`);
+      const response = await axios.get(`${URL}/orders/${id}`, {
+        withCredentials: true,
+      });
+
       return response.data.data.order;
     } catch (error) {
-      throw rejectWithValue(error.response.data);
+      throw rejectWithValue(error.message);
     }
   },
 );
@@ -88,7 +106,8 @@ export const reservationStatus = createAction("reservation/status");
 // Initialisation de l'état des commandes
 const initialState = {
   orders: [],
-  orderById: null,
+  order: null,
+  orderStatus: null,
   loading: false,
   error: null,
   orderId: null,
@@ -158,7 +177,7 @@ const ordersReducer = createReducer(initialState, (builder) => {
     .addCase(changeStatus.fulfilled, (state, action) => {
       state.status = "succeeded";
       state.loading = false;
-      state.isChanged = true;
+      state.orderStatus = action.payload;
     })
     .addCase(changeStatus.rejected, (state, action) => {
       state.status = "failed";
@@ -167,6 +186,7 @@ const ordersReducer = createReducer(initialState, (builder) => {
     })
     .addCase(ordersOfOneUser.pending, (state, action) => {
       state.status = "loading";
+      state.orderStatus = null;
       state.loading = true;
     })
     .addCase(ordersOfOneUser.fulfilled, (state, action) => {
@@ -180,12 +200,13 @@ const ordersReducer = createReducer(initialState, (builder) => {
     })
     .addCase(getOrderById.pending, (state, action) => {
       state.status = "loading";
+      state.orderStatus = null;
       state.loading = true;
       state.error = false;
     })
     .addCase(getOrderById.fulfilled, (state, action) => {
       state.status = "fulfilled";
-      state.orderById = action.payload;
+      state.order = action.payload;
       state.loading = false;
     })
     .addCase(getOrderById.rejected, (state, action) => {

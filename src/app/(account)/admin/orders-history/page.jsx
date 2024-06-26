@@ -12,7 +12,7 @@ export default function Page() {
         subtitle={metadata.description}
         className={"text-center"}
       />{" "}
-      <Orders files={true} />
+      <Orders history={true} />
     </>
   );
 }

@@ -1,17 +1,16 @@
-// Ensures the component only runs on the client side.
 "use client";
 
-import { useAppDispatch, useAppSelector } from "@/hooks/redux"; // Custom hooks for Redux state management.
-import { forgotPassword } from "@/store/reducer/auth/login"; // Redux action to trigger the forgot password process.
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { forgotPassword } from "@/store/reducer/auth/login";
 
-import { useForm } from "react-hook-form"; // Form handling library.
+import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod"; // Integration of Zod with React Hook Form for schema validation.
-import { forgotPasswordSchema } from "@/validations/schemas"; // Validation schema for the forgot password form.
+import { zodResolver } from "@hookform/resolvers/zod";
+import { forgotPasswordSchema } from "@/validations/schemas";
 
 export function ForgotPassword() {
   const dispatch = useAppDispatch();
-  const { loading, status } = useAppSelector((state) => state.user); // Accessing the loading state and status from the Redux store.
+  const { loading, status } = useAppSelector((state) => state.user);
   const {
     register,
     handleSubmit,
@@ -19,8 +18,8 @@ export function ForgotPassword() {
   } = useForm({
     resolver: zodResolver(forgotPasswordSchema),
   });
-  const [showMessage, setShowMessage] = useState(false); // State to control visibility of the success message.
-  const [showErrorMessage, setShowErrorMessage] = useState(false); // State to control visibility of the error message.
+  const [showMessage, setShowMessage] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
 
   const onSubmit = handleSubmit((data) => {
     dispatch(forgotPassword(data)); // Dispatching the forgot password action with the form data.
@@ -72,6 +71,8 @@ export function ForgotPassword() {
           )}
         </div>
       )}
+
+      {/* Email input */}
       <div>
         <label
           htmlFor="email"
@@ -90,6 +91,8 @@ export function ForgotPassword() {
           className="block w-full rounded-md border p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm sm:leading-6"
         />
       </div>
+
+      {/* Submit button */}
       <div>
         <button className="flex w-full justify-center rounded-md bg-amber-600 px-3 p-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">
           {loading ? "Chargement en cours" : "Valider"}

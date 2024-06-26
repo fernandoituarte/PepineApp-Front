@@ -1,19 +1,8 @@
-// Ensures that this file runs only on the client-side in Next.js.
 "use client";
 import { useEffect } from "react";
-import Link from "next/link";
-
-// Custom hooks from the Redux store for dispatching actions and selecting state.
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-
-// Actions imported from the product reducer to manage product and media states.
 import { fetchProducts } from "@/store/reducer/products/product";
-import { emptyCategories } from "@/store/reducer/products/update-categories/productCategories";
-import { emptyMedia } from "@/store/reducer/products/media/media";
-
-// Component imports
-import { ProductItem } from "./ProductItem";
-import { BsPlus } from "react-icons/bs"; // Icon for the add product button.
+import { ProductItem, AddProductFloating } from "@/components";
 
 /**
  * Component to display a list of products with functionality to add new products.
@@ -21,20 +10,12 @@ import { BsPlus } from "react-icons/bs"; // Icon for the add product button.
  */
 export function ProductList() {
   const dispatch = useAppDispatch();
-  // Retrieves the products array from Redux state.
   const { products } = useAppSelector((state) => state.product);
 
-  // Handler to reset category and media states before adding a new product.
-  const handleAddProduct = () => {
-    dispatch(emptyCategories());
-    dispatch(emptyMedia());
-  };
-
-  // Effect hook to fetch products on component mount.
+  // Fetch orders on component mount.
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
-
   return (
     <div className="lg:px-8">
       <div className="mt-12 flow-root m-auto">
@@ -108,13 +89,7 @@ export function ProductList() {
             </table>
           </div>
           {/* Floating action button for adding a new product, with an icon from react-icons. */}
-          <Link
-            href={"/admin/products/add-product"}
-            onClick={handleAddProduct}
-            className="fixed z-20 bottom-8 right-8  backdrop-blur-sm bg-indigo-500/40 w-18 h-18 w-20 h-20 rounded-full flex flex-col items-center justify-center"
-          >
-            <BsPlus size={60} className=" text-gray-100" />
-          </Link>
+          <AddProductFloating />
         </div>
       </div>
     </div>

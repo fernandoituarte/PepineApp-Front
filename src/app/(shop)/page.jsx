@@ -1,4 +1,4 @@
-import { Category, ImagesHeader, About, SubTitle } from "@/components";
+import { CategoriesSwiper, ImagesHeader, About, SubTitle } from "@/components";
 import axios from "axios";
 
 const URL = process.env.NEXT_PUBLIC_URL;
@@ -27,17 +27,7 @@ export default async function Home() {
     <>
       <ImagesHeader />
       <SubTitle subtitle="Nos categories" className={"text-center"} />
-      <div className="mx-auto mb-16 max-w-7xl px-6 lg:px-8">
-        <ul
-          role="list"
-          className="mx-auto mt-20 grid max-w-2xl grid-cols-1 md:grid-cols-2 gap-x-6 lg:gap-x-7 gap-y-16 text-center lg:mx-0 lg:max-w-none lg:grid-cols-3 xl:grid-cols-3 justify-center"
-        >
-          {categories &&
-            categories.map((category) => (
-              <Category key={category.id} {...category} />
-            ))}
-        </ul>
-      </div>
+      {categories && <CategoriesSwiper categories={categories} />}
       <About />
     </>
   );

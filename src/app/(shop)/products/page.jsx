@@ -1,7 +1,8 @@
-import { ProductCard, Title } from "@/components";
-import { Suspense } from "react";
-import ProductListLoading from "./loading";
 import axios from "axios";
+import { Suspense } from "react";
+import { ProductCard, Title } from "@/components";
+
+import ProductListLoading from "./loading";
 
 const URL = process.env.NEXT_PUBLIC_URL;
 
@@ -19,8 +20,7 @@ const getProducts = async () => {
 
     return products;
   } catch (error) {
-    //TODO:
-    console.log(error);
+    throw error;
   }
 };
 
@@ -30,7 +30,6 @@ export default async function Page() {
   return (
     <Suspense fallback={<ProductListLoading />}>
       <div className="mx-auto my-10 lg:my-16 max-w-7xl px-6 lg:px-8">
-        {/* Animated container for the title using Framer Motion for a smooth appearance on load. */}
         <div className="mx-auto lg:mx-0">
           {/* Title component with both a main title and a subtitle. */}
           <Title

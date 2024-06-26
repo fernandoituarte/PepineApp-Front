@@ -4,23 +4,25 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { useForm } from "react-hook-form";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { getCookie } from "cookies-next";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userUpdateSchema } from "@/validations/schemas";
-import { updateUserDetails } from "@/store/reducer/auth/login";
-import { Message } from "@/components";
+import {
+  updateUserDetails,
+  getUserById,
+  setStatus,
+} from "@/store/reducer/auth/login";
+import { Message, InputFieldAdmin } from "@/components";
 
-export const UserUpdate = () => {
+export const UserUpdate = ({ id, role }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const pathname = usePathname();
+
   const { status, user } = useAppSelector((state) => state.user);
-  const [userId, setUserId] = useState();
+
   const [showMessage, setShowMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
-  const adminPath = pathname === "/admin/update";
 
   const {
     register,
@@ -30,20 +32,20 @@ export const UserUpdate = () => {
   } = useForm({ resolver: zodResolver(userUpdateSchema) });
 
   useEffect(() => {
-    const userCookie = getCookie("user");
-    if (userCookie) {
-      const { id } = JSON.parse(userCookie);
-      setUserId(id);
-    }
+    dispatch(getUserById(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
     if (user) {
+      const { first_name, last_name, email, phone } = user;
       reset({
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email,
-        phone: user.phone,
+        first_name,
+        last_name,
+        email,
+        phone,
       });
     }
-  }, [reset, user]);
+  }, [user, reset]);
 
   useEffect(() => {
     if (status === "user updated") {
@@ -51,6 +53,10 @@ export const UserUpdate = () => {
       setTimeout(() => {
         setShowMessage(false);
       }, 3000);
+      setTimeout(() => {
+        dispatch(setStatus(""));
+        router.back();
+      }, 1000);
     }
     if (status === "user failed to update") {
       setShowErrorMessage(true);
@@ -58,14 +64,11 @@ export const UserUpdate = () => {
         setShowErrorMessage(false);
       }, 3000);
     }
-  }, [status]);
+  }, [status, router, dispatch]);
 
   const onSubmit = handleSubmit((data) => {
     const userInfo = { ...data };
-    dispatch(updateUserDetails({ userInfo, id: userId }));
-    setTimeout(() => {
-      router.back();
-    }, 1000);
+    dispatch(updateUserDetails({ userInfo, id: user.id }));
   });
 
   return (
@@ -82,82 +85,48 @@ export const UserUpdate = () => {
       )}
       {showErrorMessage && (
         <Message
-          title={"Informations mises à jour: "}
+          title={"Erreur de mise à jour: "}
           className={"bg-red-50 text-red-700 mb-5"}
-          text={"Vos informations ont étés mises à jour"}
+          text={
+            "Une erreur est survenue lors de la mise à jour de vos informations."
+          }
         />
       )}
-      <div className="w-full flex flex-col sm:flex-row sm:justify-between  mb-6">
-        <p className="font-semibold mb-1">Prénom: </p>
-        <div className="flex flex-col sm:w-1/2">
-          <input
-            className="font-normal border rounded-md h-10 px-2 "
-            placeholder={"Prénom"}
-            {...register("first_name", {
-              required: true,
-              message: "Ce champ est requis",
-            })}
-          />
-          {errors.first_name?.message && (
-            <p className="ml-2 text-red-500 text-sm">
-              {errors.first_name?.message}
-            </p>
-          )}
-        </div>
-      </div>
-      <div className="w-full flex flex-col sm:flex-row sm:justify-between mb-6">
-        <p className="font-semibold mb-1">Nom: </p>
-        <div className="flex flex-col sm:w-1/2">
-          <input
-            className="font-normal border rounded-md h-10 px-2 "
-            placeholder={"Nom"}
-            {...register("last_name", {
-              required: true,
-              message: "Ce champ est requis",
-            })}
-          />
-          {errors.last_name?.message && (
-            <p className="ml-2 text-red-500 text-sm">
-              {errors.last_name?.message}
-            </p>
-          )}
-        </div>
-      </div>
-      <div className="w-full flex flex-col sm:flex-row sm:justify-between mb-6">
-        <p className="font-semibold mb-1">Email: </p>
-        <div className="flex flex-col sm:w-1/2">
-          <input
-            className="font-normal border rounded-md h-10 px-2 "
-            placeholder={"Email"}
-            {...register("email", {
-              required: true,
-              message: "Ce champ est requis",
-            })}
-          />
-          {errors.email?.message && (
-            <p className="ml-2 text-red-500 text-sm">{errors.email?.message}</p>
-          )}
-        </div>
-      </div>
-      <div className="w-full flex flex-col sm:flex-row sm:justify-between mb-4">
-        <p className="font-semibold mb-1">Téléphone: </p>
-        <input
-          className="font-normal border rounded-md h-10 px-2 sm:w-1/2"
-          placeholder={"Phone"}
-          {...register("phone", {
-            required: true,
-            message: "Ce champ est requis",
-          })}
-        />
-        {errors.phone?.message && (
-          <p className="ml-2 text-red-500 text-sm">{errors.phone?.message}</p>
-        )}
-      </div>
+      <InputFieldAdmin
+        label="Prénom"
+        placeholder="Prénom"
+        register={register}
+        name="first_name"
+        errors={errors}
+      />
+      <InputFieldAdmin
+        label="Nom"
+        placeholder="Nom"
+        register={register}
+        name="last_name"
+        errors={errors}
+      />
+      <InputFieldAdmin
+        label="Email"
+        placeholder="Email"
+        register={register}
+        name="email"
+        errors={errors}
+      />
+      <InputFieldAdmin
+        label="Téléphone"
+        placeholder="Phone"
+        register={register}
+        name="phone"
+        errors={errors}
+      />
       {/* Line Separator */}
       <div className="w-full h-px bg-gray-200 my-10" />
 
       <Link
-        href={adminPath ? "/admin/change-password" : "/user/change-password"}
+        href={
+          role === "admin" ? "/admin/change-password" : "/user/change-password"
+        }
         className="font-semibold mb-1 text-orange-500"
       >
         Modifier mon mot de passe{" "}
@@ -169,12 +138,12 @@ export const UserUpdate = () => {
         >
           Valider
         </button>
-        <button
-          onClick={() => router.back()}
+        <Link
+          href={role === "admin" ? "/admin" : "/user"}
           className="w-[300px] sm:w-[200px] mx-auto mt-3 py-2 antialiased text-white bg-red-400 rounded-lg hover:bg-red-500 text-center"
         >
           Annuler
-        </button>
+        </Link>
       </div>
     </form>
   );

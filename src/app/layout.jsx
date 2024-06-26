@@ -2,7 +2,6 @@ import { bodyFont } from "@/config/fonts";
 import { Providers } from "@/store/Providers";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import CartStorageManager from "./CartStorageManager";
-import LoadUser from "./LoadUser";
 import "./globals.css";
 
 export const metadata = {
@@ -16,7 +15,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <Providers>
-        <LoadUser />
         <CartStorageManager />
         <body className={bodyFont.className}>
           <SpeedInsights />

@@ -1,33 +1,30 @@
-// Directive to ensure this component only runs on the client side.
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation"; // Hook from Next.js for getting the current path.
-import { motion } from "framer-motion"; // For adding animations to the component.
-import { AddToCart } from "@/components"; // Importing a reusable Add to Cart button component.
+import { usePathname } from "next/navigation";
+import { AddToCart } from "@/components";
 
-// Redux actions for clearing selected media and categories.
 import { emptyMedia } from "@/store/reducer/products/media/media";
 import { emptyCategories } from "@/store/reducer/products/update-categories/productCategories";
 import { deleteProductToUpdate } from "@/store/reducer/products/product";
+import { getUserSessionCookieClient } from "@/lib/getUserClientSide";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { useEffect, useState } from "react";
 
-export function ProductCard(product) {
-  const {
-    id,
-    media_urls,
-    name,
-    size,
-    price,
-    product_id,
-    category_id,
-    status,
-    stock,
-  } = product;
+export function ProductCard({
+  id,
+  media_urls,
+  name,
+  size,
+  price,
+  product_id,
+  category_id,
+  status,
+  stock,
+}) {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
-  const { userRole: role } = useAppSelector((state) => state.user);
 
   const item = {
     id: product_id || id,
@@ -37,6 +34,14 @@ export function ProductCard(product) {
     stock,
     status,
   };
+  const { loading, loggedOut } = useAppSelector((state) => state.user);
+  const [role, setRole] = useState();
+
+  useEffect(() => {
+    const user = getUserSessionCookieClient();
+    if (user) setRole(user.role);
+    if (loggedOut) setRole(null);
+  }, [loading, loggedOut]);
 
   function handleUpdate() {
     // Dispatches actions to reset categories, product updates, and media when updating a product.
@@ -46,17 +51,7 @@ export function ProductCard(product) {
   }
 
   return (
-    <motion.div
-      whileHover={{ scale: 1.1 }} // Animation for hover state.
-      whileTap={{ scale: 1.1 }} // Animation for tap state.
-      initial={{ opacity: 0 }} // Initial animation state.
-      animate={{ opacity: 1, scale: 1 }} // Animated state.
-      transition={{
-        duration: 0.2, // Animation duration.
-        ease: [0, 0.71, 0.2, 1.01], // Animation ease function.
-      }}
-      className="bg-white shadow-lg rounded-md"
-    >
+    <div className="bg-white shadow-lg rounded-md">
       <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-10 lg:max-w-7xl">
         <div key={id} className="group relative">
           <div className="h-80 w-full overflow-hidden rounded-md bg-gray-200">
@@ -65,10 +60,10 @@ export function ProductCard(product) {
                 width={800}
                 height={800}
                 src={media_urls[0] ? media_urls[0] : "/"}
-                alt={"image"} // Placeholder if no image URL is provided.
+                alt={"image"}
                 className="h-full w-full object-cover object-center"
                 placeholder="blur"
-                blurDataURL={media_urls[0] ? media_urls[0] : "/"} // Data URL for image placeholder.
+                blurDataURL={media_urls[0] ? media_urls[0] : "/"}
               />
             )}
           </div>
@@ -104,6 +99,6 @@ export function ProductCard(product) {
           <AddToCart item={item} />
         )}
       </div>
-    </motion.div>
+    </div>
   );
 }

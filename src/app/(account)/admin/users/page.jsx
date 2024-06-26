@@ -5,7 +5,7 @@ export const metadata = {
   description: "Gerez vos utilisateurs",
 };
 
-export default function Page() {
+export default async function Page() {
   return (
     <div className="px-6 sm:px-6 lg:px-8">
       <Title title={metadata.title} className={"text-center"} />

@@ -34,6 +34,7 @@ export async function generateMetadata({ params }) {
 const getProductsByCategory = async (id) => {
   try {
     const response = await axios.get(`${URL}/categories/${id}/products`);
+    console.log(response.data.data.category);
     return response.data.data.category;
   } catch (error) {
     notFound();
@@ -42,7 +43,6 @@ const getProductsByCategory = async (id) => {
 
 export default async function Page({ params }) {
   const products = await getProductsByCategory(params.id);
-
   // Finds the corresponding information from categoriesInfo by matching the category ID.
   const category = categoriesInfo.find((category) => category.id == params.id);
 

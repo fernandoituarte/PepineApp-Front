@@ -12,8 +12,6 @@ function classNames(...classes) {
 /**
  * Component to display additional details of a product in collapsible panels.
  * Each panel can be expanded or collapsed to show or hide the details.
- *
- * @param {object} product - The product object containing various attributes to be displayed.
  */
 export const AdditionalDetails = ({ product }) => {
   // Predefined sections for display in the disclosure component.
@@ -21,30 +19,30 @@ export const AdditionalDetails = ({ product }) => {
     {
       name: "Informations Générales",
       items: [
-        `Nom Scientifique: ${product.scientific_name}`,
-        `Famille: ${product.family}`,
-        `Origine: ${product.origin}`,
-        `Taille: ${product.size}`,
-        `Pot: ${product.pot}`,
-        `Stock: ${product.stock}`,
-        `Prix: ${product.price}`,
-        `Statut: ${product.status ? "Disponible" : "Indisponible"}`,
+        `Nom Scientifique: ${product?.scientific_name}`,
+        `Famille: ${product?.family}`,
+        `Origine: ${product?.origin}`,
+        `Taille: ${product?.size}`,
+        `Pot: ${product?.pot}`,
+        `Stock: ${product?.stock}`,
+        `Prix: ${product?.price}`,
+        `Statut: ${product?.status ? "Disponible" : "Indisponible"}`,
       ],
     },
     {
       name: "Détails Botaniques",
       items: [
-        `Couleur des Fleurs: ${product.flower_color}`,
-        `Couleur des Feuilles: ${product.leaf_color}`,
-        `Rendement: ${product.yield_value}`,
-        `Exposition: ${product.exposure_value}`,
-        `Type de feuillage: ${product.foliage_value}`,
-        `Pouvoir couvrant: ${product.ground_cover_power_value}`,
-        `Zone de rusticité: ${product.hardiness_zone_value}`,
-        `Hauteur Adulte: ${product.maturity_height}`,
-        `Largeur adulte: ${product.maturity_width}`,
-        `Besoin en eau: ${product.water_requirement_value}`,
-        `Strate: ${product.strate_value}`,
+        `Couleur des Fleurs: ${product?.flower_color}`,
+        `Couleur des Feuilles: ${product?.leaf_color}`,
+        `Rendement: ${product?.yield_value}`,
+        `Exposition: ${product?.exposure_value}`,
+        `Type de feuillage: ${product?.foliage_value}`,
+        `Pouvoir couvrant: ${product?.ground_cover_power_value}`,
+        `Zone de rusticité: ${product?.hardiness_zone_value}`,
+        `Hauteur Adulte: ${product?.maturity_height}`,
+        `Largeur adulte: ${product?.maturity_width}`,
+        `Besoin en eau: ${product?.water_requirement_value}`,
+        `Strate: ${product?.strate_value}`,
       ],
     },
   ];

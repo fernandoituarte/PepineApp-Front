@@ -1,8 +1,6 @@
 import axios from "axios";
 import { UserProductDetails } from "@/components";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
-import ProductDetailsLoading from "./loading";
 
 const URL = process.env.NEXT_PUBLIC_URL;
 

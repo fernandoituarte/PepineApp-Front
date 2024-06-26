@@ -1,13 +1,5 @@
-// Directive to ensure the component only runs on the client side.
-"use client";
-import Link from "next/link"; // Importing Link from Next.js for client-side navigation.
+import Link from "next/link";
 
-/**
- * Represents a row in a user table, displaying user details.
- * Each cell in the row is a clickable link that navigates to the user's detail page.
- *
- * @param {Object} user - User object containing user details.
- */
 export const UserItem = (user) => {
   // Destructuring user details from the user object.
   const { first_name, last_name, email, phone, created_at, id } = user;

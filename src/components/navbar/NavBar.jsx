@@ -1,30 +1,37 @@
-"use client"; // Ensures that this module only runs on the client side.
+"use client";
 
-import { useState, useEffect } from "react"; // Importing React hooks for state management and side effects.
-import Link from "next/link"; // Imports the Link component for SPA navigation.
-import Image from "next/image"; // Imports the Image component for optimized image handling.
-import { getCookie } from "cookies-next"; // Imports a utility function for cookie retrieval.
-import { useRouter, usePathname } from "next/navigation"; // useRouter for programmatic navigation, usePathname for current path retrieval.
-import { useAppDispatch, useAppSelector } from "@/hooks/redux"; // Custom hooks for accessing Redux state and dispatch functions.
-import { logOut } from "@/store/reducer/auth/login"; // Action creator for logging out users.
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { useRouter, usePathname } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { logOut } from "@/store/reducer/auth/login";
+import { getUserSessionCookieClient } from "@/lib/getUserClientSide";
 
-import { Bars3Icon, ShoppingCartIcon } from "@heroicons/react/24/outline"; // Icons for menu and shopping cart.
-import { FiLogOut } from "react-icons/fi"; // Icon for logout button.
-import clsx from "clsx"; // A utility for conditionally joining classNames together.
-import { NavBarMobile } from "@/components"; // Mobile version of the navigation bar.
-import { totalCartItemSelector } from "@/store/reducer/cart/cart"; // Selector for total items in the cart.
+import { Bars3Icon, ShoppingCartIcon } from "@heroicons/react/24/outline";
+import { FiLogOut } from "react-icons/fi";
+import clsx from "clsx";
+import { NavBarMobile } from "@/components";
+import { totalCartItemSelector } from "@/store/reducer/cart/cart";
 
 export function NavBar({ className }) {
   const router = useRouter();
-  const pathname = usePathname(); // Retrieves the current path.
-  const dispatch = useAppDispatch(); // Dispatch function from Redux.
-  const { userRole: role } = useAppSelector((state) => state.user);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // State to manage mobile menu visibility.
-  const totalItems = useAppSelector(totalCartItemSelector); // Total cart items count from Redux store.
+  const pathname = usePathname();
+  const dispatch = useAppDispatch();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const totalItems = useAppSelector(totalCartItemSelector);
+  const { loading, loggedOut } = useAppSelector((state) => state.user);
+  const [role, setRole] = useState();
+
+  useEffect(() => {
+    const user = getUserSessionCookieClient();
+    if (user) setRole(user.role);
+    if (loggedOut) setRole(null);
+  }, [loading, loggedOut]);
 
   const handleLogout = () => {
-    setMobileMenuOpen(false); // Close mobile menu.
-    dispatch(logOut()); // Dispatch logout action.
+    setMobileMenuOpen(false);
+    dispatch(logOut());
 
     // Refresh or navigate to the home page depending on current path.
     if (pathname === "/") {
@@ -95,8 +102,8 @@ export function NavBar({ className }) {
             Categories
           </Link>
 
-          {/* Admin or user-specific links depending on the role. */}
-          {role === "admin" ? (
+          {/* Admin or user-specific links depending on the user.role. */}
+          {role && role === "admin" ? (
             <Link
               href={"/admin/products"}
               className={clsx(
@@ -130,19 +137,19 @@ export function NavBar({ className }) {
 
         {/* Right-aligned section for login/logout functionality based on user role. */}
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          {role === "user" && (
+          {role && role === "user" && (
             <Link
               href={"/user"}
-              className={`text-md font-semibold flex items-center leading-6 text-gray-600 ${className}`}
+              className={`text-md font-semibold flex items-center leading-6 text-gray-600 $, logged`}
             >
               <p
-                className={`text-lg font-semibold flex items-center leading-6 text-gray-600 ${className}`}
+                className={`text-lg font-semibold flex items-center leading-6 text-gray-600 $, logged`}
               >
                 Mon compte
               </p>
             </Link>
           )}
-          {role ? (
+          {role && role ? (
             <button
               onClick={handleLogout}
               className={`flex justify-end items-center rounded-md px-2 ml-10 gap-x-1 text-md  leading-6 text-white bg-amber-300 hover:bg-amber-200 ${className}`}
@@ -168,7 +175,7 @@ export function NavBar({ className }) {
         handleLogout={handleLogout}
         setMobileMenuOpen={setMobileMenuOpen}
         mobileMenuOpen={mobileMenuOpen}
-        role={role}
+        role={role && role}
       />
     </>
   );

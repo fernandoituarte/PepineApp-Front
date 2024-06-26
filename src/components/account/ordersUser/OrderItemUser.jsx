@@ -1,21 +1,6 @@
-// "use client" is used to ensure this component only runs on the client side in Next.js applications.
 "use client";
 import Link from "next/link";
 
-/**
- * Renders a single order item in a table row format.
- * Displays formatted date, order reference, customer name, total price, and status.
- * Provides a clickable area to navigate to detailed order view.
- *
- * @param {object} props Component props
- * @param {number} props.id Unique identifier for the order
- * @param {string} props.reference Order reference number
- * @param {string} props.created_at ISO date string when the order was created
- * @param {string} props.last_name Customer's last name
- * @param {string} props.first_name Customer's first name
- * @param {number} props.total_price Total price of the order
- * @param {string} props.status Current status of the order
- */
 export function OrderItemUser({
   id,
   reference,

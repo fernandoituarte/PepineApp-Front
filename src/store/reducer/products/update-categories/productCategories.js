@@ -5,6 +5,8 @@ import {
   createReducer,
 } from "@reduxjs/toolkit";
 
+const URL = process.env.NEXT_PUBLIC_URL;
+
 // Initial state for the product slice
 const initialState = {
   status: "",
@@ -27,10 +29,14 @@ export const activeModal = createAction("active/modal");
 export const productCategory = createAsyncThunk(
   "product/addCategory",
   async (category) => {
+    console.log(category);
     try {
-      const response = await axios.post(`/api/products/categories`, category);
+      const response = await axios.post(`${URL}/products/category`, category, {
+        withCredentials: true,
+      });
       return response.data.product;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   },
@@ -41,8 +47,9 @@ export const deleteProductCategory = createAsyncThunk(
   "product/deleteCategory",
   async (id) => {
     try {
-      const response = await axios.delete(`/api/products/categories/${id}`);
-      return response.data;
+      await axios.delete(`${URL}/products/${id}/category`, {
+        withCredentials: true,
+      });
     } catch (error) {
       throw error;
     }

@@ -1,6 +1,6 @@
 import { NavBar, Footer } from "@/components";
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
   return (
     <div>
       <header>

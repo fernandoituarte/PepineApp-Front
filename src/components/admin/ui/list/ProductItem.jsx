@@ -1,22 +1,8 @@
-"use client";
-// Import necessary dependencies for linking to product details.
 import Link from "next/link";
-
 /**
  * Displays a single product's details as a table row with clickable cells that link to the product's detailed view.
  * Each cell of the row displays different aspects of the product like name, category, and price.
  *
- * @param {object} props - The properties passed to the component.
- * @param {string} props.name - The name of the product.
- * @param {string} props.id - The unique identifier for the product.
- * @param {string} props.scientific_name - The scientific name of the product.
- * @param {string} props.pot - The pot size or type in which the product is sold.
- * @param {string} props.size - The size of the product.
- * @param {number} props.stock - The current stock level of the product.
- * @param {number} props.vat - The value-added tax rate applicable to the product.
- * @param {number} props.price - The price of the product.
- * @param {string} props.status - The current status of the product (online or offline).
- * @param {string[]} props.category - The category(ies) under which the product is listed.
  */
 export function ProductItem({
   name,

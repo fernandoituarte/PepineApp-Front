@@ -1,4 +1,4 @@
-"use client"; // Directs Next.js to only load this module in the client-side environment.
+"use client";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { resetPassword } from "@/store/reducer/auth/login";
 
@@ -13,10 +13,9 @@ import { Message } from "@/components";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 export function ResetPassword({ token }) {
-  // Initialization of hooks and state variables
-  const dispatch = useAppDispatch(); // Access the Redux dispatch function
-  const router = useRouter(); // Access Next.js router for navigation
-  const { loading, status } = useAppSelector((state) => state.user); // Retrieve loading and status from Redux state
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { loading, status } = useAppSelector((state) => state.user);
   const {
     register,
     handleSubmit,
@@ -31,13 +30,13 @@ export function ResetPassword({ token }) {
 
   // Function to handle form submission
   const onSubmit = handleSubmit((data) => {
-    dispatch(resetPassword({ newPassword: data.password, resetToken: token })); // Dispatch resetPassword action with form data and token
+    dispatch(resetPassword({ newPassword: data.password, resetToken: token }));
   });
 
   // Effect to handle the outcome after a password reset attempt
   useEffect(() => {
     if (status === "reset succeeded") {
-      setShowMessage(true); // Show success message
+      setShowMessage(true);
       setTimeout(() => {
         // Redirect to login page after a delay
         setShowMessage(false);
@@ -45,12 +44,11 @@ export function ResetPassword({ token }) {
       }, 3000);
     }
     if (status === "reset failed") {
-      setShowErrorMessage(true); // Show error message
-      setTimeout(() => setShowErrorMessage(false), 3000); // Hide error message after a delay
+      setShowErrorMessage(true);
+      setTimeout(() => setShowErrorMessage(false), 3000);
     }
   }, [status, router]);
 
-  // Render the form UI
   return (
     <form onSubmit={onSubmit} className="space-y-6" action="" method="POST">
       {showMessage && (
@@ -95,7 +93,7 @@ export function ResetPassword({ token }) {
           type={showPassword ? "text" : "password"}
           autoComplete="current-password"
           required
-          className="w-full rounded-md border p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm sm:leading-6 pr-10" // Additional class for padding
+          className="w-full rounded-md border p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm sm:leading-6 pr-10"
         />
         {showPassword ? (
           // Toggle icon for hiding password
@@ -151,7 +149,7 @@ export function ResetPassword({ token }) {
         )}
       </div>
       <div>
-        {/* Submit button, displays loading text if request is processing */}
+        {/* Submit button */}
         <button className="flex w-full justify-center rounded-md bg-amber-600 px-3 p-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">
           {loading ? "Chargement en cours" : "Valider"}
         </button>

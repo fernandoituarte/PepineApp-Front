@@ -15,18 +15,23 @@ const initialState = {
   user: null,
   users: null,
   loading: false,
+  loggedOut: false,
   status: "",
   isDeleted: false,
 };
 
 export const setUser = createAction("set/user");
 export const clearUser = createAction("clear/user");
+export const setStatus = createAction("set/status");
 // Asynchronous action for user authentication
 export const loginUser = createAsyncThunk(
   "user/login",
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/api/users", credentials);
+      const response = await axios.post(`${URL}/users/login`, credentials, {
+        withCredentials: true,
+      });
+      console.log("Login", response.data.status);
       return response.data.status;
     } catch (error) {
       throw rejectWithValue(error.response.data);
@@ -37,9 +42,9 @@ export const logOut = createAsyncThunk(
   "user/logout",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.delete("/api/users");
+      const response = await axios.delete("/api/logout");
 
-      return response;
+      console.log("LogOut", response.statusText);
     } catch (error) {
       throw rejectWithValue(error.response.data);
     }
@@ -49,9 +54,13 @@ export const logOut = createAsyncThunk(
 export const forgotPassword = createAsyncThunk(
   "forgot/password",
   async (data, { rejectWithValue }) => {
+    console.log("forgotPassword", data);
     try {
-      const response = await axios.post(`${URL}/users/forgot-password`, data);
+      const response = await axios.post(`${URL}/users/forgot-password`, data, {
+        withCredentials: true,
+      });
 
+      console.log("forgotPassword", response.data.message);
       return response.data.message;
     } catch (error) {
       throw rejectWithValue(error.response.data);
@@ -62,8 +71,11 @@ export const resetPassword = createAsyncThunk(
   "reset/password",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${URL}/users/reset-password`, data);
+      const response = await axios.post(`${URL}/users/reset-password`, data, {
+        withCredentials: true,
+      });
 
+      console.log("resetPassword", response.data.message);
       return response.data.message;
     } catch (error) {
       throw rejectWithValue(error.response.data);
@@ -74,8 +86,10 @@ export const updatePassword = createAsyncThunk(
   "update/password",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/api/users/update-password", data);
-
+      const response = await axios.post(`${URL}/users/change-password`, data, {
+        withCredentials: true,
+      });
+      console.log("updatePassword", response.data.message);
       return response.data.message;
     } catch (error) {
       throw rejectWithValue(error.response.data);
@@ -87,9 +101,12 @@ export const updateUserDetails = createAsyncThunk(
   "user/updateUserDetails",
   async ({ userInfo, id }, { rejectWithValue }) => {
     try {
-      const response = await axios.patch(`/api/users/${id}`, userInfo);
+      const response = await axios.patch(`${URL}/users/${id}`, userInfo, {
+        withCredentials: true,
+      });
 
-      return response.data;
+      console.log("updateUserDetails", response.data.data.u);
+      return response.data.data.u;
     } catch (error) {
       throw rejectWithValue(error.response.data);
     }
@@ -101,7 +118,10 @@ export const getUserOrders = createAsyncThunk(
   "user/getUserOrders",
   async (id) => {
     try {
-      const response = await axios.get(`${URL}/orders/${id}`);
+      const response = await axios.get(`${URL}/orders/${id}`, {
+        withCredentials: true,
+      });
+      console.log("getUserOrders", response.data);
       return response.data;
     } catch (error) {
       throw error;
@@ -114,7 +134,10 @@ export const getUserById = createAsyncThunk(
   "user/getUserById",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/api/users/${id}`);
+      const response = await axios.get(`${URL}/users/${id}`, {
+        withCredentials: true,
+      });
+      console.log("getUserById", response.data.data.user);
       return response.data.data.user;
     } catch (error) {
       throw rejectWithValue(error);
@@ -126,8 +149,11 @@ export const deleteAccount = createAsyncThunk(
   "user/deleteAccount",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.delete(`/api/users/${id}`);
-      return response.data;
+      const response = await axios.delete(`${URL}/users/${id}`, {
+        withCredentials: true,
+      });
+      console.log("deleteAccount", response.data);
+      return response.data.status;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -137,7 +163,10 @@ export const getAllUsers = createAsyncThunk(
   "get/AllUsers",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/api/users`);
+      const response = await axios.get(`${URL}/users`, {
+        withCredentials: true,
+      });
+      console.log("getAllUsers", response.data.data.user);
       return response.data.data.user;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -154,6 +183,7 @@ const userReducer = createReducer(initialState, (builder) => {
     })
     .addCase(loginUser.fulfilled, (state, action) => {
       state.status = "logged";
+      state.loggedOut = false;
       state.loading = false;
     })
     .addCase(loginUser.rejected, (state, action) => {
@@ -169,12 +199,16 @@ const userReducer = createReducer(initialState, (builder) => {
       state.userRole = null;
       state.userId = null;
     })
+    .addCase(setStatus, (state, action) => {
+      state.status = action.payload;
+    })
     .addCase(logOut.pending, (state) => {
       state.status = "loading";
       state.loading = true;
     })
     .addCase(logOut.fulfilled, (state, action) => {
       state.status = "succeeded";
+      state.loggedOut = true;
       state.loading = false;
       state.user = null;
     })

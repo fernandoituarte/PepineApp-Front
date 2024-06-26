@@ -1,30 +1,28 @@
-"use client"; // Directs Next.js to only load this module in the client-side environment.
+"use client";
 
-import { useEffect, useState } from "react"; // Imports for React built-in hooks.
-import { useAppSelector, useAppDispatch } from "@/hooks/redux"; // Custom hooks for accessing Redux state and dispatching actions.
-import Link from "next/link"; // Next.js Link component for client-side navigation.
-import { useRouter } from "next/navigation"; // Next.js hook for routing.
-import { getCookie } from "cookies-next"; // Function to get cookies.
-import { getUserById } from "@/store/reducer/auth/login"; // Action to retrieve user details by ID.
+import { useEffect } from "react";
+import { useAppSelector, useAppDispatch } from "@/hooks/redux";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { getUserById } from "@/store/reducer/auth/login";
 import {
   createOrderByUser,
   orderHasProducts,
-} from "@/store/reducer/orders/orders"; // Actions related to order processing.
-import { motion } from "framer-motion"; // Library for animations.
-import { CartItem, ModalCart, Message } from "@/components"; // Custom components.
-import { totalPriceSelector } from "@/store/reducer/cart/cart"; // Selector to compute total price of cart items.
+} from "@/store/reducer/orders/orders";
 
-// Environment variables for contact information.
+import { CartItem, ModalCart, Message } from "@/components";
+import { totalPriceSelector } from "@/store/reducer/cart/cart";
+
 const EMAIL = process.env.NEXT_PUBLIC_EMAIL;
 const PHONE = process.env.NEXT_PUBLIC_PHONE;
 
-export function Cart() {
-  const dispatch = useAppDispatch(); // Initialize dispatch function.
-  const router = useRouter(); // Initialize router.
-  const { isOrderSended, orderId } = useAppSelector((state) => state.orders); // Select order status and ID from Redux store.
-  const { user, userId, userRole } = useAppSelector((state) => state.user); // Select user information from Redux store.
-  const { cartItems } = useAppSelector((state) => state.cart); // Select cart items from Redux store.
-  const totalPrice = useAppSelector(totalPriceSelector); // Calculate total price of cart items.
+export function Cart({ id, role }) {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { isOrderSended, orderId } = useAppSelector((state) => state.orders);
+  const { user } = useAppSelector((state) => state.user);
+  const { cartItems } = useAppSelector((state) => state.cart);
+  const totalPrice = useAppSelector(totalPriceSelector);
 
   // Redirect to empty page if cart is empty.
   useEffect(() => {
@@ -35,16 +33,16 @@ export function Cart() {
 
   // Load user information from cookie and update user role state.
   useEffect(() => {
-    dispatch(getUserById(userId));
-  }, [dispatch, userId]);
+    if (id) dispatch(getUserById(id));
+  }, [dispatch, id]);
 
   // Create order when required conditions meet.
   const handleReservation = () => {
     const orderData = {
       first_name_order: user.first_name,
       last_name_order: user.last_name,
-      total_price: totalPrice.toFixed(2), // Format total price to two decimal places.
-      status: "en cours", // Initial status of the order.
+      total_price: totalPrice.toFixed(2),
+      status: "en cours",
       user_id: user.id,
     };
     dispatch(createOrderByUser(orderData));
@@ -66,15 +64,7 @@ export function Cart() {
   }, [isOrderSended, dispatch, cartItems, orderId]);
 
   return (
-    <motion.div
-      className="bg-white"
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{
-        duration: 0.5,
-        ease: [0, 0.71, 0.2, 1.01],
-      }}
-    >
+    <div className="bg-white">
       <ModalCart
         title={"Votre réservation à été enregistré"}
         subtitle={"La pépinière vous contactera rapidement"}
@@ -123,7 +113,7 @@ export function Cart() {
               text={"Les commandes sont a retirer sur place"}
             />
             <div className="my-10 text-center">
-              {userRole ? (
+              {role ? (
                 <button
                   type="button"
                   onClick={handleReservation}
@@ -149,6 +139,6 @@ export function Cart() {
           </section>
         </form>
       </div>
-    </motion.div>
+    </div>
   );
 }

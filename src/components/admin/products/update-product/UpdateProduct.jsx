@@ -1,6 +1,5 @@
 "use client";
 import { useEffect } from "react";
-import { motion } from "framer-motion";
 
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -35,7 +34,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { inputs } from "@/utils/inputs";
 
-export function UpdateProduct({ id }) {
+export function UpdateProduct({ id, userId }) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { mediumInputs, descriptionInputs, smallInputs, selectInputs } = inputs;
@@ -43,7 +42,7 @@ export function UpdateProduct({ id }) {
   const { categories, status: statusCategory } = useAppSelector(
     (state) => state.productCategories,
   );
-  const { userId } = useAppSelector((state) => state.user);
+
   const {
     register,
     handleSubmit,
@@ -77,11 +76,11 @@ export function UpdateProduct({ id }) {
         media.forEach((image) => {
           dispatch(addImage(image));
         });
-        if (category_id && category_id[0] !== null) {
-          category_id.forEach((category) => {
-            dispatch(addCategory(category));
-          });
-        }
+      }
+      if (category_id && category_id[0] !== null) {
+        category_id.forEach((category) => {
+          dispatch(addCategory(category));
+        });
       }
     }
   }, [productToUpdate, reset, dispatch]);
@@ -128,15 +127,7 @@ export function UpdateProduct({ id }) {
   }
 
   return (
-    <motion.div
-      className="max-w-4xl m-auto pb-10 px-4"
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{
-        duration: 0.5,
-        ease: [0, 0.71, 0.2, 1.01],
-      }}
-    >
+    <div className="max-w-4xl m-auto pb-10 px-4">
       <Modal />
       <form onSubmit={onSubmit}>
         <div className="space-y-12">
@@ -191,6 +182,6 @@ export function UpdateProduct({ id }) {
         <ImagesUploader id={id} />
         <ButtonsForm handleCancel={handleCancel} />
       </form>
-    </motion.div>
+    </div>
   );
 }

@@ -6,6 +6,8 @@ import {
 } from "@reduxjs/toolkit";
 import { notFound } from "next/navigation";
 
+const URL = process.env.NEXT_PUBLIC_URL;
+
 // Initial state for the product slice
 const initialState = {
   status: "",
@@ -23,9 +25,8 @@ const initialState = {
 // Thunk for fetching all products
 export const fetchProducts = createAsyncThunk("products/fetch", async () => {
   try {
-    const response = await axios.get("/api/products");
-    const data = response.data;
-    return data;
+    const response = await axios.get(`${URL}/products`);
+    return response.data.data.product;
   } catch (error) {
     throw error;
   }
@@ -39,12 +40,26 @@ export const statusProduct = createAction("status/product");
 
 //CRUD product
 
+export const getProductById = createAsyncThunk(
+  "product/getById",
+  async (id) => {
+    try {
+      const response = await axios.get(`${URL}/products/${id}`);
+      const data = response.data.data.product;
+      return data;
+    } catch (error) {
+      throw notFound();
+    }
+  },
+);
 // Thunk to fetch a single product by ID for updating
 export const getProductByIdToUpdate = createAsyncThunk(
   "product/getByIdToUpdate",
   async (id) => {
     try {
-      const response = await axios.get(`/api/products/update/${id}`);
+      const response = await axios.get(`${URL}/products/update/${id}`, {
+        withCredentials: true,
+      });
       const data = response.data.data.product;
       return data;
     } catch (error) {
@@ -58,8 +73,9 @@ export const updateProduct = createAsyncThunk(
   "product/update",
   async ({ id, update }) => {
     try {
-      const response = await axios.patch(`/api/products/${id}`, update);
-      return response.data.product;
+      await axios.patch(`${URL}/products/${id}`, update, {
+        withCredentials: true,
+      });
     } catch (error) {
       throw error;
     }
@@ -70,8 +86,10 @@ export const addNewProduct = createAsyncThunk(
   "products/addNew",
   async (product) => {
     try {
-      const response = await axios.post("/api/products", product);
-      return response.data.data;
+      const response = await axios.post(`${URL}/products`, product, {
+        withCredentials: true,
+      });
+      return response.data.data.p[0].id;
     } catch (error) {
       throw error;
     }
@@ -81,8 +99,9 @@ export const addNewProduct = createAsyncThunk(
 // Thunk to delete a product
 export const deleteProduct = createAsyncThunk("product/delete", async (id) => {
   try {
-    const response = await axios.delete(`/api/products/${id}`);
-    return response.data;
+    await axios.delete(`${URL}/products/${id}`, {
+      withCredentials: true,
+    });
   } catch (error) {
     throw error;
   }
@@ -97,7 +116,7 @@ const productReducer = createReducer(initialState, (builder) => {
     .addCase(fetchProducts.fulfilled, (state, action) => {
       state.status = "succeeded";
       state.loading = false;
-      state.products = action.payload.data.product;
+      state.products = action.payload;
     })
     .addCase(fetchProducts.rejected, (state, action) => {
       state.status = "fetch product rejected";
@@ -124,7 +143,7 @@ const productReducer = createReducer(initialState, (builder) => {
       state.productToUpdate = action.payload;
     })
     .addCase(getProductByIdToUpdate.rejected, (state, action) => {
-      state.status = "get product by id rejected";
+      state.status = "get product by id to update rejected";
       state.loading = false;
       state.error = action.error.message;
     })
@@ -152,8 +171,7 @@ const productReducer = createReducer(initialState, (builder) => {
     .addCase(addNewProduct.fulfilled, (state, action) => {
       state.status = "add product succeeded";
       state.loading = false;
-      state.productId = action.payload.p[0].id;
-      state.products.push(action.payload);
+      state.productId = action.payload;
       state.isProductSended = true;
       state.isModal = true;
     })

@@ -5,6 +5,8 @@ import {
   createReducer,
 } from "@reduxjs/toolkit";
 
+const URL = process.env.NEXT_PUBLIC_URL;
+
 const initialState = {
   media: [],
   mediaToDelete: [],
@@ -22,8 +24,15 @@ export const retireImage = createAction("Retire/Image");
 export const emptyMedia = createAction("Empty/Media");
 //
 export const uploadImage = createAsyncThunk("Upload/Image", async (file) => {
+  console.log(file);
   try {
-    const response = await axios.post("/api/products/media", { file });
+    const response = await axios.post(
+      `${URL}/products/media`,
+      { file },
+      {
+        withCredentials: true,
+      },
+    );
     return response.data.data.m;
   } catch (error) {
     throw error;
@@ -33,8 +42,10 @@ export const uploadImage = createAsyncThunk("Upload/Image", async (file) => {
 //
 export const deleteImage = createAsyncThunk("Delete/Image", async (id) => {
   try {
-    const response = await axios.delete(`/api/products/media/${id}`);
-    return response.data;
+    const response = await axios.delete(`${URL}/products/media/${id}`, {
+      withCredentials: true,
+    });
+    return response.data.data;
   } catch (error) {
     throw error;
   }
@@ -44,7 +55,9 @@ export const createMediaOrder = createAsyncThunk(
   "Media/Order",
   async (order) => {
     try {
-      const response = await axios.post("/api/products/media/order", order);
+      const response = await axios.post(`${URL}/products/media/order`, order, {
+        withCredentials: true,
+      });
 
       return response.data.data;
     } catch (error) {
@@ -80,6 +93,7 @@ const mediaReducer = createReducer(initialState, (builder) => {
     })
     .addCase(uploadImage.fulfilled, (state, action) => {
       state.loading = false;
+      state.media.push(action.payload);
     })
     .addCase(uploadImage.rejected, (state, action) => {
       state.loading = false;

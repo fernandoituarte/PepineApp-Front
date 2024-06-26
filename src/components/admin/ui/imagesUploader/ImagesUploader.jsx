@@ -1,14 +1,13 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { ItemImage } from "@/components";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import {
-  addImage,
   createMediaOrder,
   deleteImage,
+  uploadImage,
 } from "@/store/reducer/products/media/media";
-import { imageHandler } from "@/lib/uploadImage";
 
 import { SkeletonImage } from "@/components";
 
@@ -20,23 +19,17 @@ export function ImagesUploader({ id }) {
   const { isCategorySended } = useAppSelector(
     (state) => state.productCategories,
   );
-  const { media, mediaToDelete } = useAppSelector((state) => state.media);
-  const [loading, setLoading] = useState(false);
+  const { media, mediaToDelete, loading } = useAppSelector(
+    (state) => state.media,
+  );
 
   // Every time an image is selected, a dispatch of image is made
   const handleFileChange = async (event) => {
     const imageFile = event.target.files[0];
     const formData = new FormData();
     formData.append("images", imageFile);
-    setLoading(true);
-    try {
-      const image = await imageHandler(formData);
-      dispatch(addImage(image[0]));
-    } catch (error) {
-      setLoading(false);
-      throw error;
-    }
-    setLoading(false);
+
+    dispatch(uploadImage(formData));
   };
 
   // Once the product has been submitted, a media order is created and the items are removed from localStorage

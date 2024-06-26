@@ -1,25 +1,18 @@
-// "use client" ensures that this file runs only on the client-side.
 "use client";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { ordersOfOneUser } from "@/store/reducer/orders/orders";
 import { OrderItemUser } from "@/components";
 
-export function OrdersUser() {
-  // Initialize Redux dispatch to dispatch actions.
+export function OrdersUser({ id }) {
   const dispatch = useAppDispatch();
 
-  // Select user orders from the Redux state using a selector.
   const { userOrders } = useAppSelector((state) => state.orders);
-  const { userId } = useAppSelector((state) => state.user);
 
-  // Effect to load user orders when the component mounts.
   useEffect(() => {
-    // Dispatches the Redux action to load orders using the user's ID.
-    dispatch(ordersOfOneUser(userId));
-  }, [dispatch, userId]);
+    dispatch(ordersOfOneUser(id));
+  }, [dispatch, id]);
 
-  // JSX component that displays a table with the user's orders.
   return (
     <div className="px-6 sm:px-6 lg:px-8">
       <div className="mt-12 flow-root w-full m-auto">

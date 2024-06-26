@@ -1,42 +1,39 @@
-// Directive to ensure the component only runs on the client side.
 "use client";
-import { useRouter } from "next/navigation"; // Used for programmatic navigation.
-import { useState, useEffect } from "react"; // React hooks for managing state and side effects.
-import { useAppDispatch, useAppSelector } from "@/hooks/redux"; // Custom hooks for Redux state management.
-import { useForm } from "react-hook-form"; // Hook for form handling.
-import { zodResolver } from "@hookform/resolvers/zod"; // Zod resolver for schema validation with React Hook Form.
-import { changePassword } from "@/validations/schemas"; // Zod schema for password validation.
-import { updatePassword } from "@/store/reducer/auth/login"; // Redux action for updating the password.
-import { Message } from "@/components"; // Component for displaying messages.
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { changePassword } from "@/validations/schemas";
+import { updatePassword } from "@/store/reducer/auth/login";
+import { Message } from "@/components";
 
-import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5"; // Icons for showing/hiding password input.
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 export const UserChangePassword = () => {
-  const router = useRouter(); // Next.js router instance.
-  const dispatch = useAppDispatch(); // Redux dispatch function.
-  const { status } = useAppSelector((state) => state.user); // Redux state for user status.
-  const [showMessage, setShowMessage] = useState(false); // State to control the visibility of the success message.
-  const [showErrorMessage, setShowErrorMessage] = useState(false); // State to control the visibility of the error message.
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility.
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { status } = useAppSelector((state) => state.user);
+  const [showMessage, setShowMessage] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  // Form handling setup with React Hook Form and Zod schema validation.
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: zodResolver(changePassword) });
 
-  // Effect to handle the response status from the password update operation.
   useEffect(() => {
     if (status === "password updated") {
-      setShowMessage(true); // Show success message.
+      setShowMessage(true);
       setTimeout(() => {
         setShowMessage(false);
-        router.back(); // Navigate back after showing the message.
+        router.back();
       }, 3000);
     }
     if (status === "password failed to update") {
-      setShowErrorMessage(true); // Show error message.
+      setShowErrorMessage(true);
       setTimeout(() => {
         setShowErrorMessage(false);
       }, 3000);
@@ -49,6 +46,7 @@ export const UserChangePassword = () => {
       oldPassword: data.oldPassword,
       newPassword: data.password,
     };
+    console.log(password);
     dispatch(updatePassword(password));
   });
 
@@ -57,6 +55,7 @@ export const UserChangePassword = () => {
       onSubmit={onSubmit}
       className="mx-2 sm:w-4/5 md:w-2/3 sm:mx-auto mt-12 border rounded-lg p-6"
     >
+      {/* Error/Success message */}
       {showMessage && (
         <Message
           title={"Mot de passe mise à jour :"}

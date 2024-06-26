@@ -4,8 +4,9 @@ export const metadata = {
   title: "User",
   description: "Gestion des Clients",
 };
-export default function Page({ params }) {
+export default async function Page({ params }) {
   const { id } = params;
+
   return (
     <>
       <Title title={`Info du client #${id}`} className={"text-center"} />

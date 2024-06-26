@@ -1,43 +1,18 @@
-// Client-only directive for Next.js to prevent server-side rendering issues.
 "use client";
-import { useEffect, useState } from "react";
-import { useAppSelector, useAppDispatch } from "@/hooks/redux";
-import { getOrderById } from "@/store/reducer/orders/orders";
-import {
-  OrderClientInfo,
-  OrderInfo,
-  OrderProduct,
-  SkeletonSmallText,
-  SkeletonText,
-} from "@/components";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { OrderClientInfo, OrderInfo, OrderProduct } from "@/components";
 import { titleFont } from "@/config/fonts";
-import { notFound } from "next/navigation";
+import { getOrderById } from "@/store/reducer/orders/orders";
 
-/**
- * Primary component for displaying a full order detail page. It includes sections for products in the order,
- * order summary, and client information for admins. It also handles loading states and error management.
- *
- * @param {object} props - Component props.
- * @param {string} props.id - ID of the order to fetch and display.
- */
-export function Order({ id }) {
+export function Order({ userId, id, role }) {
   const dispatch = useAppDispatch();
-  const { orderById, isChanged, error, loading } = useAppSelector(
-    (state) => state.orders,
-  );
-  const { userRole: role } = useAppSelector((state) => state.user);
+  const { order } = useAppSelector((state) => state.orders);
 
-  // Effect to fetch the order data by ID when the component mounts or order changes.
+  // Fetch orders on component mount.
   useEffect(() => {
-    dispatch(getOrderById(id)); // Fetch order details from the server.
-  }, [dispatch, id, isChanged]);
-
-  // Effect to handle potential errors during fetching data.
-  useEffect(() => {
-    if (error) {
-      notFound(); // Redirects to a 404 page if an error occurs (e.g., order not found).
-    }
-  }, [error]);
+    dispatch(getOrderById(id));
+  }, [dispatch, id]);
 
   return (
     <>
@@ -73,18 +48,13 @@ export function Order({ id }) {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
-            {loading ? (
-              <tr>
-                <SkeletonSmallText />
-              </tr> // Displays skeleton loaders when data is fetching.
-            ) : (
-              orderById?.products.map((product) => (
+            {order &&
+              order?.products.map((product) => (
                 <OrderProduct
                   key={`${product.product_name + product.product_price}`}
                   {...product}
                 />
-              ))
-            )}
+              ))}
           </tbody>
         </table>
       </div>
@@ -96,13 +66,7 @@ export function Order({ id }) {
         >
           Order Summary
         </h2>
-        {loading ? (
-          <SkeletonSmallText />
-        ) : (
-          orderById && (
-            <OrderInfo order={orderById} role={role} loading={loading} />
-          )
-        )}
+        {order && <OrderInfo order={order} role={role} />}
       </div>
 
       {/* Client Information section, visible only to admins. */}
@@ -113,11 +77,7 @@ export function Order({ id }) {
           >
             Info Client
           </h2>
-          {loading ? (
-            <SkeletonText />
-          ) : (
-            orderById && <OrderClientInfo order={orderById} />
-          )}
+          <OrderClientInfo id={userId} />
         </div>
       )}
     </>

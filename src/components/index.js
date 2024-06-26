@@ -21,6 +21,7 @@ export * from "./admin/ui/add-update-product/SelectInputs";
 export * from "./admin/users/Users";
 export * from "./admin/users/UserItem";
 export * from "./admin/users/ClientInfo";
+export * from "./admin/users/InputFieldAdmin";
 
 //Admin/Orders
 export * from "./admin/orders/OrderItem";
@@ -35,6 +36,7 @@ export * from "./admin/ui/list/ProductItem";
 export * from "./admin/ui/list/ProductList";
 export * from "./admin/products/add-product/AddProduct";
 export * from "./admin/ui/imagesUploader/ImagesUploader";
+export * from "./admin/ui/SendEmailButton";
 export * from "./admin/ui/imagesUploader/ItemImage";
 export * from "./admin/ui/add-update-product/CategoriesBadges";
 export * from "./admin/products/update-product/UpdateProduct";
@@ -46,7 +48,8 @@ export * from "./cart/AddToCart";
 export * from "./cart/QtyBtn";
 export * from "./cart/ModalCart";
 //Categories
-export * from "./categories/Category";
+export * from "./categories/CategoryCard";
+export * from "./categories/CategoriesSwiper";
 // Footer
 export * from "./footer/Footer";
 // Home
@@ -55,6 +58,8 @@ export * from "./home/ImagesHeader";
 // Auth
 export * from "./auth/login/Login";
 export * from "./auth/register/Register";
+export * from "./auth/register/InputField";
+export * from "./auth/register/PasswordField";
 export * from "./auth/forgot-password/ForgotPassword";
 export * from "./auth/reset-password/ResetPassword";
 // NavBar
@@ -62,7 +67,6 @@ export * from "./navbar/NavBar";
 export * from "./navbar/NavBarMobile";
 //Product
 export * from "./product/ProductCard";
-export * from "./product/ProductsGrid";
 export * from "./product/UserProductDetails";
 export * from "./product/AdminProductDetails";
 export * from "./product/product-details/ImagesGallery";
@@ -75,3 +79,7 @@ export * from "./ui/Spinners/SkeletonOrderProduct";
 export * from "./ui/title/Title";
 export * from "./ui/title/Subtitle";
 export * from "./ui/messages/Message";
+
+//Buttons
+export * from "./ui/buttons/addProductFloating";
+export * from "./ui/buttons/DeleteAccount";

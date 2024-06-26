@@ -1,14 +1,14 @@
-"use client"; // Directs Next.js to only load this module on the client side.
+"use client";
 
-import Link from "next/link"; // Imports Link component for navigation within the app without full page reloads.
-import Image from "next/image"; // Imports optimized Image component for handling images efficiently in Next.js.
-import { useAppSelector } from "@/hooks/redux"; // Custom hook for selecting state from the Redux store.
-import { totalCartItemSelector } from "@/store/reducer/cart/cart"; // Selector to get the total number of items in the cart.
+import Link from "next/link";
+import Image from "next/image";
+import { useAppSelector } from "@/hooks/redux";
+import { totalCartItemSelector } from "@/store/reducer/cart/cart";
 
-import { Dialog } from "@headlessui/react"; // Import Dialog component for accessible modals.
-import { XMarkIcon } from "@heroicons/react/24/outline"; // Import icon for close button.
-import { FiLogIn, FiLogOut } from "react-icons/fi"; // Import login and logout icons.
-import { BsInboxes, BsShopWindow } from "react-icons/bs"; // Import icon for admin archive link.
+import { Dialog } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import { FiLogIn, FiLogOut } from "react-icons/fi";
+import { BsInboxes, BsShopWindow } from "react-icons/bs";
 
 import {
   IoPeopleOutline,
@@ -16,24 +16,24 @@ import {
   IoShirtOutline,
   IoTicketOutline,
   IoCartOutline,
-} from "react-icons/io5"; // Import various Ionicons for menu items.
-import { BsShop } from "react-icons/bs"; // Import shop icon for product link.
+} from "react-icons/io5";
+import { BsShop } from "react-icons/bs";
 
 // Functional component for mobile navigation bar.
 export function NavBarMobile({
-  handleLogout, // Function to handle logout.
-  setMobileMenuOpen, // Function to set the state of the mobile menu.
-  mobileMenuOpen, // State indicating whether the mobile menu is open.
-  role, // User role to conditionally render links.
+  handleLogout,
+  setMobileMenuOpen,
+  mobileMenuOpen,
+  role,
 }) {
   const totalItems = useAppSelector(totalCartItemSelector); // Retrieve total cart items from Redux store.
 
   return (
     <Dialog
       as="div"
-      className="lg:hidden" // Hide on larger screens where the main nav bar is used.
-      open={mobileMenuOpen} // Control the visibility of the modal based on mobileMenuOpen state.
-      onClose={setMobileMenuOpen} // Set the mobile menu state to false when the dialog is closed.
+      className="lg:hidden"
+      open={mobileMenuOpen}
+      onClose={setMobileMenuOpen}
     >
       <Dialog.Panel className="fixed inset-y-0 right-0 z-20 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
         {/* Dialog panel containing all content */}
@@ -139,7 +139,7 @@ export function NavBarMobile({
                   </Link>
                   <Link
                     className="flex items-center mt-5 p-2 hover:bg-gray-100 rounded transition-all"
-                    href={"/admin/files"}
+                    href={"/admin/orders-history"}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <BsInboxes size={26} />
