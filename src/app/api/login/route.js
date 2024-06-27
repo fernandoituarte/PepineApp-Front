@@ -7,7 +7,7 @@ const URL = process.env.NEXT_PUBLIC_URL;
 
 export async function POST(req) {
   const data = await req.json();
-
+  console.log(data);
   try {
     const response = await axios.post(`${URL}/users/login`, data);
     const token = response.data.data.token;
@@ -19,7 +19,7 @@ export async function POST(req) {
       httpOnly: true,
       secure: true,
       path: "/",
-      sameSite: "none",
+      sameSite: "lax",
       maxAge: 23 * 60 * 60 * 1000,
     });
     cookies().set({
@@ -27,7 +27,7 @@ export async function POST(req) {
       value: JSON.stringify({ role, id }),
       path: "/",
       secure: true,
-      sameSite: "none",
+      sameSite: "lax",
       maxAge: 23 * 60 * 60 * 1000,
     });
 
