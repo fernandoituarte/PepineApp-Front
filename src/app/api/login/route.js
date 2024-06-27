@@ -17,17 +17,17 @@ export async function POST(req) {
       name: "authToken",
       value: token,
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       path: "/",
-      sameSite: "Strict",
+      sameSite: "Lax",
       maxAge: 23 * 60 * 60 * 1000,
     });
     cookies().set({
       name: "user",
       value: JSON.stringify({ role, id }),
       path: "/",
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
+      secure: true,
+      sameSite: "Lax",
       maxAge: 23 * 60 * 60 * 1000,
     });
 
