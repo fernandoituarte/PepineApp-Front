@@ -1,7 +1,13 @@
+"use server";
+
+import axios from "axios";
 import { cookies } from "next/headers";
+import { jwtDecode } from "jwt-decode";
+const URL = process.env.NEXT_PUBLIC_URL;
 
 export async function POST(req) {
   const data = await req.json();
+
   try {
     const response = await axios.post(`${URL}/users/login`, data);
     const token = response.data.data.token;
@@ -11,15 +17,18 @@ export async function POST(req) {
       name: "authToken",
       value: token,
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       path: "/",
-      maxAge: 30 * 24 * 60 * 60,
+      sameSite: "Strict",
+      maxAge: 23 * 60 * 60 * 1000,
     });
     cookies().set({
       name: "user",
       value: JSON.stringify({ role, id }),
       path: "/",
-      maxAge: 30 * 24 * 60 * 60,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+      maxAge: 23 * 60 * 60 * 1000,
     });
 
     return new Response(
@@ -28,6 +37,7 @@ export async function POST(req) {
       }),
     );
   } catch (error) {
+    console.log(error);
     return new Response(
       JSON.stringify({ error: `Method ${req.method} Not Allowed` }),
       {
