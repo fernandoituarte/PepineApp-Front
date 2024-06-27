@@ -12,6 +12,10 @@ export const getOrdersList = createAsyncThunk("ordersList", async () => {
   try {
     const response = await axios.get(`${URL}/orders`, {
       withCredentials: true,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
     });
 
     return response.data.data.order;
@@ -48,7 +52,7 @@ export const orderHasProducts = createAsyncThunk(
     } catch (error) {
       throw rejectWithValue(error.response.data);
     }
-  },
+  }
 );
 
 // Création d'une action asynchrone pour mettre à jour le statut d'une commande
@@ -61,13 +65,13 @@ export const changeStatus = createAsyncThunk(
         { status },
         {
           withCredentials: true,
-        },
+        }
       );
       return response.data.status;
     } catch (error) {
       throw error;
     }
-  },
+  }
 );
 
 // récupérer les orders d'un user
@@ -82,7 +86,7 @@ export const ordersOfOneUser = createAsyncThunk(
     } catch (error) {
       throw rejectWithValue(error.response.data);
     }
-  },
+  }
 );
 
 export const getOrderById = createAsyncThunk(
@@ -97,7 +101,7 @@ export const getOrderById = createAsyncThunk(
     } catch (error) {
       throw rejectWithValue(error.message);
     }
-  },
+  }
 );
 export const activeModal = createAction("active/modal");
 export const isChanged = createAction("change/quantity");
