@@ -19,7 +19,7 @@ export async function POST(req) {
       httpOnly: true,
       secure: true,
       path: "/",
-      sameSite: "None",
+      sameSite: "Lax",
       maxAge: 23 * 60 * 60 * 1000,
     });
     cookies().set({
@@ -27,7 +27,7 @@ export async function POST(req) {
       value: JSON.stringify({ role, id }),
       path: "/",
       secure: true,
-      sameSite: "None",
+      sameSite: "Lax",
       maxAge: 23 * 60 * 60 * 1000,
     });
 
