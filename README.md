@@ -19,24 +19,37 @@ Ce projet utilise les technologies et bibliothèques suivantes :
 ## Installation
 
 1. Cloner ou télécharger le projet depuis son dépôt GitHub :
-   ```bash
+   ```
    git clone git@github.com:fernandoituarte/PepineApp-Front.git
    cd projet-05-pepine-front
+   ```
 
-2. Installer des package : `npm i`
-3. Créer le fichier ".env" sur la base de ".env.example"
+2. Installer des package :
+   ```
+    `npm i`
+   ```
+4. Créer le fichier ".env" sur la base de ".env.example"
 
 ## Utilisation
 
 ### Developpement
 
-- Lancer l'app. : `npm run dev` (script)
+- Lancer l'app. :
+  ```
+  `npm run dev`
+  ```
 
 ### Production
 
-- Construire le projet: `npm run build`
+- Construire le projet:
+  ```
+  `npm run build`
+  ```
 
-- Lancer l'app en production: `npm run build`
+- Lancer l'app en production:
+  ```
+  `npm run start`
+  ```
 
 
 
