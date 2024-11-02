@@ -55,13 +55,13 @@ export const inputs = {
 
   selectInputs: [
     {
-      name: "yield_id",
+      name: "yield",
       label: "Rendement",
       placeholder: "Entrez le rendement",
       options: ["Correct", "Bon", "Très bon", "Excellent"],
     },
     {
-      name: "hardiness_zone_id",
+      name: "hardiness_zone",
       label: "Zone de rusticité",
       placeholder: "Entrez la zone de rusticité",
       options: [
@@ -94,13 +94,13 @@ export const inputs = {
       ],
     },
     {
-      name: "water_requirement_id",
+      name: "water_requirement",
       label: "Besoin en eau",
       placeholder: "Entrez le besoin en eau",
       options: ["Faible", "Moyen", "Fort"],
     },
     {
-      name: "exposure_id",
+      name: "exposure",
       label: "Exposition",
       placeholder: "Entrez l'exposition",
       options: [
@@ -112,7 +112,7 @@ export const inputs = {
       ],
     },
     {
-      name: "ground_cover_power_id",
+      name: "ground_cover_power",
       label: "Couvrance du sol",
       placeholder: "Entrez la couvrance du sol",
       options: [
@@ -124,13 +124,13 @@ export const inputs = {
       ],
     },
     {
-      name: "foliage_id",
+      name: "foliage",
       label: "Feuillage",
       placeholder: "Entrez le feuillage",
       options: ["Persistant", "Caduc", "Persistant et caduc"],
     },
     {
-      name: "strate_id",
+      name: "strate",
       label: "Strate",
       placeholder: "Entrez la strate",
       options: [

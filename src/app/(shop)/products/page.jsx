@@ -1,31 +1,42 @@
-import axios from "axios";
 import { Suspense } from "react";
-import { ProductCard, Title } from "@/components";
+import { getAllProducts } from "@/lib/getProducts";
+import {
+  ProductCard,
+  Title,
+  Pagination,
+  NotFoundResult,
+  ErrorComponent,
+} from "@/components";
 
 import ProductListLoading from "./loading";
-
-const URL = process.env.NEXT_PUBLIC_URL;
 
 export const metadata = {
   title: "Tous nos produit",
   description:
     "Découvrez notre sélection de produits de qualité répartis dans quatre catégories distinctes.",
 };
-//Product Grid
 
-const getProducts = async () => {
-  try {
-    const response = await axios.get(`${URL}/products`);
-    const products = response.data.data.product;
+/**
+ * The main Page component fetches all products and handles display, pagination, and error states.
+ *
+ * @param {Object} searchParams - The query parameters for pagination (limit and offset).
+ * @returns JSX elements to display products, or appropriate messages in case of errors or no products.
+ */
 
-    return products;
-  } catch (error) {
-    throw error;
+export default async function Page({ searchParams }) {
+  const { limit = 16, offset = 0 } = await searchParams;
+  const { products, totalPages, totalProducts, error } = await getAllProducts({
+    limit,
+    offset,
+  });
+
+  if (error) {
+    return <ErrorComponent text={error} />;
   }
-};
 
-export default async function Page() {
-  const products = await getProducts();
+  if (totalProducts === 0) {
+    return <NotFoundResult text={`Aucun produit n'a été trouvé`} />;
+  }
 
   return (
     <Suspense fallback={<ProductListLoading />}>
@@ -47,11 +58,11 @@ export default async function Page() {
         >
           {products &&
             products.map((product) => (
-              // Mapping through each product and rendering a ProductCard.
               <ProductCard key={product.id} {...product} />
             ))}
         </ul>
       </div>
+      <Pagination limit={limit} baseUrl="/products" totalPages={totalPages} />
     </Suspense>
   );
 }

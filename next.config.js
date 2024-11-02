@@ -16,8 +16,8 @@ const nextConfig = {
         hostname: "pepine-back-ae81.onrender.com",
       },
       {
-        protocol: "https",
-        hostname: "pepine-back.onrender.com",
+        protocol: "http",
+        hostname: "localhost",
       },
     ],
   },

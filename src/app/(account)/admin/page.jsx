@@ -1,5 +1,5 @@
-import { Title, UserInfo } from "@/components";
-import { getUserSessionCookieServer } from "@/lib/getUserServerSide";
+import { Title } from "@/components";
+import { UserInfo } from "./../components/UserInfo";
 
 export const metadata = {
   title: "Mon Compte",
@@ -7,8 +7,6 @@ export const metadata = {
 };
 
 export default async function Page() {
-  const { id, role } = getUserSessionCookieServer();
-
   return (
     <div>
       <Title
@@ -16,7 +14,7 @@ export default async function Page() {
         subtitle={`Bonjour, cette page permet de modifier vos données.`}
         className={"text-center"}
       />
-      <UserInfo id={id} role={role} />
+      <UserInfo />
     </div>
   );
 }

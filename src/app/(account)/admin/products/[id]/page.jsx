@@ -1,29 +1,10 @@
-import axios from "axios";
-
-import { AdminProductDetails } from "@/components";
-
-const URL = process.env.NEXT_PUBLIC_URL;
-
-export async function generateStaticParams() {
-  const response = await axios.get(`${URL}/products`);
-  return response.data.data.product.map((post, index) => {
-    const id = post.id;
-    return {
-      id: `${id}`,
-    };
-  });
-}
-
-const getProduct = async (id) => {
-  try {
-    const response = await axios.get(`${URL}/products/${id}`);
-    return response.data.data.product;
-  } catch (error) {
-    notFound();
-  }
-};
+import { AdminProductDetails } from "./components/AdminProductDetails";
 
 export default async function Page({ params }) {
-  const product = await getProduct(params.id);
-  return <AdminProductDetails product={product} />;
+  const { id } = await params;
+  return (
+    <div className="mx-auto mb-28 max-w-7xl sm:px-6 sm:pt-16 lg:px-8">
+      <AdminProductDetails id={id} />
+    </div>
+  );
 }

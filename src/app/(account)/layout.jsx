@@ -1,17 +1,13 @@
-import { Dashboard, NavBar } from "@/components";
-import { cookies } from "next/headers";
+import { NavBar } from "@/components";
+import { Dashboard } from "./components/dashboard/Dashboard";
 
-export default function AccountLayout({ children }) {
-  const cookieStore = cookies();
-  const userCookie = cookieStore.get("user");
-
-  const user = JSON.parse(userCookie.value);
+export default async function AccountLayout({ children }) {
   return (
     <>
       <header className="lg:ml-80 xl:ml-72">
-        <NavBar className={"lg:hidden"} user={user} />
+        <NavBar className={"lg:hidden"} />
       </header>
-      <Dashboard role={user.role} />
+      <Dashboard />
       <main className="px-0 lg:pl-10 ml-auto mb-6 w-full lg:w-[75%] xl:w-[80%] 2xl:w-[85%] min-h-screen">
         {children}
       </main>

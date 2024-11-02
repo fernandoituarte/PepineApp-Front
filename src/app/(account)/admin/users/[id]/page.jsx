@@ -1,15 +1,14 @@
-import { ClientInfo, Title } from "@/components";
+import { ClientInfo } from "./components/ClientInfo";
 
 export const metadata = {
   title: "User",
   description: "Gestion des Clients",
 };
 export default async function Page({ params }) {
-  const { id } = params;
+  const { id } = await params;
 
   return (
     <>
-      <Title title={`Info du client #${id}`} className={"text-center"} />
       <ClientInfo id={id} />
     </>
   );

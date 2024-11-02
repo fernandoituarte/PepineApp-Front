@@ -1,20 +1,30 @@
 import Link from "next/link";
 import { Title } from "@/components";
 
+const URL_FRONT = process.env.NEXT_PUBLIC_URL_FRONT;
+
 export const metadata = {
   title: "Credits",
-  description: "...",
+  description:
+    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequuntur possimus recusandae? Iusto saepe quas eligendi. Corporis atque ipsam exercitationem quaerat velit?",
+  alternates: {
+    canonical: `${URL_FRONT}/credits`,
+  },
 };
 
-export default function credits() {
+export default function Credits() {
   return (
-    <div className="w-2/3 m-auto text-center my-20">
+    <article className="w-2/3 m-auto text-center my-20">
       <Title title={metadata.title} className={"text-center"} />
-      <h2 className="font-bold leading-6 my-6">Merci aux créateurs</h2>
-      <Link href="https://fr.freepik.com/photos-gratuite/nouvelle-vie-emerge-dans-ia-generative-du-printemps-humide_40933359.htm#query=growing&position=0&from_view=search&track=sph">
-        Illustration home page : vecstock
-      </Link>{" "}
-      sur Freepik
-    </div>
+      <section>
+        <h2 className="font-bold leading-6 my-6">Merci aux créateurs</h2>
+        <p>
+          <Link href="https://fr.freepik.com">
+            Illustration home page : vecstock
+          </Link>{" "}
+          sur Freepik
+        </p>
+      </section>
+    </article>
   );
 }

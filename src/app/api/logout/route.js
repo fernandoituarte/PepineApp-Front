@@ -1,17 +1,19 @@
 import { cookies } from "next/headers";
 
 export async function DELETE(req) {
+  const cookie = await cookies();
   if (req.method === "DELETE") {
-    cookies().delete({
+    cookie.delete({
       name: "authToken",
     });
-    cookies().delete({
+    cookie.delete({
       name: "user",
     });
 
     return new Response(
       JSON.stringify({
         success: true,
+        status: 201,
       }),
     );
   } else {

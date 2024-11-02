@@ -1,21 +1,24 @@
 import { Title } from "@/components";
 
+const URL_FRONT = process.env.NEXT_PUBLIC_URL_FRONT;
+
 export const metadata = {
   title: "Conditions générales d’utilisation du site",
-  description: "...",
+  description:
+    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequuntur possimus recusandae? Iusto saepe quas eligendi. Corporis atque ipsam exercitationem quaerat velit?",
+  alternates: {
+    canonical: `${URL_FRONT}/cgu`,
+  },
 };
 
 export default function Cgu() {
   return (
-    <div className="px-6 pb-16 m-auto max-w-[800px] mt-8">
-      <div className="md:max-w-3xl text-base leading-7 text-gray-700">
-        <p className="text-base font-semibold leading-7 text-amber-800">
-          Pépinière PPD
-        </p>
-        <Title title={metadata.title} className={"text-center"} />
-        <h3 className="mt-6 text-lg font-medium tracking-tight text-green-800 sm:text-xl">
+    <article className=" mx-auto md:max-w-3xl text-base leading-7 text-gray-700 pb-10">
+      <Title title={metadata.title} className={"text-center"} />
+      <section>
+        <h2 className="mt-6 text-lg font-medium tracking-tight text-green-800 sm:text-xl">
           Article 1 : Objet
-        </h3>
+        </h2>
         <p className="mt-2 text-base leading-8">
           Les présentes CGU ou Conditions Générales d’Utilisation encadrent
           juridiquement l’utilisation des services du site Poussez-pas-derrière
@@ -24,6 +27,8 @@ export default function Cgu() {
           précédé de l’acceptation de ces CGU. L’accès à cette plateforme
           signifie l’acceptation des présentes CGU.
         </p>
+      </section>
+      <section>
         <h3 className="mt-4 text-base font-medium tracking-tight text-green-800 sm:text-xl">
           Article 2 : Mentions légales
         </h3>
@@ -34,6 +39,8 @@ export default function Cgu() {
           Métropolitaine. L’hébergeur du site Poussez pas derrière.fr est la
           société SOCIETE + ADRESSE
         </p>
+      </section>
+      <section>
         <h3 className="mt-4 text-base font-medium tracking-tight text-green-800 sm:text-xl">
           Article 3 : Accès au site
         </h3>
@@ -48,6 +55,8 @@ export default function Cgu() {
           maintenance ou autres, l’accès au site peut être interrompu ou
           suspendu par l’éditeur sans préavis ni justification.
         </p>
+      </section>
+      <section>
         <h3 className="mt-4 text-base font-medium tracking-tight text-green-800 sm:text-xl">
           Article 4 : Collecte des données
         </h3>
@@ -62,6 +71,8 @@ export default function Cgu() {
           d’accéder, de rectifier, de supprimer et d’opposer ses données
           personnelles. L’exercice de ce droit s’effectue par mail.
         </p>
+      </section>
+      <section>
         <h3 className="mt-4 text-base font-medium tracking-tight text-green-800 sm:text-xl">
           Article 5 : Propriété intellectuelle
         </h3>
@@ -73,6 +84,8 @@ export default function Cgu() {
           préalable du site. Dans ce cas, toute utilisation à des usages
           commerciaux ou à des fins publicitaires est proscrite.
         </p>
+      </section>
+      <section>
         <h3 className="mt-4 text-base font-medium tracking-tight text-green-800 sm:text-xl">
           Article 6 : Responsabilité
         </h3>
@@ -94,6 +107,8 @@ export default function Cgu() {
           pas assurée par le site. Cependant, le site s’engage à mettre en œuvre
           toutes les méthodes requises pour le faire au mieux.
         </p>
+      </section>
+      <section>
         <h3 className="mt-4 text-base font-medium tracking-tight text-green-800 sm:text-xl">
           Article 7 : Cookies
         </h3>
@@ -111,6 +126,8 @@ export default function Cgu() {
           désactivation peut s’effectuer via les paramètres du logiciel de
           navigation.
         </p>
+      </section>
+      <section>
         <h3 className="mt-4 text-base font-medium tracking-tight text-green-800 sm:text-xl">
           Article 8 : Durée du contrat
         </h3>
@@ -119,6 +136,8 @@ export default function Cgu() {
           de l’utilisation des services du site marque l’application du contrat
           à l’égard de l’Utilisateur.
         </p>
+      </section>
+      <section>
         <h3 className="mt-4 text-base font-medium tracking-tight text-green-800 sm:text-xl">
           Article 9 : Droit applicable et juridiction compétente
         </h3>
@@ -127,7 +146,7 @@ export default function Cgu() {
           résolution à l’amiable des cas de litige entre les parties implique le
           recours aux tribunaux français compétents pour régler le contentieux.{" "}
         </p>
-      </div>
-    </div>
+      </section>
+    </article>
   );
 }

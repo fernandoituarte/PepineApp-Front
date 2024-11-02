@@ -1,6 +1,6 @@
 export const selectOptions = {
-  yield_id: ["Select", "Correct", "Bon", "Très bon", "Excellent"],
-  strate_id: [
+  yield: ["Select", "Correct", "Bon", "Très bon", "Excellent"],
+  strate: [
     "Select",
     "Arbre",
     "Arbuste",
@@ -10,7 +10,7 @@ export const selectOptions = {
     "Racine",
     "Grimpante",
   ],
-  hardiness_zone_id: [
+  hardiness_zone: [
     "Select",
     "Zone 1a : -51,1 à -48,3°C",
     "Zone 1b : -48,3 à -45,6°C",
@@ -39,8 +39,8 @@ export const selectOptions = {
     "Zone 13a : 15,6 à 18,3°C",
     "Zone 13b : 18,3 à 21,1°C",
   ],
-  water_requirement_id: ["Select", "Faible", "Moyen", "Fort"],
-  exposure_id: [
+  water_requirement: ["Select", "Faible", "Moyen", "Fort"],
+  exposure: [
     "Select",
     "Plein Soleil",
     "Ombre légère",
@@ -48,7 +48,7 @@ export const selectOptions = {
     "Pleine ombre",
     "Ombre profonde",
   ],
-  ground_cover_power_id: [
+  ground_cover_power: [
     "Select",
     "Mauvais",
     "Correct (Désherbage printemps/été)",
@@ -56,7 +56,7 @@ export const selectOptions = {
     "Très bon",
     "Non couvrant",
   ],
-  foliage_id: ["Select", "Persistant", "Caduc", "Persistant et caduc"],
+  foliage: ["Select", "Persistant", "Caduc", "Persistant et caduc"],
   status: ["Select", "Disponible", "Indisponible"],
   category: [
     "Select",
@@ -68,8 +68,8 @@ export const selectOptions = {
 };
 
 export const selectOptionsUpdateProduct = {
-  yield_value: ["Select", "Correct", "Bon", "Très bon", "Excellent"],
-  strate_value: [
+  yield: ["Select", "Correct", "Bon", "Très bon", "Excellent"],
+  strate: [
     "Select",
     "Arbre",
     "Arbuste",
@@ -79,7 +79,7 @@ export const selectOptionsUpdateProduct = {
     "Racine",
     "Grimpante",
   ],
-  hardiness_zone_value: [
+  hardiness_zone: [
     "Select",
     "Zone 1a : -51,1 à -48,3°C",
     "Zone 1b : -48,3 à -45,6°C",
@@ -108,8 +108,8 @@ export const selectOptionsUpdateProduct = {
     "Zone 13a : 15,6 à 18,3°C",
     "Zone 13b : 18,3 à 21,1°C",
   ],
-  water_requirement_value: ["Select", "Faible", "Moyen", "Fort"],
-  exposure_value: [
+  water_requirement: ["Select", "Faible", "Moyen", "Fort"],
+  exposure: [
     "Select",
     "Plein Soleil",
     "Ombre légère",
@@ -117,7 +117,7 @@ export const selectOptionsUpdateProduct = {
     "Pleine ombre",
     "Ombre profonde",
   ],
-  ground_cover_power_value: [
+  ground_cover_power: [
     "Select",
     "Mauvais",
     "Correct (Désherbage printemps/été)",
@@ -125,7 +125,7 @@ export const selectOptionsUpdateProduct = {
     "Très bon",
     "Non couvrant",
   ],
-  foliage_value: ["Select", "Persistant", "Caduc", "Persistant et caduc"],
+  foliage: ["Select", "Persistant", "Caduc", "Persistant et caduc"],
   status: ["Select", "Disponible", "Indisponible"],
   category: [
     "Select",

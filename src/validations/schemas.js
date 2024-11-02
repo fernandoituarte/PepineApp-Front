@@ -40,6 +40,7 @@ export const productSchema = z.object({
   description2: z.string().transform(escapeHtml),
   size: z
     .string()
+    .min(2, { message: "La taille est requise" })
     .max(50, { message: "Veuillez inserer 50 caracteres max." })
     .transform(escapeHtml),
   pot: z
@@ -53,13 +54,13 @@ export const productSchema = z.object({
     .transform((price) => parseFloat(price.toFixed(2))),
   vat: z.number().positive({ message: "Veuillez inserer un numéro valid." }),
   status: z.boolean(),
-  yield_id: z.number(),
-  hardiness_zone_id: z.number(),
-  water_requirement_id: z.number(),
-  exposure_id: z.number(),
-  ground_cover_power_id: z.number(),
-  strate_id: z.number(),
-  foliage_id: z.number(),
+  yield: z.string().transform(escapeHtml),
+  hardiness_zone: z.string().transform(escapeHtml),
+  water_requirement: z.string().transform(escapeHtml),
+  exposure: z.string().transform(escapeHtml),
+  ground_cover_power: z.string().transform(escapeHtml),
+  strate: z.string().transform(escapeHtml),
+  foliage: z.string().transform(escapeHtml),
 });
 
 export const userUpdateSchema = z.object({

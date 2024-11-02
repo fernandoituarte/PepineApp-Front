@@ -1,14 +1,15 @@
-import { Title, UserChangePassword } from "@/components";
+import { Title } from "@/components";
+import { ChangePassword } from "../../components/change-password/ChangePassword";
 
 export const metadata = {
   title: "Mon Compte",
   description: "Mon Compte",
 };
-export default function Page() {
+export default async function Page() {
   return (
-    <div>
+    <>
       <Title title={"Modifiez votre mot de passe"} className={"text-center"} />
-      <UserChangePassword />
-    </div>
+      <ChangePassword />
+    </>
   );
 }

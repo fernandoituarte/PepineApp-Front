@@ -1,10 +1,11 @@
-import { Register, Title } from "@/components";
+import { Title } from "@/components";
+import { Register } from "./components/Register";
 
 export const metadata = {
   title: "Inscrivez vous",
   description: "Créer un compte",
 };
-// Register form
+
 export default function Page() {
   return (
     <>

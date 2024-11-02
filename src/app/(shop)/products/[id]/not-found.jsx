@@ -1,8 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { NavBar } from "@/components";
 
-import pepinierenuit from "../../../../../public/pepinierenuit.webp";
+import notFoundImage from "../../../../../public/not-found-image.webp";
 
 export default function NotFound() {
   return (
@@ -10,10 +9,11 @@ export default function NotFound() {
       <div className="text-center xl:w-full xl:h-full pt-44">
         <p className="text-base font-semibold text-indigo-600">404</p>
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-          Page introuvable
+          Produit introuvable
         </h1>
         <p className="mt-6 text-base leading-7 text-gray-600">
-          Désolé, nous n&apos;avons pas pu trouver la page que vous recherchez.
+          Désolé, nous n&apos;avons pas pu trouver le produit que vous
+          recherchez.
         </p>
         <div className="mt-10 flex items-center justify-center gap-x-6">
           <Link
@@ -26,7 +26,7 @@ export default function NotFound() {
       </div>
       <div className="relative hidden xl:block w-full xl:h-[800px] py-4 bg-white">
         <Image
-          src={pepinierenuit}
+          src={notFoundImage}
           height={800}
           width={800}
           className="rounded-xl shadow-2xl object-cover object-center w-full h-full"

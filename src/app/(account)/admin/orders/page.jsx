@@ -1,10 +1,12 @@
-import { Orders, Title } from "@/components";
+import { Title } from "@/components";
+import { Orders } from "./components/Orders";
 
 export const metadata = {
   title: "Commandes",
   description: "Gestion des réservations",
 };
-export default function Page() {
+export default async function Page({ searchParams }) {
+  const { limit = 15, offset = 0 } = await searchParams;
   return (
     <>
       <Title
@@ -12,7 +14,7 @@ export default function Page() {
         subtitle={metadata.description}
         className={"text-center"}
       />{" "}
-      <Orders history={false} />
+      <Orders limit={limit} offset={offset} history={false} />
     </>
   );
 }

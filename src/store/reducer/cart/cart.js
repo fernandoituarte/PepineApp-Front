@@ -2,7 +2,6 @@ import { createAction, createReducer, createSelector } from "@reduxjs/toolkit";
 
 const initialState = {
   cartItems: [],
-  isCartChanged: false,
 };
 
 export const increment = createAction("Increment/product");
@@ -46,6 +45,7 @@ const cartReducer = createReducer(initialState, (builder) => {
 });
 
 const cartItems = (state) => state.cart.cartItems;
+
 export const totalCartItemSelector = createSelector([cartItems], (cartItems) =>
   cartItems.reduce((total, curr) => (total += curr.qty), 0),
 );

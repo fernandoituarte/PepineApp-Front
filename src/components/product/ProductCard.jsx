@@ -3,83 +3,41 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AddToCart } from "@/components";
+import { useHandleProductCard } from "@/hooks/useHandleProductCard";
 
-import { emptyMedia } from "@/store/reducer/products/media/media";
-import { emptyCategories } from "@/store/reducer/products/update-categories/productCategories";
-import { deleteProductToUpdate } from "@/store/reducer/products/product";
-import { getUserSessionCookieClient } from "@/lib/getUserClientSide";
+/**
+ * ProductCard component displays product information such as image, name, price, and size.
+ * If the user is an admin, a link to edit the product is shown instead of the "Add to Cart" button.
+ *
+ * @param {Object} product - The product data (e.g., id, name, media, price, size).
+ * @param {Object} category - The category data related to the product.
+ * @returns A card layout that shows product details and allows adding to cart or editing based on the user's role.
+ */
 
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { useEffect, useState } from "react";
-
-export function ProductCard({
-  id,
-  media_urls,
-  name,
-  size,
-  price,
-  product_id,
-  category_id,
-  status,
-  stock,
-}) {
+export function ProductCard(product, category) {
   const pathname = usePathname();
-  const dispatch = useAppDispatch();
-
-  const item = {
-    id: product_id || id,
-    name,
-    media: media_urls ? media_urls[0] : "",
-    price,
-    stock,
-    status,
-  };
-  const { loading, loggedOut } = useAppSelector((state) => state.user);
-  const [role, setRole] = useState();
-
-  useEffect(() => {
-    const user = getUserSessionCookieClient();
-    if (user) setRole(user.role);
-    if (loggedOut) setRole(null);
-  }, [loading, loggedOut]);
-
-  function handleUpdate() {
-    // Dispatches actions to reset categories, product updates, and media when updating a product.
-    dispatch(emptyCategories());
-    dispatch(deleteProductToUpdate());
-    dispatch(emptyMedia());
-  }
+  const { id, name, media, price, size } = product;
+  const { item, role, url } = useHandleProductCard(product, category, pathname);
 
   return (
-    <div className="bg-white shadow-lg rounded-md">
+    <li className="bg-white shadow-lg rounded-md list-none">
       <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-10 lg:max-w-7xl">
-        <div key={id} className="group relative">
+        <div className="group relative">
           <div className="h-80 w-full overflow-hidden rounded-md bg-gray-200">
-            {media_urls && (
+            {media[0] && (
               <Image
                 width={800}
                 height={800}
-                src={media_urls[0] ? media_urls[0] : "/"}
-                alt={"image"}
+                src={media[0].url}
+                alt={"Product image"}
                 className="h-full w-full object-cover object-center"
                 placeholder="blur"
-                blurDataURL={media_urls[0] ? media_urls[0] : "/"}
+                blurDataURL={media[0] ? media[0].url : "/"}
               />
             )}
           </div>
           <h3 className="mt-4 text-sm text-gray-700">
-            <Link
-              href={
-                // Conditional link based on the pathname and role.
-                pathname === `/categories/${category_id}`
-                  ? role === "admin"
-                    ? `/admin/products/${product_id}`
-                    : `/products/${product_id}`
-                  : role === "admin"
-                  ? `/admin/products/${id}`
-                  : `/products/${id}`
-              }
-            >
+            <Link href={url}>
               <span className="absolute inset-0" />
               {name}
             </Link>
@@ -89,9 +47,8 @@ export function ProductCard({
         </div>
         {role === "admin" ? (
           <Link
-            onClick={handleUpdate}
-            href={`/admin/products/update-product/${product_id || id}`}
-            className="bg-indigo-500 flex max-w-xs items-center justify-center rounded-md border border-transparent px-8 py-3 mt-3 mx-auto text-base font-medium text-white hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:bg-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 w-full shadow-md"
+            href={`/admin/products/update-product/${id}`}
+            className="bg-[#5c7969] flex max-w-xs items-center justify-center rounded-md border border-transparent px-8 py-3 mt-3 mx-auto text-base font-medium text-white hover:bg-[#6d8f7cc7] w-full shadow-md"
           >
             Modifier
           </Link>
@@ -99,6 +56,6 @@ export function ProductCard({
           <AddToCart item={item} />
         )}
       </div>
-    </div>
+    </li>
   );
 }

@@ -1,24 +1,22 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import productReducer from "./reducer/products/product";
-import productCategories from "./reducer/products/update-categories/productCategories";
-import mediaReducer from "./reducer/products/media/media";
-
-import registerReducer from "./reducer/auth/register";
-import userReducer from "./reducer/auth/login";
-
-import ordersReducer from "./reducer/orders/orders";
+import authReducer from "./reducer/auth/auth";
 import cartReducer from "./reducer/cart/cart";
+import mediaReducer from "./reducer/media/media";
+import ordersReducer from "./reducer/orders/orders";
+import productReducer from "./reducer/products/product";
+import categoriesReducer from "./reducer/categories/categories";
+import userReducer from "./reducer/user/user";
 
 const store = configureStore({
   reducer: {
-    product: productReducer,
-    productCategories: productCategories,
-    media: mediaReducer,
-    register: registerReducer,
-    user: userReducer,
-    orders: ordersReducer,
+    auth: authReducer,
     cart: cartReducer,
+    media: mediaReducer,
+    orders: ordersReducer,
+    product: productReducer,
+    category: categoriesReducer,
+    user: userReducer,
   },
 });
 

@@ -1,17 +1,17 @@
-import { OrdersUser, Title } from "@/components";
-import { getUserSessionCookieServer } from "@/lib/getUserServerSide";
+import { Title } from "@/components";
+import { OrdersUser } from "./components/OrdersUser";
 
 export const metadata = {
   title: "Mes Commandes",
   description: "Gestion des commandes",
 };
-export default function Page() {
-  const { id } = getUserSessionCookieServer();
+export default async function Page({ searchParams }) {
+  const { limit = 15, offset = 0 } = await searchParams;
 
   return (
     <>
       <Title title={metadata.title} className={"text-center"} />{" "}
-      <OrdersUser id={id} />
+      <OrdersUser limit={limit} offset={offset} />
     </>
   );
 }

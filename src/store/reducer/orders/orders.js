@@ -7,19 +7,20 @@ import axios from "axios";
 
 const URL = process.env.NEXT_PUBLIC_URL;
 
-// Création d'une action asynchrone pour récupérer la liste des commandes
-export const getOrdersList = createAsyncThunk("ordersList", async () => {
-  try {
-    const response = await axios.get(`${URL}/orders`, {
-      withCredentials: true,
-    });
+const initialState = {
+  orders: [],
+  order: null,
+  status: "",
+  loading: false,
+  error: null,
+  orderId: null,
+  userOrders: [],
+  isModal: false,
+  reservationSuccess: false,
+};
 
-    return response.data.data.order;
-  } catch (error) {
-    throw rejectWithValue(error.response.data);
-  }
-});
-// Création d'une commande par le client
+export const resetState = createAction("reset/state");
+
 export const createOrderByUser = createAsyncThunk(
   "orders/createOrder",
   async (order, { rejectWithValue }) => {
@@ -27,62 +28,47 @@ export const createOrderByUser = createAsyncThunk(
       const response = await axios.post(`${URL}/orders`, order, {
         withCredentials: true,
       });
-
-      return response.data.data.o[0];
+      return response.data;
     } catch (error) {
       throw rejectWithValue(error.response.data);
     }
   },
 );
 
-// rattacher les produits du client à une commande
 export const orderHasProducts = createAsyncThunk(
   "orders/productsByOrders",
-  async (cart) => {
+  async (cart, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${URL}/orders/details`, cart, {
+      const response = await axios.post(`${URL}/orders/products`, cart, {
         withCredentials: true,
       });
 
-      return response.data.data;
+      return response.data;
     } catch (error) {
       throw rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
-// Création d'une action asynchrone pour mettre à jour le statut d'une commande
-export const changeStatus = createAsyncThunk(
-  "changeStatus",
-  async ({ status, id }) => {
+export const updateOrder = createAsyncThunk(
+  "Update/order",
+  async ({ status, id }, { rejectWithValue }) => {
     try {
       const response = await axios.patch(
-        `${URL}/orders/${id}/update-status`,
-        { status },
+        `${URL}/orders/${id}`,
+        {
+          status,
+        },
         {
           withCredentials: true,
-        }
+        },
       );
-      return response.data.status;
-    } catch (error) {
-      throw error;
-    }
-  }
-);
 
-// récupérer les orders d'un user
-export const ordersOfOneUser = createAsyncThunk(
-  "users/ordersOfOneUser",
-  async (id, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(`${URL}/users/${id}/orders`, {
-        withCredentials: true,
-      });
-      return response.data.data.user;
+      return response.data;
     } catch (error) {
       throw rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const getOrderById = createAsyncThunk(
@@ -92,134 +78,165 @@ export const getOrderById = createAsyncThunk(
       const response = await axios.get(`${URL}/orders/${id}`, {
         withCredentials: true,
       });
-
-      return response.data.data.order;
+      return response.data;
     } catch (error) {
-      throw rejectWithValue(error.message);
+      throw rejectWithValue(error.response.data);
     }
-  }
+  },
 );
-export const activeModal = createAction("active/modal");
-export const isChanged = createAction("change/quantity");
-export const reservationStatus = createAction("reservation/status");
 
-// Initialisation de l'état des commandes
-const initialState = {
-  orders: [],
-  order: null,
-  orderStatus: null,
-  loading: false,
-  error: null,
-  orderId: null,
-  userOrders: [],
-  isModal: false,
-  isChanged: false,
-  isOrderSended: false,
-  reservationSuccess: false,
-};
+export const getAllOrders = createAsyncThunk(
+  "Get/AllOrders",
+  async ({ params = " ", limit, offset }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${URL}/orders?limit=${limit}&offset=${offset}${params}`,
+        { withCredentials: true },
+      );
+      return response.data;
+    } catch (error) {
+      throw rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const getOrdersByUser = createAsyncThunk(
+  "Get/AllOrdersByUser",
+  async ({ id, limit = 15, offset = 0 }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${URL}/orders/user/${id}?limit=${limit}&offset=${offset}`,
+        { withCredentials: true },
+      );
+
+      return response.data;
+    } catch (error) {
+      throw rejectWithValue(error.response.data);
+    }
+  },
+);
+
+// Delete order
+export const deleteOrder = createAsyncThunk(
+  "Delete/Order",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(`${URL}/orders/${id}`, {
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error) {
+      throw rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const activeModal = createAction("active/modal");
+export const reservationStatus = createAction("reservation/status");
 
 const ordersReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(getOrdersList.pending, (state) => {
-      state.status = "loading";
-      state.loading = true;
-    })
-    .addCase(getOrdersList.fulfilled, (state, action) => {
-      state.status = "succeeded";
-      state.orders = action.payload;
-      state.loading = false;
-    })
-    .addCase(getOrdersList.rejected, (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-      state.loading = false;
+    .addCase(resetState, () => {
+      return initialState;
     })
     .addCase(createOrderByUser.pending, (state) => {
-      state.status = "loading";
       state.loading = true;
     })
     .addCase(createOrderByUser.fulfilled, (state, action) => {
-      state.status = "succeeded";
-      state.orderId = action.payload.id;
-      state.isOrderSended = true;
+      state.status = action.payload.status;
+      state.orderId = action.payload.orderId;
       state.loading = false;
-      state.isModal = true;
     })
     .addCase(createOrderByUser.rejected, (state, action) => {
-      state.status = "failed";
+      state.status = action.payload.status;
       state.error = action.error.message;
       state.loading = false;
     })
     .addCase(orderHasProducts.pending, (state) => {
-      state.status = "loading";
       state.loading = true;
     })
     .addCase(orderHasProducts.fulfilled, (state, action) => {
       state.status = "succeeded";
-      state.isOrderSended = false;
       state.loading = false;
       state.reservationSuccess = true;
+      state.isModal = true;
     })
     .addCase(orderHasProducts.rejected, (state, action) => {
       state.status = "failed";
-      state.error = action.error.message;
+      state.error = true;
       state.loading = false;
       state.reservationSuccess = false;
     })
     .addCase(reservationStatus, (state, action) => {
       state.reservationSuccess = false;
     })
-    .addCase(changeStatus.pending, (state) => {
-      state.status = "loading";
-      state.loading = true;
-      state.isChanged = false;
+    .addCase(updateOrder.pending, (state) => {
+      state.loading = "loading";
+      state.error = false;
     })
-    .addCase(changeStatus.fulfilled, (state, action) => {
-      state.status = "succeeded";
+    .addCase(updateOrder.fulfilled, (state, action) => {
       state.loading = false;
-      state.orderStatus = action.payload;
+      state.status = action.payload.status;
+      state.order = action.payload.order;
     })
-    .addCase(changeStatus.rejected, (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-      state.loading = false;
-    })
-    .addCase(ordersOfOneUser.pending, (state, action) => {
-      state.status = "loading";
-      state.orderStatus = null;
-      state.loading = true;
-    })
-    .addCase(ordersOfOneUser.fulfilled, (state, action) => {
-      state.status = "fulfilled";
-      state.userOrders = action.payload;
-      state.loading = false;
-    })
-    .addCase(ordersOfOneUser.rejected, (state, action) => {
-      state.status = "failed";
+    .addCase(updateOrder.rejected, (state, action) => {
+      state.status = action.payload.statusCode;
+      state.error = action.payload.message;
       state.loading = false;
     })
     .addCase(getOrderById.pending, (state, action) => {
-      state.status = "loading";
-      state.orderStatus = null;
+      state.order = null;
       state.loading = true;
-      state.error = false;
     })
     .addCase(getOrderById.fulfilled, (state, action) => {
-      state.status = "fulfilled";
-      state.order = action.payload;
+      state.status = action.payload.status;
+      state.order = action.payload.order;
       state.loading = false;
     })
     .addCase(getOrderById.rejected, (state, action) => {
-      state.status = "failed";
       state.loading = false;
-      state.error = true;
+      state.status = action.payload.statusCode;
+      state.error = action.payload.message;
+    })
+    .addCase(getAllOrders.pending, (state, action) => {
+      state.loading = true;
+      state.error = false;
+    })
+    .addCase(getAllOrders.fulfilled, (state, action) => {
+      state.status = action.payload.status;
+      state.orders = {
+        orders: action.payload.orders,
+        totalOrders: action.payload.totalOrders,
+        totalPages: action.payload.totalPages,
+      };
+      state.loading = false;
+    })
+    .addCase(getAllOrders.rejected, (state, action) => {
+      state.loading = false;
+      state.status = action.payload.statusCode;
+      state.error = action.payload.message;
+    })
+    .addCase(getOrdersByUser.pending, (state, action) => {
+      state.loading = true;
+      state.error = false;
+    })
+    .addCase(getOrdersByUser.fulfilled, (state, action) => {
+      state.status = action.payload.status;
+      state.orders = {
+        orders: action.payload.orders,
+        totalOrders: action.payload.totalOrders,
+        totalPages: action.payload.totalPages,
+      };
+      state.loading = false;
+    })
+    .addCase(getOrdersByUser.rejected, (state, action) => {
+      state.loading = false;
+      state.status = action.payload.statusCode;
+      state.error = action.payload.message;
     })
     .addCase(activeModal, (state, action) => {
       state.isModal = action.payload;
       state.reservationStatus = false;
-    })
-    .addCase(isChanged, (state, action) => {
-      state.isChanged = action.payload;
     });
 });
 export default ordersReducer;

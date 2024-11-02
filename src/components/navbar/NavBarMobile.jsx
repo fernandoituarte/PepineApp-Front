@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useAppSelector } from "@/hooks/redux";
 import { totalCartItemSelector } from "@/store/reducer/cart/cart";
 
-import { Dialog } from "@headlessui/react";
+import { DialogPanel, Dialog } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { FiLogIn, FiLogOut } from "react-icons/fi";
 import { BsInboxes, BsShopWindow } from "react-icons/bs";
@@ -19,15 +19,34 @@ import {
 } from "react-icons/io5";
 import { BsShop } from "react-icons/bs";
 
-// Functional component for mobile navigation bar.
+/**
+ * The `NavBarMobile` component renders a mobile-friendly navigation menu,
+ * allowing users to navigate the application with ease on smaller screens.
+ *
+ * Props:
+ * - `handleLogout`: Function to handle user logout.
+ * - `setMobileMenuOpen`: Function to toggle the mobile menu's open state.
+ * - `mobileMenuOpen`: Boolean state indicating if the mobile menu is open.
+ * - `role`: User role (e.g., admin, user) that determines the displayed links.
+ *
+ * Features:
+ * - Displays a logo and a close button for the menu.
+ * - Renders navigation links conditionally based on the user's role.
+ * - Shows the total number of items in the shopping cart.
+ * - Includes a login/logout button that changes based on the user's authentication status.
+ *
+ * State Management:
+ * - `totalItems`: Number of items in the shopping cart, retrieved from the Redux store.
+ *
+ */
+
 export function NavBarMobile({
   handleLogout,
   setMobileMenuOpen,
   mobileMenuOpen,
   role,
 }) {
-  const totalItems = useAppSelector(totalCartItemSelector); // Retrieve total cart items from Redux store.
-
+  const totalItems = useAppSelector(totalCartItemSelector);
   return (
     <Dialog
       as="div"
@@ -35,7 +54,7 @@ export function NavBarMobile({
       open={mobileMenuOpen}
       onClose={setMobileMenuOpen}
     >
-      <Dialog.Panel className="fixed inset-y-0 right-0 z-20 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+      <DialogPanel className="fixed inset-y-0 right-0 z-20 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
         {/* Dialog panel containing all content */}
         <div className="flex items-center justify-between">
           {/* Top section with logo and close button */}
@@ -52,6 +71,7 @@ export function NavBarMobile({
             type="button"
             className="-m-2.5 rounded-md p-2.5 text-gray-700"
             onClick={() => setMobileMenuOpen(false)}
+            aria-label="Close menu"
           >
             <span className="sr-only">Close menu</span>
             <XMarkIcon className="h-6 w-6" aria-hidden="true" />
@@ -135,15 +155,15 @@ export function NavBarMobile({
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <IoTicketOutline size={30} />
-                    <span className="ml-3 text-lg">Commandes</span>
+                    <span className="ml-3 text-lg">Nouvelles commandes</span>
                   </Link>
                   <Link
                     className="flex items-center mt-5 p-2 hover:bg-gray-100 rounded transition-all"
-                    href={"/admin/orders-history"}
+                    href={"/admin/orders/history"}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <BsInboxes size={26} />
-                    <span className="ml-3 text-lg">Archives</span>
+                    <span className="ml-3 text-lg">Commandes passées</span>
                   </Link>
                   <Link
                     className="flex items-center mt-5 p-2 hover:bg-gray-100 rounded transition-all"
@@ -156,7 +176,7 @@ export function NavBarMobile({
                 </>
               )}
 
-              {/* Logout or login button based on user role */}
+              {/* Logout or login button */}
               {role ? (
                 <button
                   onClick={handleLogout}
@@ -166,7 +186,9 @@ export function NavBarMobile({
                     size={50}
                     className="rounded-lg px-3 py-2 text-white bg-amber-400 hover:bg-amber-300"
                   />
-                  <p className="flex  ml-3 text-lg">Déconnexion</p>
+                  <p className="flex  ml-3 text-lg font-semibold">
+                    Déconnexion
+                  </p>
                 </button>
               ) : (
                 <Link
@@ -178,13 +200,15 @@ export function NavBarMobile({
                     size={50}
                     className="rounded-lg px-3 py-2 text-white bg-green-500 hover:bg-green-400"
                   />
-                  <p className="flex  ml-3 text-lg">Se connecter</p>
+                  <p className="flex  ml-3 text-lg font-semibold">
+                    Se connecter
+                  </p>
                 </Link>
               )}
             </div>
           </div>
         </div>
-      </Dialog.Panel>
+      </DialogPanel>
     </Dialog>
   );
 }

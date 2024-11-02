@@ -10,11 +10,6 @@ export default function HomeLoading() {
         <Skeleton height={100} width={`20%`} className="m-auto" />
       </div>
 
-      {/* Mimic of SubTitle */}
-      <div className="text-center">
-        <Skeleton height={30} width={`50%`} className="mb-2" />
-      </div>
-
       {/* Mimic of Categories */}
       <div className="mx-auto mb-16 max-w-7xl px-6 lg:px-8">
         <ul className="mx-auto mt-20 grid max-w-2xl grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-16 text-center lg:mx-0 lg:max-w-none lg:grid-cols-4 xl:grid-cols-4 justify-center">

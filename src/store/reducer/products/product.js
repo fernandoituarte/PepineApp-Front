@@ -4,181 +4,157 @@ import {
   createAsyncThunk,
   createReducer,
 } from "@reduxjs/toolkit";
-import { notFound } from "next/navigation";
 
 const URL = process.env.NEXT_PUBLIC_URL;
 
-// Initial state for the product slice
 const initialState = {
-  status: "",
+  status: null,
   loading: false,
   error: null,
-  products: [],
+  products: null,
   product: null,
-  isProductSended: false,
-  productId: null,
-  categoriesByProduct: [],
-  productToUpdate: null,
-  isModal: false,
 };
 
-// Thunk for fetching all products
-export const fetchProducts = createAsyncThunk("products/fetch", async () => {
-  try {
-    const response = await axios.get(`${URL}/products`);
-    return response.data.data.product;
-  } catch (error) {
-    throw error;
-  }
-});
-
-// Action to clear the 'productToUpdate' state
-export const deleteProductToUpdate = createAction("delete/productToUpdate");
-
-// Action to mark a product operation status
-export const statusProduct = createAction("status/product");
-
-//CRUD product
-
-export const getProductById = createAsyncThunk(
-  "product/getById",
-  async (id) => {
-    try {
-      const response = await axios.get(`${URL}/products/${id}`);
-      const data = response.data.data.product;
-      return data;
-    } catch (error) {
-      throw notFound();
-    }
-  },
-);
-// Thunk to fetch a single product by ID for updating
-export const getProductByIdToUpdate = createAsyncThunk(
-  "product/getByIdToUpdate",
-  async (id) => {
-    try {
-      const response = await axios.get(`${URL}/products/update/${id}`, {
-        withCredentials: true,
-      });
-      const data = response.data.data.product;
-      return data;
-    } catch (error) {
-      throw notFound();
-    }
-  },
-);
-
-// Thunk to update a product
-export const updateProduct = createAsyncThunk(
-  "product/update",
-  async ({ id, update }) => {
-    try {
-      await axios.patch(`${URL}/products/${id}`, update, {
-        withCredentials: true,
-      });
-    } catch (error) {
-      throw error;
-    }
-  },
-);
-// Thunk to add a new product
+export const resetProductState = createAction("Reset/Product-State");
+//Create a new product
 export const addNewProduct = createAsyncThunk(
   "products/addNew",
-  async (product) => {
+  async (product, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${URL}/products`, product, {
         withCredentials: true,
       });
-      return response.data.data.p[0].id;
+
+      return response.data;
     } catch (error) {
-      throw error;
+      throw rejectWithValue(error.response.data);
     }
   },
 );
 
-// Thunk to delete a product
-export const deleteProduct = createAsyncThunk("product/delete", async (id) => {
-  try {
-    await axios.delete(`${URL}/products/${id}`, {
-      withCredentials: true,
-    });
-  } catch (error) {
-    throw error;
-  }
-});
+export const getAllProducts = createAsyncThunk(
+  "Get/AllProducts",
+  async ({ limit = 16, offset = 0 }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${URL}/products?limit=${limit}&offset=${offset}`,
+      );
+      return response.data;
+    } catch (error) {
+      throw rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const getProductById = createAsyncThunk(
+  "Get/product/byId",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${URL}/products/${id}`);
+
+      return response.data;
+    } catch (error) {
+      throw rejectWithValue(error.response.data);
+    }
+  },
+);
+
+//Update a product
+export const updateProduct = createAsyncThunk(
+  "product/update",
+  async ({ id, update }, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(`${URL}/products/${id}`, update, {
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error) {
+      throw rejectWithValue(error.response.data);
+    }
+  },
+);
+
+//Delete a product
+export const deleteProduct = createAsyncThunk(
+  "product/delete",
+  async (id, { rejectWithValue }) => {
+    try {
+      await axios.delete(`${URL}/products/${id}`, {
+        withCredentials: true,
+      });
+    } catch (error) {
+      throw rejectWithValue(error.response.data);
+    }
+  },
+);
 
 const productReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(fetchProducts.pending, (state, action) => {
-      state.status = "loading";
-      state.loading = true;
-    })
-    .addCase(fetchProducts.fulfilled, (state, action) => {
-      state.status = "succeeded";
-      state.loading = false;
-      state.products = action.payload;
-    })
-    .addCase(fetchProducts.rejected, (state, action) => {
-      state.status = "fetch product rejected";
-      state.loading = false;
-      state.error = action.error.message;
-    })
-    .addCase(deleteProductToUpdate, (state, action) => {
-      state.status = "";
-      state.productToUpdate = null;
-    })
-    .addCase(statusProduct, (state, action) => {
-      state.isProductSended = action.payload;
-      if (action.payload === false) {
-        state.isCategoryDeleted = false;
-      }
-    })
-    .addCase(getProductByIdToUpdate.pending, (state, action) => {
-      state.status = "loading";
-      state.loading = true;
-    })
-    .addCase(getProductByIdToUpdate.fulfilled, (state, action) => {
-      state.status = "succeeded";
-      state.loading = false;
-      state.productToUpdate = action.payload;
-    })
-    .addCase(getProductByIdToUpdate.rejected, (state, action) => {
-      state.status = "get product by id to update rejected";
-      state.loading = false;
-      state.error = action.error.message;
-    })
-    .addCase(updateProduct.pending, (state) => {
-      state.status = "loading";
-      state.loading = true;
-      state.isProductSended = false;
-    })
-    .addCase(updateProduct.fulfilled, (state) => {
-      state.status = "product updated";
-      state.loading = false;
-      state.isProductSended = true;
-      state.isModal = true;
-    })
-    .addCase(updateProduct.rejected, (state) => {
-      state.status = "update product rejected";
-      state.loading = false;
-      state.rejected = true;
-      state.isProductSended = false;
+    .addCase(resetProductState, () => {
+      return initialState;
     })
     .addCase(addNewProduct.pending, (state) => {
       state.status = "loading";
       state.loading = true;
+      state.error = null;
     })
     .addCase(addNewProduct.fulfilled, (state, action) => {
-      state.status = "add product succeeded";
+      state.status = "The product has been successfully registered.";
       state.loading = false;
-      state.productId = action.payload;
-      state.isProductSended = true;
-      state.isModal = true;
+      state.error = null;
     })
     .addCase(addNewProduct.rejected, (state, action) => {
-      state.status = "add product rejected";
+      state.status = action.payload.statusCode;
       state.loading = false;
-      state.error = action.payload;
+      state.error = action.payload.message;
+    })
+    .addCase(getAllProducts.pending, (state, action) => {
+      state.loading = true;
+      state.status = "loading";
+    })
+    .addCase(getAllProducts.fulfilled, (state, action) => {
+      state.status = action.payload.status;
+      state.products = {
+        products: action.payload.products,
+        totalPages: action.payload.totalPages,
+        totalProducts: action.payload.totalProducts,
+      };
+      state.totalPages = action.payload.totalPages;
+      state.loading = false;
+    })
+    .addCase(getAllProducts.rejected, (state, action) => {
+      state.status = action.payload.status;
+      state.loading = false;
+      state.rejected = true;
+    })
+    .addCase(getProductById.pending, (state, action) => {
+      state.loading = true;
+      state.status = "loading";
+    })
+    .addCase(getProductById.fulfilled, (state, action) => {
+      state.status = action.payload.status;
+      state.product = action.payload.product;
+      state.loading = false;
+    })
+    .addCase(getProductById.rejected, (state, action) => {
+      state.status = action.payload.statusCode;
+      state.loading = false;
+      state.error = true;
+    })
+    .addCase(updateProduct.pending, (state, action) => {
+      state.status = "loading";
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(updateProduct.fulfilled, (state, action) => {
+      state.status = "Product updated successfully";
+      state.loading = false;
+      state.error = null;
+    })
+    .addCase(updateProduct.rejected, (state, action) => {
+      state.status = action.payload.statusCode;
+      state.loading = false;
+      state.error = action.payload.message;
     })
     .addCase(deleteProduct.pending, (state) => {
       state.loading = true;
@@ -188,9 +164,10 @@ const productReducer = createReducer(initialState, (builder) => {
       state.loading = false;
       state.status = "product deleted successfully";
     })
-    .addCase(deleteProduct.rejected, (state) => {
+    .addCase(deleteProduct.rejected, (state, action) => {
       state.loading = false;
       state.status = "product deleted rejected";
+      state.error = action.payload.message;
     });
 });
 

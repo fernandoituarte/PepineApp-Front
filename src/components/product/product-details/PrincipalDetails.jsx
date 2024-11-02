@@ -47,7 +47,7 @@ export const PrincipalDetails = ({
             <h3 className="text-lg text-gray-600 mb-1">Statut</h3>
             <div className="font-bold ">
               {product?.status ? (
-                <Icon icon="ion:eye" color="#03ba4f" width="24" height="24" />
+                <Icon icon="ion:eye" color="#14873f" width="24" height="24" />
               ) : (
                 <Icon
                   className="mx-2"
@@ -63,7 +63,7 @@ export const PrincipalDetails = ({
             <h3 className="text-lg text-gray-600 mb-1">Stock</h3>
             <p
               className={`font-bold ${
-                product?.stock <= 2 ? "text-red-500" : "text-green-500"
+                product?.stock <= 2 ? "text-red-500" : "text-[#14873f]"
               }`}
             >
               {product?.stock}
@@ -76,12 +76,13 @@ export const PrincipalDetails = ({
             href={`update-product/${product?.id}`}
             onClick={handleUpdate}
             type="submit"
-            className="shadow-md flex md:max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
+            className="shadow-md flex md:max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-[#14873f] px-8 py-3 text-base font-medium text-white hover:bg-[#14873e80] focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
           >
             Modifier
           </Link>
           <button
             onClick={handleDeleteProduct}
+            aria-label="Supprimer ce produit"
             className="shadow-md items-center ml-6 justify-center rounded-md bg-red-600 px-5 py-3 text-base font-medium text-white hover:bg-red-700"
           >
             <RiDeleteBin6Line size={20} />

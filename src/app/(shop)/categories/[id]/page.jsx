@@ -1,56 +1,84 @@
 import axios from "axios";
 
-import { categoriesInfo } from "@/utils/categoriesInfo";
-import { ProductCard, Title } from "@/components";
+import {
+  Pagination,
+  ProductCard,
+  Title,
+  NotFoundResult,
+  ErrorComponent,
+} from "@/components";
+import { getProductsByCategory } from "@/lib/getProducts";
 
 const URL = process.env.NEXT_PUBLIC_URL;
-// export async function generateStaticParams({ params }) {
-//   const response = await axios.get(`${URL}/categories/${params.id}/products`);
-//   return response.data.data.category.map((post) => {
-//     return {
-//       id: `${post.id}`,
-//     };
-//   });
-// }
+
+/**
+ * `generateMetadata` function is used to dynamically generate the metadata for the page.
+ *
+ * - Fetches category information using the category ID from the URL params.
+ * - If successful, it sets the page's title and description based on the category data.
+ * - In case of an error, it defaults to a generic "Category" title with an empty description.
+ *
+ * @param {object} params - URL parameters, including the category ID.
+ * @returns {object} Metadata for the category page.
+ */
+
 export async function generateMetadata({ params }) {
-  const id = params.id;
+  const { id } = await params;
   try {
     const response = await axios.get(`${URL}/categories/${id}`);
-    const category = response.data.data.category;
-    const metadata = {
-      title: category.value,
-      description: category.description,
+
+    return {
+      title: response.data.category.value,
+      description: response.data.category.description,
     };
-    return metadata;
   } catch (error) {
-    return [
-      {
-        title: "Category",
-        description: "",
-      },
-    ];
+    return {
+      title: "Category",
+      description: "",
+    };
   }
 }
-const getProductsByCategory = async (id) => {
-  try {
-    const response = await axios.get(`${URL}/categories/${id}/products`);
-    console.log(response.data.data.category);
-    return response.data.data.category;
-  } catch (error) {
-    notFound();
-  }
-};
 
-export default async function Page({ params }) {
-  const products = await getProductsByCategory(params.id);
-  // Finds the corresponding information from categoriesInfo by matching the category ID.
-  const category = categoriesInfo.find((category) => category.id == params.id);
+/**
+ * Main category page component. Displays products under a specific category and handles pagination.
+ *
+ * - Fetches products based on category ID, search parameters (limit, offset).
+ * - Displays a message if no products are found or if there's an error.
+ * - Renders a `Title` component for the category and maps over the products array to generate `ProductCard` components.
+ * - Includes pagination controls at the bottom.
+ *
+ * @param {object} params - URL parameters, including the category ID.
+ * @param {object} searchParams - Query parameters for pagination (limit, offset).
+ */
+
+export default async function Page({ params, searchParams }) {
+  const { limit = 16, offset = 0 } = await searchParams;
+  const { id } = await params;
+
+  const { category, products, totalProducts, totalPages, error } =
+    await getProductsByCategory({
+      id,
+      limit,
+      offset,
+    });
+
+  if (error) {
+    return <ErrorComponent text={error} />;
+  }
+
+  if (totalProducts === 0) {
+    return (
+      <NotFoundResult
+        text={`Aucun produit n'a été trouvé dans cette categorie`}
+      />
+    );
+  }
 
   return (
     <div className="mx-auto my-10 lg:my-16 max-w-7xl px-6 lg:px-8">
       {/* Title component displays the category name and description. */}
       <Title
-        title={`${category && category.name}`}
+        title={`${category && category.value}`}
         subtitle={`${category && category.description}`}
         className={"text-center"}
       />
@@ -61,9 +89,15 @@ export default async function Page({ params }) {
         {/* Maps over the products array to generate a ProductCard for each product. */}
         {products &&
           products.map((product, index) => (
-            <ProductCard key={index} {...product} />
+            <ProductCard key={index} {...product} category={category} />
           ))}
       </div>
+      {/* Pagination */}
+      <Pagination
+        totalPages={totalPages}
+        limit={limit}
+        baseUrl={`/categories/${id}`}
+      />
     </div>
   );
 }

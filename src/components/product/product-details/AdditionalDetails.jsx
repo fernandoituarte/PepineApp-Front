@@ -1,13 +1,12 @@
-// Directive to ensure this component only runs on the client side in a Next.js environment.
 "use client";
 
-import { Disclosure } from "@headlessui/react";
+import {
+  Disclosure,
+  DisclosurePanel,
+  DisclosureButton,
+} from "@headlessui/react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
-
-// Helper function to join class names based on their truthiness.
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import clsx from "clsx";
 
 /**
  * Component to display additional details of a product in collapsible panels.
@@ -32,17 +31,17 @@ export const AdditionalDetails = ({ product }) => {
     {
       name: "Détails Botaniques",
       items: [
-        `Couleur des Fleurs: ${product?.flower_color}`,
+        `Couleur des Fleurs: ${product?.flower_color}`.padEnd(30),
         `Couleur des Feuilles: ${product?.leaf_color}`,
-        `Rendement: ${product?.yield_value}`,
-        `Exposition: ${product?.exposure_value}`,
-        `Type de feuillage: ${product?.foliage_value}`,
-        `Pouvoir couvrant: ${product?.ground_cover_power_value}`,
-        `Zone de rusticité: ${product?.hardiness_zone_value}`,
+        `Rendement: ${product?.yield}`,
+        `Exposition: ${product?.exposure}`,
+        `Type de feuillage: ${product?.foliage}`,
+        `Pouvoir couvrant: ${product?.ground_cover_power}`,
+        `Zone de rusticité: ${product?.hardiness_zone}`,
         `Hauteur Adulte: ${product?.maturity_height}`,
         `Largeur adulte: ${product?.maturity_width}`,
-        `Besoin en eau: ${product?.water_requirement_value}`,
-        `Strate: ${product?.strate_value}`,
+        `Besoin en eau: ${product?.water_requirement}`,
+        `Strate: ${product?.strate}`,
       ],
     },
   ];
@@ -54,13 +53,13 @@ export const AdditionalDetails = ({ product }) => {
         <Disclosure as="div" key={index}>
           {({ open }) => (
             <>
-              <h3>
-                <Disclosure.Button className="group relative flex w-full items-center justify-between py-6 text-left">
+              <p>
+                <DisclosureButton className="group relative flex w-full items-center justify-between py-6 text-left">
                   <span
-                    className={classNames(
-                      open ? "text-indigo-600" : "text-gray-900",
-                      "text-lg font-medium",
-                    )}
+                    className={clsx("text-lg font-medium", {
+                      "text-green-800": open,
+                      "text-gray-900": !open,
+                    })}
                   >
                     {detail.name}
                   </span>
@@ -77,19 +76,19 @@ export const AdditionalDetails = ({ product }) => {
                       />
                     )}
                   </span>
-                </Disclosure.Button>
-              </h3>
-              <Disclosure.Panel as="div" className="prose prose-sm pb-6">
+                </DisclosureButton>
+              </p>
+              <DisclosurePanel as="div" className="prose prose-sm pb-6">
                 <ul role="list">
                   {/* Maps over each item in the current section and creates a list item for it. */}
-                  {detail.items.map((item, idx) => {
+                  {detail.items.map((item, index) => {
                     const firstColonIndex = item.indexOf(":");
                     const key = item.substring(0, firstColonIndex + 1);
                     const value = item.substring(firstColonIndex + 1).trim();
                     const isPrice = key.toLowerCase().includes("prix");
 
                     return (
-                      <li key={idx}>
+                      <li key={index} className="flex justify-between">
                         <span>{key}</span>
                         <span className="font-semibold">
                           {isPrice ? `${value} €` : value}
@@ -98,7 +97,7 @@ export const AdditionalDetails = ({ product }) => {
                     );
                   })}
                 </ul>
-              </Disclosure.Panel>
+              </DisclosurePanel>
             </>
           )}
         </Disclosure>

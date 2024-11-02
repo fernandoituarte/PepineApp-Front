@@ -1,7 +1,7 @@
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-export default function CategoriesLoading({ skeletonCategoryCount = 4 }) {
+export default function CategoriesLoading({ skeletonCategoryCount = 3 }) {
   return (
     <div className="mx-auto mb-16 max-w-7xl px-6 lg:px-8">
       <ul

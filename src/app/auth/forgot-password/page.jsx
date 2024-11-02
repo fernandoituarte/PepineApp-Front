@@ -1,6 +1,6 @@
-import Link from "next/link";
 import Image from "next/image";
-import { Title, ForgotPassword } from "@/components";
+import { Title } from "@/components";
+import { ForgotPassword } from "./components/ForgotPassword";
 
 export const metadata = {
   title: "Connectez-vous",
