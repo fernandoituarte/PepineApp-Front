@@ -36,7 +36,7 @@ export const PasswordField = ({
       className="w-full rounded-md border p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm sm:leading-6 pr-10"
     />
     <div
-      className="absolute top-7 bottom-0 right-0 w-10 h-8 text-lg text-gray-500"
+      className="absolute top-8 bottom-0 right-0 w-10 h-8 text-lg text-gray-500"
       onClick={() => setShowPassword(!showPassword)}
     >
       {showPassword ? (

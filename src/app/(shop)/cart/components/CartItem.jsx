@@ -68,7 +68,7 @@ export function CartItem({ product, qty }) {
             </div>
             <div className="mt-1 flex text-sm">
               {/* Display product size and name */}
-              <p className="text-gray-500">Size: {product?.size}</p>
+              <p className="text-gray-500">Taille: {product?.size}</p>
               {product?.name && (
                 <p className="ml-4 border-l border-gray-200 pl-4 text-gray-500">
                   {product?.name}

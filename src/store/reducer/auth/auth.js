@@ -44,10 +44,7 @@ export const loginUser = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      throw rejectWithValue({
-        status: error.response.status,
-        message: error.response.data.message,
-      });
+      throw rejectWithValue(error.response.data);
     }
   },
 );
@@ -144,7 +141,7 @@ const authReducer = createReducer(initialState, (builder) => {
       state.loading = false;
     })
     .addCase(loginUser.rejected, (state, action) => {
-      state.status = action.payload.status;
+      state.status = action.payload.statusCode;
       state.error = action.payload.message;
       state.loading = false;
     })

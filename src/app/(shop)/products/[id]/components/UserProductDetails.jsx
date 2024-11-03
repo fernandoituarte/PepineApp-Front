@@ -35,6 +35,7 @@ export function UserProductDetails({ product, error }) {
     price: product?.price,
     stock: product?.stock,
     status: product?.status,
+    size: product?.size,
   };
 
   if (error && error.statusCode === 404) {

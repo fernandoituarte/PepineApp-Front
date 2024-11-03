@@ -50,7 +50,7 @@ export function Register() {
           </div>
         )}
         <div>
-          <form className="space-y-6" onSubmit={onSubmit}>
+          <form className="space-y-6 p-3" onSubmit={onSubmit}>
             {success && (
               <Message
                 className={

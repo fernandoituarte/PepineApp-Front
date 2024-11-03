@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 /* Custom hook to handle product card logic based on product, category, and pathname **/
 
 export const useHandleProductCard = (product, category, pathname) => {
-  const { id, name, media, price, stock, status } = product;
+  const { id, name, media, price, stock, status, size } = product;
 
   // Prepare an item object with key product details to simplify adding it to the cart
   const item = {
@@ -14,6 +14,7 @@ export const useHandleProductCard = (product, category, pathname) => {
     price,
     stock,
     status,
+    size,
   };
 
   // Get authentication status and user information from Redux

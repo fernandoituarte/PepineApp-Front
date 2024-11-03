@@ -86,7 +86,7 @@ export const ChangePassword = () => {
             placeholder="Entrez le nouveau mot de passe"
           />
           <div
-            className="absolute top-2 right-0 flex pr-3 cursor-pointer"
+            className="absolute top-2 right-0 flex pr-3 cursor-pointer text-gray-500"
             onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? (
@@ -105,15 +105,13 @@ export const ChangePassword = () => {
 
       {/* Input for confirming the new password. */}
       <div className="w-full flex flex-col sm:flex-row sm:justify-between mb-6">
-        <label className="font-semibold mb-1">
-          Confirmez le nouveau mot de passe:
-        </label>
+        <label className="font-semibold mb-1">Confirmez le mot de passe:</label>
         <div className="flex flex-col sm:w-1/2">
           <input
             type="password"
             {...register("confirmPassword")}
             className="font-normal border rounded-md h-10 px-2"
-            placeholder="Confirmez le nouveau mot de passe"
+            placeholder="Confirmez le mot de passe"
           />
           {errors.confirmPassword && (
             <p className="ml-2 text-red-500 text-sm">
@@ -127,7 +125,7 @@ export const ChangePassword = () => {
       <div className="flex flex-col mt-8 sm:flex-row justify-around">
         <button
           type="submit"
-          className="inline-flex items-center justify-center w-[300px] sm:w-[200px] mx-auto mt-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-400"
+          className="inline-flex items-center justify-center w-[300px] sm:w-[200px] mx-auto mt-3 py-2 bg-[#5e60e4] hover:bg-[#5e60e485] text-white rounded-lg"
         >
           {loading ? (
             <MoonLoader color="#ffffff" size={20} speedMultiplier={0.4} />
@@ -138,7 +136,7 @@ export const ChangePassword = () => {
         <button
           type="button"
           onClick={() => router.back()}
-          className="w-[300px] sm:w-[200px] mx-auto mt-3 py-2 bg-red-400 text-white rounded-lg hover:bg-red-500"
+          className="w-[300px] sm:w-[200px] mx-auto mt-3 py-2 bg-[#be5555] hover:bg-[#be55557e] text-white rounded-lg"
         >
           Annuler
         </button>
