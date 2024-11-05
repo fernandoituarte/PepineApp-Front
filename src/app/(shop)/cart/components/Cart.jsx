@@ -56,7 +56,7 @@ export function Cart() {
             className={"bg-red-100 border border-red-300 text-red-600 mb-3"}
           />
         )}
-        <form className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+        <form className="mt-7 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
           <section aria-labelledby="cart-heading" className="lg:col-span-7">
             <ul className="divide-y divide-gray-200 border-b border-t mb-10 border-gray-200">
               {cartItems &&

@@ -46,7 +46,7 @@ export function Orders({ limit, offset, history }) {
 
   return (
     <div className="sm:px-6 lg:px-8">
-      <div className="mt-12 flow-root w-full m-auto">
+      <div className="mt-7 flow-root w-full m-auto">
         <div className="px-5 -mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="min-w-full pb-10 align-middle sm:px-6 lg:px-10">
             <div className="lg:m-auto">

@@ -78,7 +78,7 @@ export function UpdateProduct({
       <form onSubmit={onSubmit}>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
-            <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Medium inputs */}
               {inputs.mediumInputs.map((item) => (
                 <MediumInputs

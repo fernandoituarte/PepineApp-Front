@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Suspense } from "react";
 
 import {
   Pagination,
@@ -8,6 +9,8 @@ import {
   ErrorComponent,
 } from "@/components";
 import { getProductsByCategory } from "@/lib/getProducts";
+
+import ProductListLoading from "./loading";
 
 const URL = process.env.NEXT_PUBLIC_URL;
 
@@ -75,29 +78,33 @@ export default async function Page({ params, searchParams }) {
   }
 
   return (
-    <div className="mx-auto my-10 lg:my-16 max-w-7xl px-6 lg:px-8">
-      {/* Title component displays the category name and description. */}
-      <Title
-        title={`${category && category.value}`}
-        subtitle={`${category && category.description}`}
-        className={"text-center"}
-      />
-      <div
-        role="list"
-        className="mx-auto mt-20 grid max-w-2xl grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-16 text-center lg:mx-0 lg:max-w-none lg:grid-cols-3 xl:grid-cols-4 justify-center"
-      >
-        {/* Maps over the products array to generate a ProductCard for each product. */}
-        {products &&
-          products.map((product, index) => (
-            <ProductCard key={index} {...product} category={category} />
-          ))}
+    <Suspense fallback={<ProductListLoading />}>
+      <div className="mx-auto my-10 lg:my-16 max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto lg:mx-0">
+          {/* Title component displays the category name and description. */}
+          <Title
+            title={`${category && category.value}`}
+            subtitle={`${category && category.description}`}
+            className={"text-center"}
+          />
+        </div>
+        <ul
+          role="list"
+          className="mx-auto grid max-w-2xl grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-16 text-center lg:mx-0 lg:max-w-none lg:grid-cols-3 xl:grid-cols-4 justify-center"
+        >
+          {/* Maps over the products array to generate a ProductCard for each product. */}
+          {products &&
+            products.map((product, index) => (
+              <ProductCard key={index} {...product} category={category} />
+            ))}
+        </ul>
+        {/* Pagination */}
+        <Pagination
+          totalPages={totalPages}
+          limit={limit}
+          baseUrl={`/categories/${id}`}
+        />
       </div>
-      {/* Pagination */}
-      <Pagination
-        totalPages={totalPages}
-        limit={limit}
-        baseUrl={`/categories/${id}`}
-      />
-    </div>
+    </Suspense>
   );
 }

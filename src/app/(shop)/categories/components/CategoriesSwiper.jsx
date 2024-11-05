@@ -27,6 +27,7 @@ export function CategoriesSwiper() {
 
   const settings = {
     dots: true,
+    arrows: false,
     infinite: false,
     speed: 400,
     slidesToShow: 3,
@@ -68,8 +69,8 @@ export function CategoriesSwiper() {
   }
 
   return (
-    <div className="mb-24 overflow-x-hidden w-full">
-      <div className="slider-container overflow-hidden">
+    <div className="mb-24 w-full">
+      <div className="slider-container">
         <Slider {...settings}>
           {categories &&
             categories.map((category) => (

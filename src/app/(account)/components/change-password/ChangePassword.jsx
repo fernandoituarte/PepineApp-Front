@@ -39,7 +39,7 @@ export const ChangePassword = () => {
   return (
     <form
       onSubmit={onSubmit}
-      className="mx-2 sm:w-4/5 md:w-2/3 sm:mx-auto mt-12 border rounded-lg p-6"
+      className="mx-2 sm:w-4/5 md:w-2/3 sm:mx-auto mt-7 border rounded-lg p-6"
     >
       {/* Error/Success message */}
       {showMessage && (

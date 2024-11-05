@@ -40,7 +40,7 @@ export default async function Page({ searchParams }) {
 
   return (
     <Suspense fallback={<ProductListLoading />}>
-      <div className="mx-auto my-10 lg:my-16 max-w-7xl px-6 lg:px-8">
+      <div className="mx-auto my-4 lg:my-8 max-w-7xl px-6 lg:px-8">
         <div className="mx-auto lg:mx-0">
           {/* Title component with both a main title and a subtitle. */}
           <Title
@@ -52,7 +52,7 @@ export default async function Page({ searchParams }) {
         {/* Grid layout for products, dynamically adjusting columns based on screen size. */}
         <ul
           role="list"
-          className="mx-auto mt-20 grid max-w-2xl grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-16 text-center lg:mx-0 lg:max-w-none lg:grid-cols-3 xl:grid-cols-4 justify-center"
+          className="mx-auto grid max-w-2xl grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-16 text-center lg:mx-0 lg:max-w-none lg:grid-cols-3 xl:grid-cols-4 justify-center"
         >
           {products &&
             products.map((product) => (

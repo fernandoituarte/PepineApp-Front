@@ -12,7 +12,7 @@ export default async function Page({ searchParams }) {
     <>
       <Title title={"Liste des produits"} className={"text-center"} />
       <div className="lg:px-8">
-        <div className="mt-12 flow-root m-auto">
+        <div className="mt-7 flow-root m-auto">
           <div className="px-5 -mx-4 -my-2 sm:-mx-6 lg:-mx-8">
             <Products limit={limit} offset={offset} />
             {/* Floating action button for adding a new product, with an icon from react-icons. */}

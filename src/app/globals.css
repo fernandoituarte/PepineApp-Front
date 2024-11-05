@@ -14,3 +14,15 @@
     color: #2d3748;
   }
 }
+
+@media (max-width: 768px) {
+  .overflow-hidden-mobile {
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 768px) {
+  .overflow-x-hidden-mobile {
+    overflow-x: hidden;
+  }
+}
