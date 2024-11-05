@@ -9,7 +9,11 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "pepineapp-back.onrender.com",
+        hostname: "api.fernandoituarte.com",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
       },
     ],
   },
