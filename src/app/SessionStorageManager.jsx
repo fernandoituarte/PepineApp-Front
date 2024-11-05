@@ -33,6 +33,7 @@ export function SessionStorageManager() {
 
   useEffect(() => {
     const savedUser = getCookie("user");
+
     if (savedUser) {
       dispatch(setUserSession(JSON.parse(savedUser)));
     }

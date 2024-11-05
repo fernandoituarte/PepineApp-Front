@@ -111,8 +111,7 @@ const authReducer = createReducer(initialState, (builder) => {
       state.message = "";
     })
     .addCase(setUserSession, (state, action) => {
-      state.user = action.payload.user;
-      state.logged = action.payload.logged;
+      state.user = action.payload;
     })
     .addCase(registerUser.pending, (state) => {
       state.status = "loading";
