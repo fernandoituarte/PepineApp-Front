@@ -1,8 +1,11 @@
 "use client";
 
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { CategoryCard } from "./CategoryCard";
-import React from "react";
+import React, { useEffect } from "react";
 import Slider from "react-slick";
+import { getAllCategories } from "@/store/reducer/categories/categories";
+import { ErrorComponent, Spinner } from "@/components";
 
 /**
  * `CategoriesSwiper` is a component that renders a Swiper carousel to display category cards.
@@ -13,7 +16,15 @@ import Slider from "react-slick";
  * @param {Array} categories - An array of category objects to display in the Swiper.
  */
 
-export function CategoriesSwiper({ categories }) {
+export function CategoriesSwiper() {
+  const dispatch = useAppDispatch();
+  const { loading, error, categories } = useAppSelector(
+    (state) => state.category,
+  );
+  useEffect(() => {
+    dispatch(getAllCategories());
+  }, [dispatch]);
+
   const settings = {
     dots: true,
     infinite: false,
@@ -48,13 +59,20 @@ export function CategoriesSwiper({ categories }) {
       },
     ],
   };
+  if (loading) {
+    return <Spinner />;
+  }
+
+  if (error) {
+    return <ErrorComponent text={error} />;
+  }
 
   return (
-    <div className="mb-24">
-      <div className="slider-container">
+    <div className="mb-24 overflow-x-hidden w-full">
+      <div className="slider-container overflow-hidden">
         <Slider {...settings}>
-          {categories.categories &&
-            categories.categories.map((category) => (
+          {categories &&
+            categories.map((category) => (
               <CategoryCard {...category} key={category.id} />
             ))}
         </Slider>

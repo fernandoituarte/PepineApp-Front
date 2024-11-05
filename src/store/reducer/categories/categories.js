@@ -124,17 +124,19 @@ const categoriesReducer = createReducer(initialState, (builder) => {
     })
     .addCase(getAllCategories.pending, (state, action) => {
       state.loading = true;
+      state.error = null;
       state.status = "loading";
     })
     .addCase(getAllCategories.fulfilled, (state, action) => {
+      console.log(action.payload);
       state.status = action.payload.status;
       state.categories = action.payload.categories;
       state.loading = false;
     })
     .addCase(getAllCategories.rejected, (state, action) => {
-      state.status = action.payload.status;
+      state.status = action.payload.statusCode;
+      state.error = action.payload.message;
       state.loading = false;
-      state.rejected = true;
     })
     .addCase(getCategoryById.pending, (state, action) => {
       state.loading = true;

@@ -1,6 +1,5 @@
 import { Title } from "@/components";
 import { CategoriesSwiper } from "./components/CategoriesSwiper";
-import { getCategories } from "@/lib/getCategories";
 
 import { Suspense } from "react";
 import CategoriesLoading from "./loading";
@@ -12,8 +11,6 @@ export const metadata = {
 };
 
 export default async function Page() {
-  const categories = await getCategories();
-
   return (
     <Suspense fallback={<CategoriesLoading />}>
       <Title
@@ -21,7 +18,7 @@ export default async function Page() {
         subtitle={metadata.description}
         className={"text-center"}
       />
-      {categories && <CategoriesSwiper categories={categories} />}
+      <CategoriesSwiper />
     </Suspense>
   );
 }

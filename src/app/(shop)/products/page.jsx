@@ -45,9 +45,7 @@ export default async function Page({ searchParams }) {
           {/* Title component with both a main title and a subtitle. */}
           <Title
             title="Tous nos produits disponibles"
-            subtitle="Explorez notre large gamme d'arbres, d'arbustes et de plantes pour
-            agrémenter votre espace de vie de verdure et créer une ambiance
-            naturelle dans votre quotidien."
+            subtitle="Explorez notre large gamme d'arbres, d'arbustes et de plantes."
             className={"text-center"}
           />
         </div>

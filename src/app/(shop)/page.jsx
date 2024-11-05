@@ -2,7 +2,6 @@ import { SubTitle } from "@/components";
 import { ImagesHeader } from "./components/home/ImagesHeader";
 import { About } from "./components/home/About";
 import { CategoriesSwiper } from "./categories/components/CategoriesSwiper";
-import { getCategories } from "@/lib/getCategories";
 
 export const metadata = {
   title: "Home",
@@ -11,12 +10,11 @@ export const metadata = {
 };
 
 export default async function Home() {
-  const categories = await getCategories();
   return (
     <>
       <ImagesHeader />
       <SubTitle subtitle="Nos categories" className={"text-center"} />
-      {categories && <CategoriesSwiper categories={categories} />}
+      <CategoriesSwiper />
       <About />
     </>
   );

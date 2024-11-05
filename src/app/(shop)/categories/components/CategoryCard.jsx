@@ -36,7 +36,7 @@ export function CategoryCard(category) {
             <h3 className="text-base font-semibold leading-7 tracking-tight text-gray-900">
               {value}
             </h3>
-            <p className="text-sm text-pretty leading-6 text-gray-600 overflow-hidden overflow-ellipsis line-clamp-5">
+            <p className="text-sm text-pretty leading-6 text-gray-600 overflow-hidden overflow-ellipsis line-clamp-4">
               {description}
             </p>
           </div>
