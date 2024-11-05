@@ -52,8 +52,8 @@ export const ImagesGallery = ({ urls }) => {
           urls.map((image, index) => (
             <TabPanel key={index}>
               <Image
-                width={600}
-                height={500}
+                width={1200}
+                height={800}
                 priority
                 src={image === null ? noimage : image.url}
                 alt="Product Image"
