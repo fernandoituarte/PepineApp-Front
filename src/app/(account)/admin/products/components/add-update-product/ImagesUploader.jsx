@@ -60,10 +60,9 @@ export function ImagesUploader({
 
   return (
     <div className="col-span-3 pb-10 pt-5 px-5 lg:col-start-2 lg:col-span-4">
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 py-4">
-        {Array.isArray(media) &&
-          media?.length &&
-          media.map((item) => (
+      {Array.isArray(media) && media?.length > 0 && (
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 py-4">
+          {media.map((item) => (
             <ItemImage
               key={item}
               item={item}
@@ -71,7 +70,9 @@ export function ImagesUploader({
               setMedia={setMedia}
             />
           ))}
-      </div>
+        </div>
+      )}
+
       <div
         className={clsx("grid grid-cols-2 md:grid-cols-3 gap-6 py-4", {
           "border-t border-gray-900/10 mt-5": selectedImages.length > 0,

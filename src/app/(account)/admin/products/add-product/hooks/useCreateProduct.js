@@ -75,7 +75,7 @@ export const useCreateProduct = () => {
     if (
       (mediaStatus === 201 || mediaStatus === 204) &&
       !isSubmitting &&
-      mediaUrls?.length
+      mediaUrls?.length > 0
     ) {
       setIsSubmitting(true);
       dispatch(addNewProduct({ ...productToUpdate, media: mediaUrls }));
