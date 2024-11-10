@@ -9,7 +9,8 @@ export function Spinner() {
         sx={{
           display: "flex",
           justifyContent: "center",
-          marginTop: "3rem",
+          marginTop: "5rem",
+          marginBottom: "5rem",
         }}
       >
         <CircularProgress size={60} color="success" />
