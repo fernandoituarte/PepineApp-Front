@@ -34,6 +34,8 @@ export const registerUser = createAsyncThunk(
     }
   },
 );
+
+//Login user
 export const loginUser = createAsyncThunk(
   "user/login",
   async (credentials, { rejectWithValue }) => {
@@ -48,18 +50,26 @@ export const loginUser = createAsyncThunk(
     }
   },
 );
+
+//Logout user
 export const logOut = createAsyncThunk(
   "user/logout",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.delete("/api/logout");
+      const response = await axios.post(`${URL}/auth/logout`, null, {
+        withCredentials: true,
+      });
 
+      console.log(response);
       return response.data;
     } catch (error) {
+      console.log(error.response);
       throw rejectWithValue(error.response.data);
     }
   },
 );
+
+//Forgot password
 export const forgotPassword = createAsyncThunk(
   "forgot/password",
   async (data, { rejectWithValue }) => {
